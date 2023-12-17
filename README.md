@@ -3,7 +3,8 @@ A web application for booking any service and making payments for it through the
 
 ## Run
 ### frontend
-1. with `npm start`
+1. make sure if you make `npm ci`
+2. with `npm start`
 
 
 ### backend 
