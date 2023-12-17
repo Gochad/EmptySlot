@@ -1,63 +1,45 @@
 package database
 
 import (
-	"database/sql"
+	"emptyslot/internal/models"
 	"fmt"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"log"
+	"os"
 )
 
 type Postgres struct {
-	db *sql.DB
+	Db *gorm.DB
 }
 
-func NewPostgres() *Postgres {
-	return &Postgres{db: &sql.DB{}}
-}
+var DB Postgres
 
-func (p *Postgres) Database() *sql.DB {
-	return p.db
-}
+func ConnectDb() {
+	dsn := fmt.Sprintf(
+		"host=db user=%s password=%s dbname=%s port=5432",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_NAME"),
+	)
 
-func (p *Postgres) Connect(driver string, dataSourceName string) error {
-	var err error
-	p.db, err = sql.Open(driver, dataSourceName)
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
+
 	if err != nil {
-		return err
+		log.Fatal("Failed to connect to database. \n", err)
+		os.Exit(2)
 	}
 
-	err = p.db.Ping()
-	if err != nil {
-		return err
+	log.Println("connected")
+	db.Logger = logger.Default.LogMode(logger.Info)
+
+	log.Println("running migrations")
+	db.AutoMigrate(&models.Merchandise{})
+
+	DB = Postgres{
+		Db: db,
 	}
-
-	fmt.Println("Connected to database")
-	return nil
-}
-
-func (p *Postgres) Close() error {
-	return p.db.Close()
-}
-
-func (p *Postgres) InsertData(data string) error {
-	_, err := p.db.Exec("INSERT INTO table_name (column_name) VALUES (?)", data)
-	return err
-}
-
-func (p *Postgres) GetData() ([]string, error) {
-	rows, err := p.db.Query("SELECT column_name FROM table_name")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var result []string
-	for rows.Next() {
-		var data string
-		err := rows.Scan(&data)
-		if err != nil {
-			return nil, err
-		}
-		result = append(result, data)
-	}
-
-	return result, nil
 }

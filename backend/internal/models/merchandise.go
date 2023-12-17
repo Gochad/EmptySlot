@@ -1,6 +1,9 @@
 package models
 
+import "gorm.io/gorm"
+
 type Merchandise struct {
+	gorm gorm.Model
 	ID   string `json:"id"`
 	Name string `json:"name"`
 }
