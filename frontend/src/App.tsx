@@ -10,13 +10,6 @@ function App() {
             <Scheduler
                 events={EVENTS}
                 height={10}
-                // week={{
-                //   weekDays: [0, 1, 2, 3, 4, 5, 6],
-                //   weekStartOn: 6,
-                //   startHour: 0,
-                //   endHour: 24,
-                //   step: 30
-                // }}
             />
         </div>
 
