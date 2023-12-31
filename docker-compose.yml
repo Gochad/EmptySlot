@@ -1,17 +1,6 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
-    env_file:
-      - .env
-    ports:
-      - "8080:8080"
-    volumes:
-      - .:/usr/src/app
-    command: go run ./cmd/api/main.go
-    depends_on:
-      - db
   db:
     container_name: go_db
     image: postgres:latest
@@ -23,6 +12,26 @@ services:
       - "5432:5432"
     volumes:
       - postgres-db:/var/lib/postgresql/data
+
+  be:
+    build: ./backend
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/usr/src/app
+    command: go run ./cmd/api/main.go
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    command: npm start
+    depends_on:
+      - be
 
 volumes:
   postgres-db:
