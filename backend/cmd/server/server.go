@@ -8,7 +8,7 @@ import (
 	"syscall"
 )
 
-func ServerConfig(port string, handler http.Handler) *http.Server {
+func Config(port string, handler http.Handler) *http.Server {
 	return &http.Server{
 		Addr:    port,
 		Handler: handler,
@@ -37,7 +37,7 @@ func RunServer(server *http.Server) {
 }
 
 func NewServer(r http.Handler) {
-	s := ServerConfig(":8080", r)
+	s := Config(":8080", r)
 
 	RunServer(s)
 	CloseServer(s)

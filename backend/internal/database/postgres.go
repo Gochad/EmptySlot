@@ -1,7 +1,6 @@
 package database
 
 import (
-	"emptyslot/internal/models"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -10,13 +9,7 @@ import (
 	"os"
 )
 
-type Postgres struct {
-	Db *gorm.DB
-}
-
-var DB Postgres
-
-func ConnectDb() {
+func ConnectDb() *gorm.DB {
 	dsn := fmt.Sprintf(
 		"host=db user=%s password=%s dbname=%s port=5432",
 		os.Getenv("DB_USER"),
@@ -33,13 +26,7 @@ func ConnectDb() {
 		os.Exit(2)
 	}
 
-	log.Println("connected")
 	db.Logger = logger.Default.LogMode(logger.Info)
 
-	log.Println("running migrations")
-	db.AutoMigrate(&models.Merchandise{})
-
-	DB = Postgres{
-		Db: db,
-	}
+	return db
 }
