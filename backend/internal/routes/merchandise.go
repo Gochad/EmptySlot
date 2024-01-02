@@ -1,23 +1,22 @@
 package routes
 
 import (
-	"emptyslot/internal/models"
+	"context"
 	"emptyslot/internal/services"
 	"emptyslot/internal/views"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	"gorm.io/gorm"
 	"net/http"
 )
 
 type merchandiseImpl struct {
-	db *gorm.DB
+	ctx context.Context
 }
 
-func registerMerchandise(router *mux.Router, db *gorm.DB) {
+func registerMerchandise(ctx context.Context, router *mux.Router) {
 	impl := &merchandiseImpl{
-		db: db,
+		ctx: ctx,
 	}
 	s := router.PathPrefix("/merchandises").Subrouter()
 	s.HandleFunc("/", impl.create).Methods("POST")
@@ -33,9 +32,7 @@ func (impl *merchandiseImpl) create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding JSON", http.StatusBadRequest)
 		return
 	}
-	mr := models.MerchandiseRepository{Db: impl.db}
-	model := body.ToModel()
-	mr.CreateMerchandise(model)
+	model := services.Create(impl.ctx, &body)
 	views.SendJSONResponse(w, http.StatusOK, model)
 }
 
@@ -50,23 +47,18 @@ func (impl *merchandiseImpl) update(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding JSON", http.StatusBadRequest)
 		return
 	}
-	mr := models.MerchandiseRepository{Db: impl.db}
-	model := body.ToModel()
-	mr.UpdateMerchandise(model)
+	model := services.Update(impl.ctx, &body)
 	views.SendJSONResponse(w, http.StatusOK, model)
 }
 
 func (impl *merchandiseImpl) get(w http.ResponseWriter, r *http.Request) {
-	mr := models.MerchandiseRepository{Db: impl.db}
-	mods := mr.GetAllMerchandise()
+	mods := services.Get(impl.ctx)
 	views.SendJSONResponse(w, http.StatusOK, mods)
 }
 
 func (impl *merchandiseImpl) detail(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	merchandiseID := vars["id"]
-
-	mr := models.MerchandiseRepository{Db: impl.db}
-	model := mr.GetMerchandiseByID(merchandiseID)
+	model := services.Detail(impl.ctx, merchandiseID)
 	views.SendJSONResponse(w, http.StatusOK, model)
 }

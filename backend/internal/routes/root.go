@@ -1,10 +1,10 @@
 package routes
 
 import (
+	"context"
 	"github.com/gorilla/mux"
-	"gorm.io/gorm"
 )
 
-func RegisterRoutes(r *mux.Router, db *gorm.DB) {
-	registerMerchandise(r, db)
+func RegisterRoutes(ctx context.Context, r *mux.Router) {
+	registerMerchandise(ctx, r)
 }
