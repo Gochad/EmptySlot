@@ -2,12 +2,14 @@ package routes
 
 import (
 	"context"
-	"emptyslot/internal/services"
-	"emptyslot/internal/views"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
+
+	"emptyslot/internal/services"
+	"emptyslot/internal/views"
 )
 
 type merchandiseImpl struct {
@@ -32,8 +34,12 @@ func (impl *merchandiseImpl) create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding JSON", http.StatusBadRequest)
 		return
 	}
-	model := services.Create(impl.ctx, &body)
-	views.SendJSONResponse(w, http.StatusOK, model)
+	model, err := body.Create(impl.ctx)
+	if err != nil {
+		views.SendResponse(w, http.StatusOK, model)
+	} else {
+		views.SendErrorMsg(w, http.StatusOK, model)
+	}
 }
 
 func (impl *merchandiseImpl) update(w http.ResponseWriter, r *http.Request) {
@@ -47,18 +53,37 @@ func (impl *merchandiseImpl) update(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error decoding JSON", http.StatusBadRequest)
 		return
 	}
-	model := services.Update(impl.ctx, &body)
-	views.SendJSONResponse(w, http.StatusOK, model)
+	model, err := body.Update(impl.ctx)
+
+	if err != nil {
+		views.SendResponse(w, http.StatusOK, model)
+	} else {
+		views.SendErrorMsg(w, http.StatusOK, model)
+	}
 }
 
 func (impl *merchandiseImpl) get(w http.ResponseWriter, r *http.Request) {
-	mods := services.Get(impl.ctx)
-	views.SendJSONResponse(w, http.StatusOK, mods)
+	var body services.MerchandiseRequest
+
+	mods, err := body.Get(impl.ctx)
+
+	if err != nil {
+		views.SendResponse(w, http.StatusOK, mods)
+	} else {
+		views.SendErrorMsg(w, http.StatusOK, mods)
+	}
 }
 
 func (impl *merchandiseImpl) detail(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	merchandiseID := vars["id"]
-	model := services.Detail(impl.ctx, merchandiseID)
-	views.SendJSONResponse(w, http.StatusOK, model)
+
+	var body services.MerchandiseRequest
+	model, err := body.Detail(impl.ctx, merchandiseID)
+
+	if err != nil {
+		views.SendResponse(w, http.StatusOK, model)
+	} else {
+		views.SendErrorMsg(w, http.StatusOK, model)
+	}
 }

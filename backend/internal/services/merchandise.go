@@ -2,50 +2,60 @@ package services
 
 import (
 	"context"
+
 	"emptyslot/internal"
 	"emptyslot/internal/models"
-	"github.com/google/uuid"
-	"strconv"
 )
 
 type MerchandiseRequest struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Price       int64  `json:"price"`
 }
 
-func (mr *MerchandiseRequest) ToModel(generateNewID bool) *models.Merchandise {
-	var id string
+func (mreq *MerchandiseRequest) ToModel(generateNewID bool) *models.Merchandise {
 	if generateNewID {
-		id = strconv.Itoa(int(uuid.New().ID()))
-	} else {
-		id = mr.ID
+		mreq.ID = generateUUID()
 	}
 	return &models.Merchandise{
-		ID:   id,
-		Name: mr.Name,
+		ID:          mreq.ID,
+		Name:        mreq.Name,
+		Description: mreq.Description,
+		Price:       mreq.Price,
 	}
 }
 
-func Create(ctx context.Context, mreq *MerchandiseRequest) *models.Merchandise {
+func (mreq *MerchandiseRequest) Create(ctx context.Context) (*models.Merchandise, error) {
 	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
 	model := mreq.ToModel(true)
-	mr.CreateMerchandise(model)
-	return model
+	err := mr.CreateMerchandise(model)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return model, nil
 }
 
-func Update(ctx context.Context, mreq *MerchandiseRequest) *models.Merchandise {
+func (mreq *MerchandiseRequest) Update(ctx context.Context) (*models.Merchandise, error) {
 	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
 	model := mreq.ToModel(false)
-	mr.UpdateMerchandise(model)
-	return model
+	err := mr.UpdateMerchandise(model)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return model, nil
 }
 
-func Get(ctx context.Context) []*models.Merchandise {
+func (mreq *MerchandiseRequest) Get(ctx context.Context) ([]*models.Merchandise, error) {
 	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
 	return mr.GetAllMerchandise()
 }
 
-func Detail(ctx context.Context, id string) *models.Merchandise {
+func (mreq *MerchandiseRequest) Detail(ctx context.Context, id string) (*models.Merchandise, error) {
 	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
 	return mr.GetMerchandiseByID(id)
 }
