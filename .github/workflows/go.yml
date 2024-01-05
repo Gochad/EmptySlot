@@ -22,7 +22,7 @@ jobs:
           go-version: '1.21'
 
       - name: Initialize Go module
-        run: go mod init
+        run: go mod init github.com/Gochad/EmptySlot
 
       - name: Install dependencies
         run: |
