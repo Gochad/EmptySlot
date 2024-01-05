@@ -24,7 +24,7 @@ func (rr *ReservationRequest) ToModel(generateNewID bool) *models.Reservation {
 
 	return &models.Reservation{
 		ID:          rr.ID,
-		Merchandise: *rr.MerchandiseReq.ToModel(generateNewID),
+		Merchandise: *rr.MerchandiseReq.ToModel(generateNewID, ""),
 		Customer:    *rr.CustomerReq.ToModel(generateNewID),
 		Confirmed:   rr.Confirmed,
 	}

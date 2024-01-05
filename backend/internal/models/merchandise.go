@@ -7,11 +7,13 @@ import (
 )
 
 type Merchandise struct {
-	gorm        gorm.Model
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Price       int64  `json:"price"`
+	gorm          gorm.Model
+	ID            string  `json:"id"`
+	Name          string  `json:"name"`
+	Description   string  `json:"description"`
+	Price         int64   `json:"price"`
+	CategoryID    *string `json:"category_id"`
+	ReservationID *string `json:"reservation_id"`
 }
 
 type MerchandiseRepository struct {

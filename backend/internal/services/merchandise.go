@@ -12,9 +12,10 @@ type MerchandiseRequest struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Price       int64  `json:"price"`
+	CategoryID  uint   `json:"category_id"`
 }
 
-func (mreq *MerchandiseRequest) ToModel(generateNewID bool) *models.Merchandise {
+func (mreq *MerchandiseRequest) ToModel(generateNewID bool, categoryId string) *models.Merchandise {
 	if generateNewID {
 		mreq.ID = generateUUID()
 	}
@@ -23,12 +24,13 @@ func (mreq *MerchandiseRequest) ToModel(generateNewID bool) *models.Merchandise 
 		Name:        mreq.Name,
 		Description: mreq.Description,
 		Price:       mreq.Price,
+		CategoryID:  &categoryId,
 	}
 }
 
 func (mreq *MerchandiseRequest) Create(ctx context.Context) (*models.Merchandise, error) {
 	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
-	model := mreq.ToModel(true)
+	model := mreq.ToModel(true, "")
 	err := mr.CreateMerchandise(model)
 
 	if err != nil {
@@ -40,7 +42,7 @@ func (mreq *MerchandiseRequest) Create(ctx context.Context) (*models.Merchandise
 
 func (mreq *MerchandiseRequest) Update(ctx context.Context) (*models.Merchandise, error) {
 	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
-	model := mreq.ToModel(false)
+	model := mreq.ToModel(false, "")
 	err := mr.UpdateMerchandise(model)
 
 	if err != nil {

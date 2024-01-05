@@ -10,23 +10,23 @@ type Category struct {
 	gorm         gorm.Model
 	ID           string         `json:"id"`
 	Name         string         `json:"name"`
-	Merchandises []*Merchandise `json:"merchandises"`
+	Merchandises []*Merchandise `gorm:"foreignKey:CategoryID" json:"merchandises"`
 }
 
 type CategoryRepository struct {
 	Db *gorm.DB
 }
 
-func (r *CategoryRepository) CreateCategory(m *Category) error {
-	if err := r.Db.Create(m).Error; err != nil {
+func (r *CategoryRepository) CreateCategory(c *Category) error {
+	if err := r.Db.Create(c).Error; err != nil {
 		return fmt.Errorf("error creating category: %v", err)
 	}
 
 	return nil
 }
 
-func (r *CategoryRepository) UpdateCategory(m *Category) error {
-	if err := r.Db.Save(m).Error; err != nil {
+func (r *CategoryRepository) UpdateCategory(c *Category) error {
+	if err := r.Db.Save(c).Error; err != nil {
 		return fmt.Errorf("error updating category: %v", err)
 	}
 
@@ -35,7 +35,7 @@ func (r *CategoryRepository) UpdateCategory(m *Category) error {
 
 func (r *CategoryRepository) GetCategoryByID(id string) (*Category, error) {
 	model := new(Category)
-	if err := r.Db.First(model, id).Error; err != nil {
+	if err := r.Db.Preload("Merchandises").First(model, id).Error; err != nil {
 		return nil, fmt.Errorf("error updating category: %v", err)
 	}
 
@@ -44,8 +44,12 @@ func (r *CategoryRepository) GetCategoryByID(id string) (*Category, error) {
 
 func (r *CategoryRepository) GetAllCategories() ([]*Category, error) {
 	var list []*Category
-	if err := r.Db.Find(&list).Error; err != nil {
+	if err := r.Db.Preload("Merchandises").Find(&list).Error; err != nil {
 		return nil, fmt.Errorf("error updating category: %v", err)
+	}
+
+	for i, elem := range list {
+		fmt.Println(i, "-ty element: ", elem.Merchandises)
 	}
 	return list, nil
 }

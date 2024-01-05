@@ -20,7 +20,7 @@ func (cr *CategoryRequest) ToModel(generateNewID bool) *models.Category {
 
 	ms := make([]*models.Merchandise, 0)
 	for _, m := range cr.Merchandises {
-		ms = append(ms, m.ToModel(generateNewID))
+		ms = append(ms, m.ToModel(generateNewID, cr.ID))
 	}
 
 	return &models.Category{

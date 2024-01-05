@@ -9,6 +9,10 @@ import (
 func Migration(db *gorm.DB) {
 	mods := []interface{}{
 		&Merchandise{},
+		&Category{},
+		&Reservation{},
+		&User{},
+		&Customer{},
 	}
 	for _, model := range mods {
 		if err := db.AutoMigrate(model); err != nil {

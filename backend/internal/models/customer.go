@@ -7,10 +7,11 @@ import (
 )
 
 type Customer struct {
-	gorm gorm.Model
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	User User   `json:"user"`
+	gorm          gorm.Model
+	ID            string  `json:"id"`
+	Name          string  `json:"name"`
+	User          User    `gorm:"foreignKey:CustomerID" json:"user"`
+	ReservationID *string `json:"reservation_id"`
 }
 
 type CustomerRepository struct {

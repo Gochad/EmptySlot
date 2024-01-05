@@ -7,13 +7,14 @@ import (
 )
 
 type User struct {
-	gorm    gorm.Model
-	ID      string `json:"id"`
-	Name    string `json:"name"`
-	Surname string `json:"surname"`
-	Email   string `json:"email"`
-	Address string `json:"address"`
-	Phone   string `json:"phone"`
+	gorm       gorm.Model
+	ID         string  `json:"id"`
+	Name       string  `json:"name"`
+	Surname    string  `json:"surname"`
+	Email      string  `json:"email"`
+	Address    string  `json:"address"`
+	Phone      string  `json:"phone"`
+	CustomerID *string `json:"customer_id"`
 }
 
 type UserRepository struct {
