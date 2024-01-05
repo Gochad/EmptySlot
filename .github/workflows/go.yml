@@ -22,7 +22,9 @@ jobs:
           go-version: '1.21'
 
       - name: Initialize Go module
-        run: go mod init emptyslot
+        run: |
+          go mod init emptyslot
+          go mod tidy
 
       - name: Install dependencies
         run: |
@@ -34,14 +36,26 @@ jobs:
 
       - name: Build
         run: |
+          cd /backend/cmd/api
           go build -v
 
       - name: Test
         run: |
+          cd backend/cmd/api
           go test -v 
 
       - name: Run vet & lint
         run: |
           go vet .
           golint .
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push Docker image
+        uses: docker/compose-action@v2
+        with:
+          compose-file: docker-compose.yml
+          context: .
+          push: true
 
