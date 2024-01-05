@@ -34,13 +34,13 @@ jobs:
 
       - name: Build
         run: |
-          cd EmptySlot/backend/cmd/api
-          go build -v
+          cd backend
+          go build -v ./...
 
       - name: Test
         run: |
-          cd EmptySlot/backend/cmd/api
-          go test -v 
+          cd backend
+          go test -v ./...
 
       - name: Run vet & lint
         run: |
