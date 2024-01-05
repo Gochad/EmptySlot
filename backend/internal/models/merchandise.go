@@ -19,8 +19,7 @@ type MerchandiseRepository struct {
 }
 
 func (r *MerchandiseRepository) CreateMerchandise(m *Merchandise) error {
-	err := r.Db.Create(m).Error
-	if err != nil {
+	if err := r.Db.Create(m).Error; err != nil {
 		return fmt.Errorf("error creating merchandise: %v", err)
 	}
 

@@ -2,13 +2,14 @@ package stripe
 
 import (
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/joho/godotenv"
 	"github.com/stripe/stripe-go/v76"
 	"github.com/stripe/stripe-go/v76/paymentintent"
 	"github.com/stripe/stripe-go/v76/price"
 	"github.com/stripe/stripe-go/v76/product"
-	"log"
-	"os"
 )
 
 func something() {
@@ -44,11 +45,4 @@ func something() {
 
 	fmt.Println("Success! Here is your starter subscription product id: " + starter_product.ID)
 	fmt.Println("Success! Here is your starter subscription price id: " + starter_price.ID)
-
-	cos := &stripe.PaymentIntentListParams{}
-	cos.Filters.AddFilter("limit", "", "3")
-	i := paymentintent.List(cos)
-	for i.Next() {
-		log.Println(i.PaymentIntent())
-	}
 }

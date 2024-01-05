@@ -13,3 +13,11 @@ func SendJSONResponse(w http.ResponseWriter, statusCode int, data any) {
 		return
 	}
 }
+
+func SendResponse(w http.ResponseWriter, data any) {
+	SendJSONResponse(w, http.StatusOK, data)
+}
+
+func SendErrorMsg(w http.ResponseWriter, data any) {
+	SendJSONResponse(w, http.StatusBadRequest, data)
+}

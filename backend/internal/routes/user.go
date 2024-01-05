@@ -12,23 +12,23 @@ import (
 	"emptyslot/internal/views"
 )
 
-type merchandiseImpl struct {
+type userImpl struct {
 	ctx context.Context
 }
 
-func registerMerchandise(ctx context.Context, router *mux.Router) {
-	impl := &merchandiseImpl{
+func registerUser(ctx context.Context, router *mux.Router) {
+	impl := &userImpl{
 		ctx: ctx,
 	}
-	s := router.PathPrefix("/merchandises").Subrouter()
+	s := router.PathPrefix("/users").Subrouter()
 	s.HandleFunc("/", impl.create).Methods("POST")
 	s.HandleFunc("/", impl.get).Methods("GET")
 	s.HandleFunc("/{id}", impl.update).Methods("PUT")
 	s.HandleFunc("/{id}", impl.detail).Methods("GET")
 }
 
-func (impl *merchandiseImpl) create(w http.ResponseWriter, r *http.Request) {
-	var body services.MerchandiseRequest
+func (impl *userImpl) create(w http.ResponseWriter, r *http.Request) {
+	var body services.UserRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 		http.Error(w, "Error decoding JSON", http.StatusBadRequest)
@@ -42,12 +42,12 @@ func (impl *merchandiseImpl) create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (impl *merchandiseImpl) update(w http.ResponseWriter, r *http.Request) {
+func (impl *userImpl) update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	merchandiseID := vars["id"]
-	fmt.Println(merchandiseID)
+	userID := vars["id"]
+	fmt.Println(userID)
 
-	var body services.MerchandiseRequest
+	var body services.UserRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 		http.Error(w, "Error decoding JSON", http.StatusBadRequest)
@@ -62,8 +62,8 @@ func (impl *merchandiseImpl) update(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (impl *merchandiseImpl) get(w http.ResponseWriter, r *http.Request) {
-	var body services.MerchandiseRequest
+func (impl *userImpl) get(w http.ResponseWriter, r *http.Request) {
+	var body services.UserRequest
 
 	mods, err := body.Get(impl.ctx)
 
@@ -74,12 +74,12 @@ func (impl *merchandiseImpl) get(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (impl *merchandiseImpl) detail(w http.ResponseWriter, r *http.Request) {
+func (impl *userImpl) detail(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	merchandiseID := vars["id"]
+	userID := vars["id"]
 
-	var body services.MerchandiseRequest
-	model, err := body.Detail(impl.ctx, merchandiseID)
+	var body services.UserRequest
+	model, err := body.Detail(impl.ctx, userID)
 
 	if err != nil {
 		views.SendResponse(w, model)
