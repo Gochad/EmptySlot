@@ -54,6 +54,8 @@ jobs:
         uses: docker/compose-action@v2
         with:
           compose-file: docker-compose.yml
+          context: .
+          push: true
       - name: Build the stack
         run: docker-compose up -d
 
