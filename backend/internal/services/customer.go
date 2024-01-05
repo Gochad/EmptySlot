@@ -3,8 +3,8 @@ package services
 import (
 	"context"
 
-	"emptyslot/internal"
-	"emptyslot/internal/models"
+	"backend/internal"
+	"backend/internal/models"
 )
 
 type CustomerRequest struct {

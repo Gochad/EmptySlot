@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
-	"emptyslot/cmd/server"
-	"emptyslot/internal/database"
-	"emptyslot/internal/models"
-	"emptyslot/internal/routes"
+
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
+
+	"backend/cmd/server"
+	"backend/internal/database"
+	"backend/internal/models"
+	"backend/internal/routes"
 )
 
 func main() {

@@ -8,8 +8,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"emptyslot/internal/services"
-	"emptyslot/internal/views"
+	"backend/internal/services"
+	"backend/internal/views"
 )
 
 type categoryImpl struct {
