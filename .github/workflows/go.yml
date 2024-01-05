@@ -34,12 +34,10 @@ jobs:
 
       - name: Build
         run: |
-          cd backend/cmd/api
           go build -v
 
       - name: Test
         run: |
-          cd backend/cmd/api
           go test -v 
 
       - name: Run vet & lint
