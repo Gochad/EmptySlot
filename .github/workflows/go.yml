@@ -21,11 +21,9 @@ jobs:
         with:
           go-version: '1.21'
 
-      - name: Initialize Go module
-        run: go mod init backend
-
       - name: Install dependencies
         run: |
+          go mod init backend
           go version
           go get github.com/lib/pq
           go get -u github.com/gorilla/mux
