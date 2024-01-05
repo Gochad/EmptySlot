@@ -27,7 +27,10 @@ jobs:
       - name: Install dependencies
         run: |
           go version
-          go get .
+          go get github.com/lib/pq
+          go get -u github.com/gorilla/mux
+          go get -u github.com/stripe/stripe-go/v76
+          go get -u golang.org/x/lint/golint
 
       - name: Build
         run: |
