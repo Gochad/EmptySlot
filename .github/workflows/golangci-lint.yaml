@@ -22,4 +22,4 @@ jobs:
           cache: false
       - name: Lint
         run: |
-          cd backend && golangci-lint run
+          cd backend && go mod init backend && golangci-lint run

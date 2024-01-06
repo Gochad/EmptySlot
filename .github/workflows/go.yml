@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          go mod init backend
+          cd backend && go mod init backend
           go version
           go get github.com/lib/pq
           go get -u github.com/gorilla/mux
