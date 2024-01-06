@@ -21,5 +21,5 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.55
-          working-directory: ${{ github.workspace }}/backend
+          version: latest
+          working-directory:  ./backend
