@@ -6,9 +6,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-
-	"github.com/stripe/stripe-go/v76"
-	"github.com/stripe/stripe-go/v76/paymentintent"
 )
 
 type item struct {
@@ -31,24 +28,7 @@ func CreatePayment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create a PaymentIntent with amount and currency
-	params := &stripe.PaymentIntentParams{
-		Amount:   stripe.Int64(155),
-		Currency: stripe.String(string(stripe.CurrencyUSD)),
-		// In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
-		AutomaticPaymentMethods: &stripe.PaymentIntentAutomaticPaymentMethodsParams{
-			Enabled: stripe.Bool(true),
-		},
-	}
-
-	pi, err := paymentintent.New(params)
-	log.Printf("pi.New: %v", pi.ClientSecret)
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Printf("pi.New: %v", err)
-		return
-	}
+	pi := payForReservation(100)
 
 	writeJSON(w, struct {
 		ClientSecret string `json:"clientSecret"`

@@ -5,7 +5,7 @@ import (
 	"github.com/stripe/stripe-go/v76/paymentintent"
 )
 
-func payForReservation(amount int64) {
+func payForReservation(amount int64) *stripe.PaymentIntent {
 	params := &stripe.PaymentIntentParams{
 		Amount: stripe.Int64(2000),
 		AutomaticPaymentMethods: &stripe.PaymentIntentAutomaticPaymentMethodsParams{
@@ -13,5 +13,7 @@ func payForReservation(amount int64) {
 		},
 		Currency: stripe.String(string(stripe.CurrencyPLN)),
 	}
-	_, _ = paymentintent.New(params)
+	pi, _ := paymentintent.New(params)
+
+	return pi
 }
