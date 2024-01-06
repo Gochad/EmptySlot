@@ -10,9 +10,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
+    env:
+      DB_USER: "gocha"
+      DB_PASSWORD: "gocha"
+      DB_NAME: "emptyslot"
     steps:
       - uses: actions/checkout@v3
 

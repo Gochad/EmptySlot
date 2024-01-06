@@ -24,6 +24,7 @@ jobs:
         run: |
           cd backend 
           go mod init backend
+          go get .
           go mod tidy
           golangci-lint run
           go vet .
