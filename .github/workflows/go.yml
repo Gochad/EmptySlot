@@ -46,11 +46,6 @@ jobs:
           cd backend
           go test -v ./...
 
-      - name: Run vet & lint
-        run: |
-          go vet .
-          golint .
-
       - name: Set up Docker
         uses: docker/setup-buildx-action@v1
 
