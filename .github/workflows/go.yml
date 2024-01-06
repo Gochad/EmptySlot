@@ -13,9 +13,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DB_USER: "gocha"
-      DB_PASSWORD: "gocha"
-      DB_NAME: "emptyslot"
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ secrets.DB_NAME }}
     steps:
       - uses: actions/checkout@v3
 
