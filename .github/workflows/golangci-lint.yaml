@@ -20,4 +20,4 @@ jobs:
           cache: false
       - name: Lint
         run: |
-          cd ${{ inputs.dir }} && golangci-lint run
+          cd backend && golangci-lint run
