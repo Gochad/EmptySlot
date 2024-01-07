@@ -25,5 +25,6 @@ jobs:
           cd backend 
           go mod init backend
           go mod tidy
+          go get -u github.com/stripe/stripe-go/v76
           golangci-lint run
           go vet .
