@@ -28,12 +28,12 @@ func CreatePayment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pi := payForReservation(100)
+	pl, _ := payForReservations(100)
 
 	writeJSON(w, struct {
-		ClientSecret string `json:"clientSecret"`
+		PaymentLink string `json:"paymentLink"`
 	}{
-		ClientSecret: pi.ClientSecret,
+		PaymentLink: pl.URL,
 	})
 }
 
