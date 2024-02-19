@@ -6,47 +6,45 @@ import (
 	"io"
 	"log"
 	"net/http"
-
-	"backend/internal/models"
 )
 
 type item struct {
 	id string
 }
 
-func CreatePayment(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
-		return
-	}
-
-	var req struct {
-		Items []item `json:"items"`
-	}
-
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Printf("json.NewDecoder.Decode: %v", err)
-		return
-	}
-
-	resv := models.Reservation{
-		Merchandise: models.Merchandise{
-			ID:          "3",
-			Name:        "no siema siema",
-			Price:       10,
-			Description: "superancki itemek",
-		},
-	}
-
-	pl, _ := GeneratePaymentLink(SendToStripe(resv))
-
-	writeJSON(w, struct {
-		PaymentLink string `json:"paymentLink"`
-	}{
-		PaymentLink: pl.URL,
-	})
-}
+//func CreatePayment(w http.ResponseWriter, r *http.Request) {
+//	if r.Method != "POST" {
+//		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+//		return
+//	}
+//
+//	var req struct {
+//		Items []item `json:"items"`
+//	}
+//
+//	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+//		http.Error(w, err.Error(), http.StatusInternalServerError)
+//		log.Printf("json.NewDecoder.Decode: %v", err)
+//		return
+//	}
+//
+//	resv := models.Reservation{
+//		Merchandise: models.Merchandise{
+//			ID:          "3",
+//			Name:        "no siema siema",
+//			Price:       10,
+//			Description: "superancki itemek",
+//		},
+//	}
+//
+//	pl, _ := generatePaymentLink(sendToStripe(resv))
+//
+//	writeJSON(w, struct {
+//		PaymentLink string `json:"paymentLink"`
+//	}{
+//		PaymentLink: pl.URL,
+//	})
+//}
 
 func writeJSON(w http.ResponseWriter, v interface{}) {
 	var buf bytes.Buffer
