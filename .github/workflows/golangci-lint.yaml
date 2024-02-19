@@ -25,5 +25,5 @@ jobs:
           cd backend 
           go mod init backend
           go mod tidy
-          cd backend && golangci-lint run
+          golangci-lint run
           go vet ./...
