@@ -6,6 +6,8 @@ import (
 	"io"
 	"log"
 	"net/http"
+
+	"backend/internal/models"
 )
 
 type item struct {
@@ -28,7 +30,16 @@ func CreatePayment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pl, _ := payForReservations(100)
+	resv := models.Reservation{
+		Merchandise: models.Merchandise{
+			ID:          "3",
+			Name:        "no siema siema",
+			Price:       10,
+			Description: "superancki itemek",
+		},
+	}
+
+	pl, _ := GeneratePaymentLink(SendToStripe(resv))
 
 	writeJSON(w, struct {
 		PaymentLink string `json:"paymentLink"`

@@ -10,7 +10,7 @@ import (
 	"backend/internal/database"
 	"backend/internal/models"
 	"backend/internal/routes"
-	"backend/stripeGateway"
+	sg "backend/stripeGateway"
 )
 
 func main() {
@@ -19,7 +19,6 @@ func main() {
 	r := mux.NewRouter()
 	ctx := context.WithValue(context.Background(), "DB", db)
 	routes.RegisterRoutes(ctx, r)
-	stripeGateway.RegisterRoutes(ctx, r)
-
+	sg.RegisterRoutes(ctx, r)
 	server.NewServer(r)
 }
