@@ -4,7 +4,7 @@ import {EVENTS} from "./events";
 
 const Calendar = () => {
     return (
-        <div style={{maxWidth: '500px', maxHeight: '100px', display: 'flex', width: '300px'}}>
+        <div style={{maxWidth: '500px', maxHeight: '100px', display: 'flex', width: '350px'}}>
             <Scheduler
                 events={EVENTS}
                 height={10}
