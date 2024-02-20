@@ -11,7 +11,7 @@ import (
 	"backend/internal/database"
 	"backend/internal/models"
 	"backend/internal/routes"
-	sg "backend/stripeGateway"
+	sg "backend/stripegateway"
 )
 
 func main() {

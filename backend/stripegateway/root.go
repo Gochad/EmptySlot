@@ -1,4 +1,4 @@
-package stripeGateway
+package stripegateway
 
 import (
 	"context"
