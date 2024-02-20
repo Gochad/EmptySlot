@@ -4,7 +4,6 @@ import (
 	"context"
 	"os"
 
-	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/stripe/stripe-go/v76"
 )
@@ -14,7 +13,6 @@ func setupStripeKey() {
 	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
 }
 
-func RegisterRoutes(ctx context.Context, r *mux.Router) {
+func Setup(ctx context.Context) {
 	setupStripeKey()
-	r.HandleFunc("/create-payment", CreatePayment).Methods("POST")
 }

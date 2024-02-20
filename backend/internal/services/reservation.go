@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 
 	"backend/internal"
 	"backend/internal/models"
@@ -58,4 +59,18 @@ func (rr *ReservationRequest) Get(ctx context.Context) ([]*models.Reservation, e
 func (rr *ReservationRequest) Detail(ctx context.Context, id string) (*models.Reservation, error) {
 	mr := models.ReservationRepository{Db: internal.Database(ctx)}
 	return mr.GetReservationByID(id)
+}
+
+func (rr *ReservationRequest) Pay(ctx context.Context, id string) (string, error) {
+	mr := models.ReservationRepository{Db: internal.Database(ctx)}
+	reservation, err := mr.GetReservationByID(id)
+	if err != nil {
+		return "", fmt.Errorf("getting reservation from db error: %v", err)
+	}
+
+	if reservation == nil {
+		return "", fmt.Errorf("reservation from db is nil")
+	}
+
+	return makePaymentLink(*reservation)
 }

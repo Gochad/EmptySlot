@@ -20,11 +20,14 @@ func registerReservation(ctx context.Context, router *mux.Router) {
 	impl := &reservationImpl{
 		ctx: ctx,
 	}
+
 	s := router.PathPrefix("/reservations").Subrouter()
 	s.HandleFunc("/", impl.create).Methods("POST")
 	s.HandleFunc("/", impl.get).Methods("GET")
 	s.HandleFunc("/{id}", impl.update).Methods("PUT")
 	s.HandleFunc("/{id}", impl.detail).Methods("GET")
+
+	s.HandleFunc("/{id}/pay", impl.makePayment).Methods("POST")
 }
 
 func (impl *reservationImpl) create(w http.ResponseWriter, r *http.Request) {
@@ -85,5 +88,19 @@ func (impl *reservationImpl) detail(w http.ResponseWriter, r *http.Request) {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)
+	}
+}
+
+func (impl *reservationImpl) makePayment(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	reservationID := vars["id"]
+
+	var body services.ReservationRequest
+	paymentLink, err := body.Pay(impl.ctx, reservationID)
+
+	if err != nil {
+		views.SendResponse(w, paymentLink)
+	} else {
+		views.SendErrorMsg(w, paymentLink)
 	}
 }

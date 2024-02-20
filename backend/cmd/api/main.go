@@ -19,6 +19,6 @@ func main() {
 	r := mux.NewRouter()
 	ctx := context.WithValue(context.Background(), "DB", db)
 	routes.RegisterRoutes(ctx, r)
-	sg.RegisterRoutes(ctx, r)
+	sg.Setup(ctx)
 	server.NewServer(r)
 }
