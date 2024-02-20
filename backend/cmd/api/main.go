@@ -7,6 +7,7 @@ import (
 	_ "github.com/lib/pq"
 
 	"backend/cmd/server"
+	"backend/internal/auth"
 	"backend/internal/database"
 	"backend/internal/models"
 	"backend/internal/routes"
@@ -19,6 +20,7 @@ func main() {
 	r := mux.NewRouter()
 	ctx := context.WithValue(context.Background(), "DB", db)
 	routes.RegisterRoutes(ctx, r)
+	auth.RegisterAuth(ctx, r)
 	sg.Setup(ctx)
 	server.NewServer(r)
 }
