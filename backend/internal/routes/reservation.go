@@ -84,7 +84,7 @@ func (impl *reservationImpl) detail(w http.ResponseWriter, r *http.Request) {
 	var body services.ReservationRequest
 	model, err := body.Detail(impl.ctx, reservationID)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)
@@ -98,7 +98,7 @@ func (impl *reservationImpl) makePayment(w http.ResponseWriter, r *http.Request)
 	var body services.ReservationRequest
 	paymentLink, err := body.Pay(impl.ctx, reservationID)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, paymentLink)
 	} else {
 		views.SendErrorMsg(w, paymentLink)

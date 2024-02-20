@@ -7,14 +7,14 @@ import (
 )
 
 type Reservation struct {
-	gorm        gorm.Model
-	ID          string      `json:"id"`
-	Merchandise Merchandise `gorm:"foreignKey:ReservationID" json:"merchandise"`
-	Customer    Customer    `gorm:"foreignKey:ReservationID" json:"customer"`
-	Confirmed   bool        `json:"confirmed"`
-	IsReserved  bool        `json:"isreserved"`
-	StartTime   string      `json:"starttime"`
-	EndTime     string      `json:"endtime"`
+	gorm         gorm.Model
+	ID           string        `json:"id"`
+	Merchandises []Merchandise `gorm:"foreignKey:ReservationID" json:"merchandises"`
+	Customer     Customer      `gorm:"foreignKey:ReservationID" json:"customer"`
+	Confirmed    bool          `json:"confirmed"`
+	IsReserved   bool          `json:"isreserved"`
+	StartTime    string        `json:"starttime"`
+	EndTime      string        `json:"endtime"`
 }
 
 type ReservationRepository struct {
@@ -40,7 +40,7 @@ func (r *ReservationRepository) UpdateReservation(m *Reservation) error {
 
 func (r *ReservationRepository) GetReservationByID(id string) (*Reservation, error) {
 	model := new(Reservation)
-	if err := r.Db.First(model, id).Error; err != nil {
+	if err := r.Db.Preload("Merchandises").First(model, id).Error; err != nil {
 		return nil, fmt.Errorf("error updating reservation: %v", err)
 	}
 
