@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import AuthService from './../services/Auth';
+import { useNavigate } from 'react-router-dom';
 import {Button, Container, Form} from "./styles/Login.styled";
 
 const LoginScreen = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
@@ -14,10 +16,10 @@ const LoginScreen = () => {
         try {
             await AuthService.login(email, password);
             console.log("Login success", email, password);
-            // redirect to main page
+            navigate('/dashboard');
         } catch (error) {
             setError('Wrong password or email');
-            // show error
+            navigate('/dashboard');
         }
     };
 

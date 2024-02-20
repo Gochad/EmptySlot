@@ -3,8 +3,7 @@ import Calendar from "./../components/Calendar";
 
 const MainPage = () => {
     return (
-        // <Calendar />
-        <div></div>
+        <Calendar />
     );
 }
 export default MainPage;
