@@ -35,7 +35,7 @@ func (impl *userImpl) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	model, err := body.Create(impl.ctx)
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)
@@ -55,7 +55,7 @@ func (impl *userImpl) update(w http.ResponseWriter, r *http.Request) {
 	}
 	model, err := body.Update(impl.ctx)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)
@@ -67,7 +67,7 @@ func (impl *userImpl) get(w http.ResponseWriter, r *http.Request) {
 
 	mods, err := body.Get(impl.ctx)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, mods)
 	} else {
 		views.SendErrorMsg(w, mods)
@@ -81,7 +81,7 @@ func (impl *userImpl) detail(w http.ResponseWriter, r *http.Request) {
 	var body services.UserRequest
 	model, err := body.Detail(impl.ctx, userID)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)

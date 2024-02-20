@@ -35,7 +35,7 @@ func (impl *customerImpl) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	model, err := body.Create(impl.ctx)
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)
@@ -55,7 +55,7 @@ func (impl *customerImpl) update(w http.ResponseWriter, r *http.Request) {
 	}
 	model, err := body.Update(impl.ctx)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)
@@ -67,7 +67,7 @@ func (impl *customerImpl) get(w http.ResponseWriter, r *http.Request) {
 
 	mods, err := body.Get(impl.ctx)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, mods)
 	} else {
 		views.SendErrorMsg(w, mods)
@@ -81,7 +81,7 @@ func (impl *customerImpl) detail(w http.ResponseWriter, r *http.Request) {
 	var body services.CustomerRequest
 	model, err := body.Detail(impl.ctx, customerID)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)

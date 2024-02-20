@@ -38,7 +38,7 @@ func (impl *reservationImpl) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	model, err := body.Create(impl.ctx)
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)
@@ -58,7 +58,7 @@ func (impl *reservationImpl) update(w http.ResponseWriter, r *http.Request) {
 	}
 	model, err := body.Update(impl.ctx)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)
@@ -70,7 +70,7 @@ func (impl *reservationImpl) get(w http.ResponseWriter, r *http.Request) {
 
 	mods, err := body.Get(impl.ctx)
 
-	if err != nil {
+	if err == nil {
 		views.SendResponse(w, mods)
 	} else {
 		views.SendErrorMsg(w, mods)
