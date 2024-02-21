@@ -7,16 +7,15 @@ import (
 )
 
 func Migration(db *gorm.DB) {
-	mods := []interface{}{
+	models := []any{
 		&Merchandise{},
 		&Category{},
 		&Reservation{},
 		&User{},
 		&Customer{},
 	}
-	for _, model := range mods {
-		if err := db.AutoMigrate(model); err != nil {
-			fmt.Println("Error auto-migrating model:", err)
-		}
+
+	if err := db.AutoMigrate(models...); err != nil {
+		fmt.Println("Error auto-migrating model:", err)
 	}
 }

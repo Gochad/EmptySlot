@@ -3,7 +3,7 @@ interface LoginResponse {
 }
 
 class AuthService {
-    private static apiUrl: string = 'http://example.com/api/auth';
+    private static apiUrl: string = 'http://be:8080';
 
     static async login(email: string, password: string): Promise<LoginResponse> {
         const response = await fetch(`${this.apiUrl}/login`, {
@@ -15,7 +15,7 @@ class AuthService {
         });
 
         if (!response.ok) {
-            throw new Error('Błąd logowania. Sprawdź email i hasło.');
+            throw new Error('login error');
         }
 
         const data: LoginResponse = await response.json();

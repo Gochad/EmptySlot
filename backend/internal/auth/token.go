@@ -1,26 +1,33 @@
 package auth
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
-var mySigningKey = []byte("random")
+type UserCredentials struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
 
-func CreateToken(userId string) (string, error) {
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
+var SecretKey = []byte("your_secret_key")
 
-	claims["authorized"] = true
-	claims["user_id"] = userId
-	claims["exp"] = time.Now().Add(time.Minute * 30).Unix()
+func generateJWT(user UserCredentials) (string, error) {
+	expirationTime := time.Now().Add(1 * time.Hour)
 
-	tokenString, err := token.SignedString(mySigningKey)
+	claims := &Claims{
+		Username: user.Username,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+			Issuer:    "EmptySlot",
+		},
+	}
 
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	tokenString, err := token.SignedString(SecretKey)
 	if err != nil {
-		_ = fmt.Errorf("err: %s", err.Error())
 		return "", err
 	}
 
