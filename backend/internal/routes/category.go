@@ -31,7 +31,7 @@ func (impl *categoryImpl) create(w http.ResponseWriter, r *http.Request) {
 	var body services.CategoryRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		http.Error(w, "Error decoding JSON", http.StatusBadRequest)
+		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
 	model, err := body.Create(impl.ctx)
@@ -50,9 +50,10 @@ func (impl *categoryImpl) update(w http.ResponseWriter, r *http.Request) {
 	var body services.CategoryRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-		http.Error(w, "Error decoding JSON", http.StatusBadRequest)
+		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
+
 	model, err := body.Update(impl.ctx)
 
 	if err == nil {

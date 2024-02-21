@@ -22,6 +22,14 @@ type ReservationRepository struct {
 }
 
 func (r *ReservationRepository) CreateReservation(m *Reservation) error {
+	var validMerchandises []Merchandise
+	for _, merchandise := range m.Merchandises {
+		if merchandise.ID != "" && merchandise.Price != 0 {
+			validMerchandises = append(validMerchandises, merchandise)
+		}
+	}
+	m.Merchandises = validMerchandises
+
 	if err := r.Db.Create(m).Error; err != nil {
 		return fmt.Errorf("error creating reservation: %v", err)
 	}
