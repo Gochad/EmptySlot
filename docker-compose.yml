@@ -25,13 +25,5 @@ services:
     depends_on:
       - db
 
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    command: npm start
-    depends_on:
-      - be
-
 volumes:
   postgres-db:
