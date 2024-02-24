@@ -1,31 +1,26 @@
+import {API_URL, LOGIN_PREFIX, REGISTER_PREFIX} from "../config";
+import axios from "axios";
+import Login from "../pages/Login";
+
 interface LoginResponse {
     token: string;
 }
 
+interface LoginData {
+    email: string;
+    password: string;
+}
+
+
 class AuthService {
-    private static apiUrl: string = 'http://localhost:8080';
+    static async login(userData: LoginData){
+        const response = await axios.post(`${API_URL}${LOGIN_PREFIX}`, userData);
 
-    static async login(email: string, password: string): Promise<LoginResponse> {
-        const response = await fetch(`${this.apiUrl}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
-
-
-        if (!response.ok) {
-            throw new Error('login error');
-        }
-
-        const data: LoginResponse = await response.json();
+        const data: LoginResponse = response.data;
         localStorage.setItem('token', data.token);
-
-        return data;
     }
 
-    static logout(): void {
+    static logout() {
         localStorage.removeItem('token');
     }
 }

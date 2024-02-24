@@ -21,7 +21,6 @@ const RegistrationScreen = () => {
 
         try {
             await RegisterService.register(formData);
-            console.log("registration success", formData.email, formData.username);
             navigate('/login');
         } catch (error) {
             setError('Wrong password or email');

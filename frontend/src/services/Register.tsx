@@ -1,10 +1,15 @@
 import axios from "axios";
+import {API_URL, REGISTER_PREFIX} from "../config";
+
+interface RegisterData {
+    username: string;
+    email: string;
+    password: string;
+}
 
 class RegisterService {
-    private static apiUrl: string = 'http://localhost:8080';
-
-    static async register(userData: any){
-        return await axios.post(`${this.apiUrl}/register`, userData);
+    static async register(userData: RegisterData){
+        return await axios.post(`${API_URL}${REGISTER_PREFIX}`, userData);
     }
 }
 

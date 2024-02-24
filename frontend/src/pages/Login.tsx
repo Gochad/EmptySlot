@@ -14,8 +14,7 @@ const LoginScreen = () => {
         setError(null);
 
         try {
-            await AuthService.login(email, password);
-            console.log("Login success", email, password);
+            await AuthService.login({email, password});
             navigate('/dashboard');
         } catch (error) {
             setError('Wrong password or email');
