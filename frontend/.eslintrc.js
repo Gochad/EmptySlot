@@ -1,4 +1,4 @@
-{
+module.exports = {
   "settings": {
     "react": {
       "version": "detect"
@@ -6,7 +6,8 @@
   },
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
   "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:react-hooks/recommended"],
   "parserOptions": {
@@ -18,5 +19,8 @@
   },
   "plugins": ["react", "react-hooks"],
   "rules": {
+    "curly": [
+        "error", "all"
+    ]
   }
 }
