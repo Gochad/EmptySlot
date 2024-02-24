@@ -1,9 +1,9 @@
 interface LoginResponse {
-    accessToken: string;
+    token: string;
 }
 
 class AuthService {
-    private static apiUrl: string = 'http://be:8080';
+    private static apiUrl: string = 'http://localhost:8080';
 
     static async login(email: string, password: string): Promise<LoginResponse> {
         const response = await fetch(`${this.apiUrl}/login`, {
@@ -19,13 +19,13 @@ class AuthService {
         }
 
         const data: LoginResponse = await response.json();
-        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('token', data.token);
 
         return data;
     }
 
     static logout(): void {
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem('token');
     }
 }
 

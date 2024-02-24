@@ -8,7 +8,7 @@ import (
 )
 
 type Claims struct {
-	Username string
+	Email string
 	jwt.StandardClaims
 }
 

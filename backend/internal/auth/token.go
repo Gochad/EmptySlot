@@ -7,7 +7,7 @@ import (
 )
 
 type UserCredentials struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -17,7 +17,7 @@ func generateJWT(user UserCredentials) (string, error) {
 	expirationTime := time.Now().Add(1 * time.Hour)
 
 	claims := &Claims{
-		Username: user.Username,
+		Email: user.Email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 			Issuer:    "EmptySlot",

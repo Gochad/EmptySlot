@@ -22,5 +22,6 @@ func main() {
 	routes.RegisterRoutes(ctx, r)
 	auth.RegisterAuth(ctx, r)
 	sg.Setup(ctx)
-	server.NewServer(r)
+	handler := auth.AddCors(r)
+	server.NewServer(handler)
 }
