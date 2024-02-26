@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import {Scheduler} from "@aldabil/react-scheduler";
-import {EVENTS} from "./events";
 
 const Calendar = () => {
+    const [events, setEvents] = useState([]);
+
     const translations = {
         navigation: {
             month: "Month",
@@ -28,10 +29,12 @@ const Calendar = () => {
         loading: "Loading..."
     }
 
+
+
     return (
         <div style={{maxWidth: '500px', maxHeight: '100px', display: 'flex', width: '350px'}}>
             <Scheduler
-                events={EVENTS}
+                events={events}
                 height={10}
                 translations={translations}
             />
