@@ -1,13 +1,13 @@
 import axios from "axios";
 import {API_URL, LOGIN_PREFIX} from "../config";
 
-interface Event {
+export interface BaseEvent {
     event_id: number,
+    start: Date
+    end: Date,
     title: string,
-    start: Date,
-    end: Date
 }
-interface Reservation {
+export interface Reservation {
     id: number,
     starttime: string,
     endtime: string,
@@ -21,7 +21,7 @@ const merchandisesReqExample: never[] = [
 const customerReqExample = {
 };
 
-export const mapEventToReservationRequests = (event: Event) => {
+export const mapEventToReservationRequests = (event: BaseEvent) => {
     return {
         ID: event.event_id.toString(),
         MerchandisesReq: merchandisesReqExample,
@@ -35,18 +35,15 @@ export const mapEventToReservationRequests = (event: Event) => {
 
 function convertStringToDate(dateString: string) {
     const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-        return null;
-    } else {
-        return date;
-    }
+    return date;
 }
 
-export const mapReservationToEvent = (reservation: Reservation) => {
+export const mapReservationToEvent = (reservation: Reservation): BaseEvent => {
     return {
-        event_id: reservation.id,
+        event_id: Number(reservation.id),
         start: convertStringToDate(reservation.starttime),
         end: convertStringToDate(reservation.endtime),
+        title: ""
     };
 };
 export let EVENTS = []

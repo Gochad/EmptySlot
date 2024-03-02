@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Scheduler} from "@aldabil/react-scheduler";
-import {Events, mapReservationToEvent} from "./events";
+import {Events, mapReservationToEvent, Reservation, BaseEvent} from "./events";
+import {removeInvalidDates} from "./utils";
 
 const Calendar = () => {
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState<BaseEvent[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     const translations = {
@@ -33,23 +34,22 @@ const Calendar = () => {
 
     const rerenderEvents = async () => {
         try {
-            const events = await Events.get();
-            return events
+            const events: Reservation[] = await Events.get();
+            return removeInvalidDates(events.map(v => mapReservationToEvent(v)))
         } catch (error) {
             setError('problem with loading data');
         }
     };
+
     useEffect(() => {
         (async () => {
             try {
-                const events = await rerenderEvents();
-                if (events && events.length > 0) {
-                    const mappedEvent = mapReservationToEvent(events[4]);
-                    setEvents([mappedEvent]);
-                    console.log(mapReservationToEvent(events[4]));
+                const events: BaseEvent[] | undefined = await rerenderEvents();
+                if (events) {
+                    setEvents(events);
                 }
             } catch (error) {
-                console.error("Error fetching events:", error);
+                setError(`Error fetching events: ${error}`);
             }
         })();
     }, []);
