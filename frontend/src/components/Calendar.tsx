@@ -52,7 +52,7 @@ const Calendar = () => {
                 console.error("Error fetching events:", error);
             }
         })();
-    });
+    }, []);
 
 
 
@@ -63,6 +63,7 @@ const Calendar = () => {
                 height={10}
                 translations={translations}
                 onEventClick={rerenderEvents}
+                draggable={true} //admin = true, standard = false
             />
         </div>
     );
