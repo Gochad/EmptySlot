@@ -1,4 +1,4 @@
-import axios from "axios/index";
+import axios from "axios";
 import {API_URL, LOGIN_PREFIX} from "../config";
 
 interface Event {
@@ -7,6 +7,13 @@ interface Event {
     start: Date,
     end: Date
 }
+interface Reservation {
+    id: number,
+    starttime: string,
+    endtime: string,
+    confirmed: boolean,
+    isreserved: boolean,
+}
 
 const merchandisesReqExample: never[] = [
 ];
@@ -14,7 +21,7 @@ const merchandisesReqExample: never[] = [
 const customerReqExample = {
 };
 
-const mapEventToReservationRequests = (event) => {
+export const mapEventToReservationRequests = (event: Event) => {
     return {
         ID: event.event_id.toString(),
         MerchandisesReq: merchandisesReqExample,
@@ -25,13 +32,29 @@ const mapEventToReservationRequests = (event) => {
         IsReserved: false,
     };
 };
+
+function convertStringToDate(dateString: string) {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        return null;
+    } else {
+        return date;
+    }
+}
+
+export const mapReservationToEvent = (reservation: Reservation) => {
+    return {
+        event_id: reservation.id,
+        start: convertStringToDate(reservation.starttime),
+        end: convertStringToDate(reservation.endtime),
+    };
+};
 export let EVENTS = []
 
-class Events {
-    static async get(data: Event) {
-        const response = await axios.post(`${API_URL}/reservation`, data);
-
+export class Events {
+    static async get() {
+        const response = await axios.get(`${API_URL}/reservations/`);
+        console.log(response.data);
         return response.data;
-
     }
 }

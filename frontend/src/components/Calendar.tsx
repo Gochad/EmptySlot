@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Scheduler} from "@aldabil/react-scheduler";
+import {Events, mapReservationToEvent} from "./events";
 
 const Calendar = () => {
     const [events, setEvents] = useState([]);
+    const [error, setError] = useState<string | null>(null);
 
     const translations = {
         navigation: {
@@ -29,6 +31,28 @@ const Calendar = () => {
         loading: "Loading..."
     }
 
+    const rerenderEvents = async () => {
+        try {
+            const events = await Events.get();
+            return events
+        } catch (error) {
+            setError('problem with loading data');
+        }
+    };
+    useEffect(() => {
+        // Use an async IIFE within useEffect
+        (async () => {
+            try {
+                const events = await rerenderEvents();
+                if (events && events.length > 0) {
+                    console.log(mapReservationToEvent(events[0]));
+                }
+            } catch (error) {
+                console.error("Error fetching events:", error);
+            }
+        })();
+    });
+
 
 
     return (
@@ -37,6 +61,7 @@ const Calendar = () => {
                 events={events}
                 height={10}
                 translations={translations}
+                onEventClick={rerenderEvents}
             />
         </div>
     );
