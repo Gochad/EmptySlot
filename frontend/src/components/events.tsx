@@ -1,6 +1,7 @@
 import axios from "axios";
 import {API_URL, LOGIN_PREFIX} from "../config";
-import {removeInvalidDates} from "./utils";
+import {errorPopup, removeInvalidDates} from "./utils";
+import {ProcessedEvent} from "@aldabil/react-scheduler/types";
 
 export interface BaseEvent {
     event_id: number,
@@ -22,11 +23,12 @@ const merchandisesReqExample: never[] = [
 const customerReqExample = {
 };
 
-export const mapEventToReservationRequests = (event: BaseEvent) => {
+export const mapEventToReservationRequests = (event: BaseEvent | ProcessedEvent) => {
+    if (event && !event.start && !event.end){
+        errorPopup("Event obj doesn't have start or end prop")
+        return
+    }
     return {
-        ID: event.event_id.toString(),
-        MerchandisesReq: merchandisesReqExample,
-        CustomerReq: customerReqExample,
         Confirmed: false,
         StartTime: event.start.toISOString(),
         EndTime: event.end.toISOString(),
@@ -47,13 +49,16 @@ export const mapReservationToEvent = (reservation: Reservation): BaseEvent => {
         title: ""
     };
 };
-export let EVENTS = []
 
 export class Events {
     static async get() {
         const response = await axios.get(`${API_URL}/reservations/`);
         const events: Reservation[] = response.data;
-        return removeInvalidDates(events.map(v => mapReservationToEvent(v)))
+        return removeInvalidDates(events.map(v => mapReservationToEvent(v)));
     }
 
+    static async create(data: ProcessedEvent) {
+        const mapped = mapEventToReservationRequests(data);
+        await axios.post(`${API_URL}/reservations/`, mapped);
+    }
 }

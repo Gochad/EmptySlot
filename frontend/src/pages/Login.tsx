@@ -2,29 +2,27 @@ import React, { useState } from 'react';
 import AuthService from './../services/Auth';
 import { useNavigate } from 'react-router-dom';
 import {Button, Container, Form} from "./styles/Login.styled";
+import {errorPopup} from "../components/utils";
 
 const LoginScreen = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
 
         try {
             await AuthService.login({email, password});
             navigate('/dashboard');
         } catch (error) {
-            setError('Wrong password or email');
+            errorPopup('Wrong password or email');
         }
     };
 
     return (
         <Container>
             <h2>Login</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
             <Form onSubmit={handleLogin}>
                 <div>
                     <label htmlFor="email">Email:</label>

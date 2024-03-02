@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Scheduler} from "@aldabil/react-scheduler";
 import {Events, BaseEvent} from "./events";
 import {translations} from "./translations";
-import {makeErrorPopup} from "./utils";
+import {errorPopup, successPopup} from "./utils";
+import {EventActions, ProcessedEvent} from "@aldabil/react-scheduler/types";
 
 const Calendar = () => {
     const [events, setEvents] = useState<BaseEvent[]>([]);
@@ -10,11 +11,27 @@ const Calendar = () => {
     const rerenderEvents = async () => {
         try {
             const events: BaseEvent[] = await Events.get();
-            return events
+            return events;
         } catch (error) {
-            makeErrorPopup(`problem with loading data: ${error}`);
+            errorPopup(`problem with loading data: ${error}`);
         }
     };
+
+    const onConfirm = async (event: ProcessedEvent, action: EventActions): Promise<any> => {
+        try {
+            switch (action) {
+                case "create":
+                    await Events.create(event);
+                    //successPopup(`Event added: ${event}`);
+                    break;
+                default:
+                    errorPopup(`Unhandled action: ${action}`);
+            }
+        } catch (error) {
+            errorPopup(`Error while confirmation: ${error}`);
+        }
+    };
+
 
     useEffect(() => {
         (async () => {
@@ -24,7 +41,7 @@ const Calendar = () => {
                     setEvents(events);
                 }
             } catch (error) {
-                makeErrorPopup(`error fetching events: ${error}`);
+                errorPopup(`error fetching events: ${error}`);
             }
         })();
     }, []);
@@ -37,6 +54,7 @@ const Calendar = () => {
                 translations={translations}
                 onEventClick={rerenderEvents}
                 draggable={true} //admin = true, standard = false
+                onConfirm={onConfirm}
             />
         </div>
     );

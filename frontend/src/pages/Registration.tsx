@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import React, {ChangeEvent, useState} from "react";
 import RegisterService from "../services/Register";
+import {errorPopup} from "../components/utils";
 
 const RegistrationScreen = () => {
     const navigate = useNavigate();
@@ -9,7 +10,6 @@ const RegistrationScreen = () => {
         password: '',
         email: ''
     });
-    const [error, setError] = useState<string | null>(null);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,13 +17,12 @@ const RegistrationScreen = () => {
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
 
         try {
             await RegisterService.register(formData);
             navigate('/login');
         } catch (error) {
-            setError('Wrong password or email');
+            errorPopup('Wrong password or email');
         }
     };
 
