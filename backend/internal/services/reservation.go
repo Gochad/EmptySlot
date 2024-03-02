@@ -33,6 +33,9 @@ func (rr *ReservationRequest) ToModel(generateNewID bool) *models.Reservation {
 		Merchandises: merchandises,
 		Customer:     *rr.CustomerReq.ToModel(generateNewID),
 		Confirmed:    rr.Confirmed,
+		StartTime:    rr.StartTime,
+		EndTime:      rr.EndTime,
+		IsReserved:   rr.IsReserved,
 	}
 }
 

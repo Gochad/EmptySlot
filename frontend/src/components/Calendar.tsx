@@ -40,12 +40,13 @@ const Calendar = () => {
         }
     };
     useEffect(() => {
-        // Use an async IIFE within useEffect
         (async () => {
             try {
                 const events = await rerenderEvents();
                 if (events && events.length > 0) {
-                    console.log(mapReservationToEvent(events[0]));
+                    const mappedEvent = mapReservationToEvent(events[4]);
+                    setEvents([mappedEvent]);
+                    console.log(mapReservationToEvent(events[4]));
                 }
             } catch (error) {
                 console.error("Error fetching events:", error);
