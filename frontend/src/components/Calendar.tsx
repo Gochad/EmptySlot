@@ -22,10 +22,12 @@ const Calendar = () => {
             switch (action) {
                 case "create":
                     await Events.create(event);
-                    //successPopup(`Event added: ${event}`);
+                    successPopup(`Event added`);
+                    return events;
                     break;
                 default:
                     errorPopup(`Unhandled action: ${action}`);
+                    return;
             }
         } catch (error) {
             errorPopup(`Error while confirmation: ${error}`);
