@@ -1,5 +1,6 @@
 import axios from "axios";
 import {API_URL, LOGIN_PREFIX} from "../config";
+import {removeInvalidDates} from "./utils";
 
 export interface BaseEvent {
     event_id: number,
@@ -51,7 +52,8 @@ export let EVENTS = []
 export class Events {
     static async get() {
         const response = await axios.get(`${API_URL}/reservations/`);
-        console.log(response.data);
-        return response.data;
+        const events: Reservation[] = response.data;
+        return removeInvalidDates(events.map(v => mapReservationToEvent(v)))
     }
+
 }

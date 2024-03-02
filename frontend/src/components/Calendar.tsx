@@ -1,43 +1,18 @@
 import React, {useEffect, useState} from "react";
 import {Scheduler} from "@aldabil/react-scheduler";
-import {Events, mapReservationToEvent, Reservation, BaseEvent} from "./events";
-import {removeInvalidDates} from "./utils";
+import {Events, BaseEvent} from "./events";
+import {translations} from "./translations";
+import {makeErrorPopup} from "./utils";
 
 const Calendar = () => {
     const [events, setEvents] = useState<BaseEvent[]>([]);
-    const [error, setError] = useState<string | null>(null);
-
-    const translations = {
-        navigation: {
-            month: "Month",
-                week: "Week",
-                day: "Day",
-                today: "Today",
-            agenda: "Agenda"
-        },
-        form: {
-            addTitle: "Add merchandise",
-                editTitle: "Edit merchandise",
-                confirm: "Confirm",
-                delete: "Delete",
-                cancel: "Cancel"
-        },
-        event: {
-            title: "Title",
-                start: "Start",
-                end: "End",
-                allDay: "All Day"
-        },
-        moreEvents: "More...",
-        loading: "Loading..."
-    }
 
     const rerenderEvents = async () => {
         try {
-            const events: Reservation[] = await Events.get();
-            return removeInvalidDates(events.map(v => mapReservationToEvent(v)))
+            const events: BaseEvent[] = await Events.get();
+            return events
         } catch (error) {
-            setError('problem with loading data');
+            makeErrorPopup(`problem with loading data: ${error}`);
         }
     };
 
@@ -49,12 +24,10 @@ const Calendar = () => {
                     setEvents(events);
                 }
             } catch (error) {
-                setError(`Error fetching events: ${error}`);
+                makeErrorPopup(`error fetching events: ${error}`);
             }
         })();
     }, []);
-
-
 
     return (
         <div style={{maxWidth: '500px', maxHeight: '100px', display: 'flex', width: '350px'}}>
