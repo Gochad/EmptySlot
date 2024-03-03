@@ -61,4 +61,8 @@ export class Events {
         const mapped = mapEventToReservationRequests(data);
         await axios.post(`${API_URL}/reservations/`, mapped);
     }
+
+    static async delete(id: string | number) {
+        await axios.delete(`${API_URL}/reservations/${id}`);
+    }
 }

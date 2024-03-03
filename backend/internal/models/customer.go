@@ -10,7 +10,7 @@ type Customer struct {
 	gorm          gorm.Model
 	ID            string  `json:"id"`
 	Name          string  `json:"name"`
-	User          User    `gorm:"foreignKey:CustomerID" json:"user"`
+	User          User    `gorm:"constraint:OnDelete:CASCADE;" json:"user"`
 	ReservationID *string `json:"reservation_id"`
 }
 

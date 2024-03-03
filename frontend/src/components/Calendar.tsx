@@ -33,6 +33,15 @@ const Calendar = () => {
             errorPopup(`Error while confirmation: ${error}`);
         }
     };
+    const onDelete = async (id: string | number): Promise<string | number | void> => {
+        try {
+            await Events.delete(id);
+            successPopup(`Event deleted`);
+            return id;
+        } catch (error) {
+            errorPopup(`Error while confirmation: ${error}`);
+        }
+    }
 
 
     useEffect(() => {
@@ -57,6 +66,7 @@ const Calendar = () => {
                 onEventClick={rerenderEvents}
                 draggable={true} //admin = true, standard = false
                 onConfirm={onConfirm}
+                onDelete={onDelete}
             />
         </div>
     );

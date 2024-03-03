@@ -10,7 +10,7 @@ type Reservation struct {
 	gorm         gorm.Model
 	ID           string        `json:"id"`
 	Merchandises []Merchandise `gorm:"foreignKey:ReservationID" json:"merchandises"`
-	Customer     Customer      `gorm:"foreignKey:ReservationID" json:"customer"`
+	Customer     Customer      `gorm:"constraint:OnDelete:CASCADE;" json:"customer"`
 	Confirmed    bool          `json:"confirmed"`
 	IsReserved   bool          `json:"isreserved"`
 	StartTime    string        `json:"starttime"`
