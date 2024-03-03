@@ -49,7 +49,7 @@ func (r *ReservationRepository) UpdateReservation(m *Reservation) error {
 func (r *ReservationRepository) GetReservationByID(id string) (*Reservation, error) {
 	model := new(Reservation)
 	if err := r.Db.Preload("Merchandises").First(model, id).Error; err != nil {
-		return nil, fmt.Errorf("error updating reservation: %v", err)
+		return nil, fmt.Errorf("error getting reservation: %v", err)
 	}
 
 	return model, nil
@@ -58,7 +58,7 @@ func (r *ReservationRepository) GetReservationByID(id string) (*Reservation, err
 func (r *ReservationRepository) GetAllReservations() ([]*Reservation, error) {
 	var list []*Reservation
 	if err := r.Db.Find(&list).Error; err != nil {
-		return nil, fmt.Errorf("error updating reservation: %v", err)
+		return nil, fmt.Errorf("error getting reservations: %v", err)
 	}
 	return list, nil
 }
@@ -66,7 +66,16 @@ func (r *ReservationRepository) GetAllReservations() ([]*Reservation, error) {
 func (r *ReservationRepository) DeleteReservation(id string) error {
 	err := r.Db.Delete(&Reservation{}, id).Error
 	if err != nil {
-		return fmt.Errorf("error updating reservation: %v", err)
+		return fmt.Errorf("error deleting reservation: %v", err)
+	}
+
+	return nil
+}
+
+func (r *ReservationRepository) DeleteReservations() error {
+	err := r.Db.Delete(&Reservation{}).Error
+	if err != nil {
+		return fmt.Errorf("error deleting reservations: %v", err)
 	}
 
 	return nil

@@ -24,9 +24,11 @@ func registerReservation(ctx context.Context, router *mux.Router) {
 	s := router.PathPrefix("/reservations").Subrouter()
 	s.HandleFunc("/", impl.create).Methods("POST")
 	s.HandleFunc("/", impl.get).Methods("GET")
+	s.HandleFunc("/", impl.deleteMany).Methods("DELETE")
+
 	s.HandleFunc("/{id}", impl.update).Methods("PUT")
 	s.HandleFunc("/{id}", impl.detail).Methods("GET")
-	s.HandleFunc("/{id}", impl.detail).Methods("DELETE")
+	s.HandleFunc("/{id}", impl.deleteOne).Methods("DELETE")
 
 	s.HandleFunc("/{id}/pay", impl.makePayment).Methods("POST")
 }
@@ -92,15 +94,26 @@ func (impl *reservationImpl) detail(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (impl *reservationImpl) delete(w http.ResponseWriter, r *http.Request) {
+func (impl *reservationImpl) deleteOne(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	reservationID := vars["id"]
 
 	var body services.ReservationRequest
-	err := body.Delete(impl.ctx, reservationID)
+	err := body.DeleteOne(impl.ctx, reservationID)
 
 	if err == nil {
 		views.SendResponse(w, reservationID)
+	} else {
+		views.SendErrorMsg(w, err)
+	}
+}
+
+func (impl *reservationImpl) deleteMany(w http.ResponseWriter, r *http.Request) {
+	var body services.ReservationRequest
+	err := body.DeleteMany(impl.ctx)
+
+	if err == nil {
+		views.SendResponse(w, r)
 	} else {
 		views.SendErrorMsg(w, err)
 	}

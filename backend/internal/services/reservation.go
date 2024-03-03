@@ -69,9 +69,14 @@ func (rr *ReservationRequest) Detail(ctx context.Context, id string) (*models.Re
 	return mr.GetReservationByID(id)
 }
 
-func (rr *ReservationRequest) Delete(ctx context.Context, id string) error {
+func (rr *ReservationRequest) DeleteOne(ctx context.Context, id string) error {
 	mr := models.ReservationRepository{Db: internal.Database(ctx)}
 	return mr.DeleteReservation(id)
+}
+
+func (rr *ReservationRequest) DeleteMany(ctx context.Context) error {
+	mr := models.ReservationRepository{Db: internal.Database(ctx)}
+	return mr.DeleteReservations()
 }
 
 func (rr *ReservationRequest) Pay(ctx context.Context, id string) (string, error) {
