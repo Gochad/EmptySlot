@@ -3,6 +3,7 @@ package auth
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -12,28 +13,34 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-var mySigningKey = []byte("secret")
-
-func isTokenValid(r *http.Request) (bool, error) {
-	tokenString := r.Header.Get("Authorization")
-	if len(tokenString) > 7 && tokenString[:7] == "Bearer " {
-		tokenString = tokenString[7:]
-	}
-
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
-		if token.Method != jwt.SigningMethodHS256 {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+func TokenValidationMiddleware(next func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		tokenString := r.Header.Get("Authorization")
+		if len(tokenString) > 7 && strings.HasPrefix(tokenString, "Bearer ") {
+			tokenString = tokenString[7:]
+		} else {
+			http.Error(w, "Missing or malformed JWT", http.StatusUnauthorized)
+			return
 		}
-		return mySigningKey, nil
-	})
 
-	if err != nil {
-		return false, err
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+			}
+
+			return SecretKey, fmt.Errorf("coś sie zjebalo")
+		})
+
+		if err != nil {
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		if !token.Valid {
+			http.Error(w, "Invalid token", http.StatusUnauthorized)
+			return
+		}
+
+		next(w, r)
 	}
-
-	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return true, nil
-	}
-
-	return false, fmt.Errorf("invalid token")
 }

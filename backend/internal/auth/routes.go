@@ -3,7 +3,6 @@ package auth
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -23,7 +22,6 @@ func RegisterAuth(ctx context.Context, r *mux.Router) {
 
 	r.HandleFunc("/login", impl.login)
 	r.HandleFunc("/register", impl.register)
-	r.HandleFunc("/dashboard", impl.validateMiddleware(impl.dashboard))
 }
 
 func (impl *authImpl) login(w http.ResponseWriter, r *http.Request) {
@@ -62,24 +60,5 @@ func (impl *authImpl) register(w http.ResponseWriter, r *http.Request) {
 		views.SendResponse(w, create)
 	} else {
 		views.SendErrorMsg(w, create)
-	}
-}
-
-func (impl *authImpl) dashboard(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(w, "Super Secret Information")
-}
-
-func (impl *authImpl) validateMiddleware(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		ok, err := isTokenValid(r)
-		if err != nil || !ok {
-			w.WriteHeader(http.StatusForbidden)
-			_, err2 := w.Write([]byte("Unauthorized"))
-			if err2 != nil {
-				return
-			}
-			return
-		}
-		next.ServeHTTP(w, r)
 	}
 }

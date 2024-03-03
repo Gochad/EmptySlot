@@ -23,6 +23,7 @@ func registerReservation(ctx context.Context, router *mux.Router) {
 
 	s := router.PathPrefix("/reservations").Subrouter()
 	s.HandleFunc("/", impl.create).Methods("POST")
+	//s.HandleFunc("/", auth.TokenValidationMiddleware(impl.get)).Methods("GET")
 	s.HandleFunc("/", impl.get).Methods("GET")
 	s.HandleFunc("/", impl.deleteMany).Methods("DELETE")
 

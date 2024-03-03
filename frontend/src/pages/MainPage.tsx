@@ -1,26 +1,18 @@
 import React from "react";
 import Calendar from "./../components/Calendar";
-import {useNavigate} from "react-router-dom";
-import {LogoutBtn} from "./styles/MainPage";
+import Navbar from "./../components/Navbar";
 
 const MainPage = () => {
-    const navigate = useNavigate()
-    const handleChange = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        navigate('/login');
-    };
+    const token = localStorage.getItem('token');
+    const isTokenValid = token;
 
-    return (
+    return isTokenValid ? (
         <div>
+            <Navbar />
             <div>
                 <Calendar />
             </div>
-
-            <LogoutBtn type="submit"
-                    onClick={handleChange}>Logout
-            </LogoutBtn>
         </div>
-
-    );
+    ): <div>You can't access</div>;
 }
 export default MainPage;

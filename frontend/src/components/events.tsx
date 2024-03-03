@@ -3,6 +3,14 @@ import {API_URL, LOGIN_PREFIX} from "../config";
 import {errorPopup, removeInvalidDates} from "./utils";
 import {ProcessedEvent} from "@aldabil/react-scheduler/types";
 
+axios.interceptors.request.use(config => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 export interface BaseEvent {
     event_id: number,
     start: Date
@@ -16,12 +24,6 @@ export interface Reservation {
     confirmed: boolean,
     isreserved: boolean,
 }
-
-const merchandisesReqExample: never[] = [
-];
-
-const customerReqExample = {
-};
 
 export const mapEventToReservationRequests = (event: BaseEvent | ProcessedEvent) => {
     if (event && !event.start && !event.end){
