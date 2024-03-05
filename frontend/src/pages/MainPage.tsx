@@ -1,6 +1,8 @@
 import React from "react";
-import Calendar from "./../components/Calendar";
 import Navbar from "./../components/Navbar";
+
+import FullCalendar from '../components/FullCalendar';
+import { Container } from '@mui/material';
 
 const MainPage = () => {
     const token = localStorage.getItem('token');
@@ -9,9 +11,10 @@ const MainPage = () => {
     return isTokenValid ? (
         <div>
             <Navbar />
-            <div>
-                <Calendar />
-            </div>
+            {/*<div>*/}
+            {/*    <Calendar />*/}
+            {/*</div>*/}
+            <FullCalendar />
         </div>
     ): <div>You can't access</div>;
 }

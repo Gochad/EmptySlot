@@ -9,13 +9,15 @@ import (
 )
 
 type ReservationRequest struct {
-	ID              string               `json:"id"`
-	MerchandisesReq []MerchandiseRequest `json:"merchandises"`
-	CustomerReq     CustomerRequest      `json:"customer"`
-	Confirmed       bool                 `json:"confirmed"`
-	StartTime       string               `json:"starttime"`
-	EndTime         string               `json:"endtime"`
-	IsReserved      bool                 `json:"isreserved"`
+	ID          string          `json:"id"`
+	Name        string          `json:"name"`
+	Description string          `json:"description"`
+	Price       int64           `json:"price"`
+	Confirmed   bool            `json:"confirmed"`
+	StartTime   string          `json:"starttime"`
+	EndTime     string          `json:"endtime"`
+	IsReserved  bool            `json:"isreserved"`
+	CustomerReq CustomerRequest `json:"customer"`
 }
 
 func (rr *ReservationRequest) ToModel(generateNewID bool) *models.Reservation {
@@ -23,19 +25,16 @@ func (rr *ReservationRequest) ToModel(generateNewID bool) *models.Reservation {
 		rr.ID = generateUUID()
 	}
 
-	merchandises := make([]models.Merchandise, len(rr.MerchandisesReq))
-	for _, merch := range rr.MerchandisesReq {
-		merchandises = append(merchandises, *merch.ToModel(generateNewID, ""))
-	}
-
 	return &models.Reservation{
-		ID:           rr.ID,
-		Merchandises: merchandises,
-		Customer:     *rr.CustomerReq.ToModel(generateNewID),
-		Confirmed:    rr.Confirmed,
-		StartTime:    rr.StartTime,
-		EndTime:      rr.EndTime,
-		IsReserved:   rr.IsReserved,
+		ID:          rr.ID,
+		Name:        rr.Name,
+		Description: rr.Description,
+		Price:       rr.Price,
+		Confirmed:   rr.Confirmed,
+		StartTime:   rr.StartTime,
+		EndTime:     rr.EndTime,
+		IsReserved:  rr.IsReserved,
+		Customer:    *rr.CustomerReq.ToModel(generateNewID),
 	}
 }
 

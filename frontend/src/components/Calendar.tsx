@@ -5,7 +5,7 @@ import {translations} from "./translations";
 import {errorPopup, successPopup} from "./utils";
 import {EventActions, ProcessedEvent} from "@aldabil/react-scheduler/types";
 
-const Calendar = () => {
+const MyCalendar = () => {
     const [events, setEvents] = useState<BaseEvent[]>([]);
 
     const rerenderEvents = async () => {
@@ -71,4 +71,4 @@ const Calendar = () => {
         </div>
     );
 }
-export default Calendar;
+export default MyCalendar;

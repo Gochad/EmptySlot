@@ -7,14 +7,16 @@ import (
 )
 
 type Reservation struct {
-	gorm         gorm.Model
-	ID           string        `json:"id"`
-	Merchandises []Merchandise `gorm:"foreignKey:ReservationID" json:"merchandises"`
-	Customer     Customer      `gorm:"constraint:OnDelete:CASCADE;" json:"customer"`
-	Confirmed    bool          `json:"confirmed"`
-	IsReserved   bool          `json:"isreserved"`
-	StartTime    string        `json:"starttime"`
-	EndTime      string        `json:"endtime"`
+	gorm        gorm.Model
+	ID          string   `json:"id"`
+	Name        string   `json:"name"`
+	Description string   `json:"description"`
+	Price       int64    `json:"price"`
+	Confirmed   bool     `json:"confirmed"`
+	IsReserved  bool     `json:"isreserved"`
+	StartTime   string   `json:"starttime"`
+	EndTime     string   `json:"endtime"`
+	Customer    Customer `gorm:"foreignKey:ReservationID" json:"customer"`
 }
 
 type ReservationRepository struct {
@@ -22,14 +24,6 @@ type ReservationRepository struct {
 }
 
 func (r *ReservationRepository) CreateReservation(m *Reservation) error {
-	var validMerchandises []Merchandise
-	for _, merchandise := range m.Merchandises {
-		if merchandise.ID != "" && merchandise.Price != 0 {
-			validMerchandises = append(validMerchandises, merchandise)
-		}
-	}
-	m.Merchandises = validMerchandises
-
 	if err := r.Db.Create(m).Error; err != nil {
 		return fmt.Errorf("error creating reservation: %v", err)
 	}
