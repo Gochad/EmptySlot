@@ -5,6 +5,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import {Events} from "./events";
 import {errorPopup, successPopup} from "./utils";
 import Modal from 'react-modal';
+import {Form, modalStyles} from "./styles/FullCalendar.styled";
+
+Modal.setAppElement('#root');
 
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
@@ -12,13 +15,14 @@ const localizer = momentLocalizer(moment);
 export interface BaseEvent {
     title: string,
     start: Date,
-    end: Date
+    end: Date,
+    price: number,
 }
 
 export default function FullCalendar() {
     const [events, setEvents] = useState<BaseEvent[]>([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [newEvent, setNewEvent] = useState({ start: null, end: null, title: '' });
+    const [newEvent, setNewEvent] = useState({ start: null, end: null, title: '', price: 0 });
 
     const localizer = momentLocalizer(moment);
 
@@ -42,21 +46,24 @@ export default function FullCalendar() {
 
         try {
             await Events.create(newEvent);
-            successPopup(`Event added`);
+            successPopup(`event added`);
         } catch (error) {
-            errorPopup(`Error while confirmation: ${error}`);
+            errorPopup(`error while saving new event: ${error}`);
         } finally {
             handleCloseModal();
         }
     };
-    const handleChange = (e) => {
+    const handleChangeTitle = (e) => {
         setNewEvent({ ...newEvent, title: e.target.value });
+    };
+
+    const handleChangePrice = (e) => {
+        setNewEvent({ ...newEvent, price: Number(e.target.value) });
     };
 
     const rerenderEvents = async () => {
         try {
             const events: BaseEvent[] = await Events.get();
-            console.log(events);
             return events;
         } catch (error) {
             errorPopup(`problem with loading data: ${error}`);
@@ -86,14 +93,17 @@ export default function FullCalendar() {
                 style={{ height: 500 }}
                 selectable
                 onSelectSlot={handleSelect}
+                defaultView="week"
+                views={["week","agenda"]}
             />
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={handleCloseModal}
                 contentLabel="New Event"
+                styles={modalStyles}
             >
                 <h2>New Event</h2>
-                <form onSubmit={(e) => {
+                <Form onSubmit={(e) => {
                     e.preventDefault();
                     handleSave();
                 }}>
@@ -102,14 +112,20 @@ export default function FullCalendar() {
                         <input
                             type="text"
                             value={newEvent.title}
-                            onChange={handleChange}
+                            onChange={handleChangeTitle}
+                            required
+                        />
+                        <input
+                            type="text"
+                            value={newEvent.price}
+                            onChange={handleChangePrice}
                             required
                         />
                     </label>
                     <br />
                     <button type="submit">Save</button>
                     <button type="button" onClick={handleCloseModal}>Cancel</button>
-                </form>
+                </Form>
             </Modal>
         </div>
     );
