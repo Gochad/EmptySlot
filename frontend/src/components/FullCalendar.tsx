@@ -5,7 +5,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import {Events} from "./events";
 import {errorPopup, successPopup} from "./utils";
 import Modal from 'react-modal';
-import {Form, modalStyles} from "./styles/FullCalendar.styled";
+import AddEventModal from "./AddEventModal";
+import ShowEventModal from "./ShowEventModal";
 
 Modal.setAppElement('#root');
 
@@ -21,21 +22,26 @@ export interface BaseEvent {
 
 export default function FullCalendar() {
     const [events, setEvents] = useState<BaseEvent[]>([]);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
     const [newEvent, setNewEvent] = useState({ start: null, end: null, title: '', price: 0 });
 
-    const localizer = momentLocalizer(moment);
+    const [modals, setModals] = useState({
+        addEventModal: false,
+        showEventModal: false,
+    });
+
+    const openModal = (modalName: string) => {
+        setModals({ ...modals, [modalName]: true });
+    };
+
+    const closeModal = (modalName: string) => {
+        setModals({ ...modals, [modalName]: false });
+    };
 
     const handleSelect = ({ start, end }) => {
         setNewEvent({ start, end, title: '' });
-        setModalIsOpen(true);
+        openModal('addEventModal');
 
     };
-
-    const handleCloseModal = () => {
-        setModalIsOpen(false);
-    };
-
     const handleSave = async () => {
         if (newEvent.title) {
             setEvents([
@@ -50,7 +56,7 @@ export default function FullCalendar() {
         } catch (error) {
             errorPopup(`error while saving new event: ${error}`);
         } finally {
-            handleCloseModal();
+            closeModal();
         }
     };
     const handleChangeTitle = (e) => {
@@ -59,6 +65,10 @@ export default function FullCalendar() {
 
     const handleChangePrice = (e) => {
         setNewEvent({ ...newEvent, price: Number(e.target.value) });
+    };
+
+    const handleEventSelect = (event: BaseEvent) => {
+
     };
 
     const rerenderEvents = async () => {
@@ -95,38 +105,23 @@ export default function FullCalendar() {
                 onSelectSlot={handleSelect}
                 defaultView="week"
                 views={["week","agenda"]}
+                onSelectEvent={handleEventSelect}
             />
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={handleCloseModal}
-                contentLabel="New Event"
-                styles={modalStyles}
-            >
-                <h2>New Event</h2>
-                <Form onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSave();
-                }}>
-                    <label>
-                        Event Name:
-                        <input
-                            type="text"
-                            value={newEvent.title}
-                            onChange={handleChangeTitle}
-                            required
-                        />
-                        <input
-                            type="text"
-                            value={newEvent.price}
-                            onChange={handleChangePrice}
-                            required
-                        />
-                    </label>
-                    <br />
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={handleCloseModal}>Cancel</button>
-                </Form>
-            </Modal>
+            <AddEventModal
+                modalIsOpen={modals.addEventModal}
+                handleCloseModal={closeModal}
+                handleSave={handleSave}
+                title={newEvent.title}
+                price={newEvent.price}
+                handleChangeTitle={handleChangeTitle}
+                handleChangePrice={handleChangePrice}
+            />
+            <ShowEventModal
+                modalIsOpen={modals.showEventModal}
+                handleCloseModal={closeModal}
+                title={newEvent.title}
+                price={newEvent.price}
+            />
         </div>
     );
 }
