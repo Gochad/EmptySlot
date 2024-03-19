@@ -57,3 +57,6 @@ export const Button = styled.button`
     background-color: #0056b3;
   }
 `;
+
+export const OAuth = styled.div`
+`;

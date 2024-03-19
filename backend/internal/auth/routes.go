@@ -22,6 +22,9 @@ func RegisterAuth(ctx context.Context, r *mux.Router) {
 
 	r.HandleFunc("/login", impl.login)
 	r.HandleFunc("/register", impl.register)
+
+	r.HandleFunc("/google-sso", GoogleSignOn)
+	r.HandleFunc("/callback", Callback)
 }
 
 func (impl *authImpl) login(w http.ResponseWriter, r *http.Request) {

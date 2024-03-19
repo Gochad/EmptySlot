@@ -1,6 +1,5 @@
 import {API_URL, LOGIN_PREFIX, REGISTER_PREFIX} from "../config";
 import axios from "axios";
-import Login from "../pages/Login";
 
 interface LoginResponse {
     token: string;

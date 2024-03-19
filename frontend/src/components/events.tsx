@@ -17,7 +17,6 @@ export interface BaseEvent {
     price: number,
     start: Date
     end: Date,
-    title: string,
 }
 export interface Reservation {
     id: number,

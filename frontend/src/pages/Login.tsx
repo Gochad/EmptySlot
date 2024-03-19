@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import AuthService from './../services/Auth';
 import { useNavigate } from 'react-router-dom';
-import {Button, Container, Form} from "./styles/Login.styled";
+import {Button, Container, Form, OAuth} from "./styles/Login.styled";
 import {errorPopup} from "../components/utils";
+import {API_URL, LOGIN_PREFIX} from "../config";
 
 const LoginScreen = () => {
+    const ssoUrl = `${API_URL}/google-sso`;
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -46,6 +48,12 @@ const LoginScreen = () => {
                 </div>
                 <Button type="submit">Login</Button>
             </Form>
+
+            <OAuth>
+                <a href={ssoUrl}>
+                    <img src="logo_google.png" alt="Google Logo"/>
+                </a>
+            </OAuth>
         </Container>
     );
 };
