@@ -2,24 +2,22 @@ package auth
 
 import (
 	"context"
-	"crypto/rand"
 	"errors"
 	"io"
+	mr "math/rand"
 	"net/http"
-	"os"
+	"strings"
+	"time"
 
 	"github.com/gorilla/sessions"
 	"golang.org/x/oauth2"
+
+	"backend/internal"
 )
 
 var (
 	oauth *oauth2.Config
-	Store = sessions.NewCookieStore([]byte(os.Getenv("TOKEN_SECRET")))
-)
-
-const (
-	tokenSet    = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	tokenLength = 15
+	Store = sessions.NewCookieStore([]byte(internal.EnvConfig.TokenSecret))
 )
 
 type OAuthData struct {
@@ -29,20 +27,25 @@ type OAuthData struct {
 	Picture        string `json:"picture"`
 }
 
-func TokenString() (string, error) {
-	charsetLength := len(tokenSet)
+const (
+	tokenSet    = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	tokenLength = 15
+)
 
-	randomBytes := make([]byte, tokenLength)
-	_, err := rand.Read(randomBytes)
-	if err != nil {
-		return "", err
-	}
+func init() {
+	mr.New(mr.NewSource(time.Now().UnixNano()))
+}
+
+func TokenString() string {
+	var sb strings.Builder
+	sb.Grow(tokenLength)
 
 	for i := 0; i < tokenLength; i++ {
-		randomBytes[i] = tokenSet[int(randomBytes[i])%charsetLength]
+		randomIndex := mr.Intn(len(tokenSet))
+		sb.WriteByte(tokenSet[randomIndex])
 	}
 
-	return string(randomBytes), nil
+	return sb.String()
 }
 
 func GetUserData(state, code, tokenCode string) ([]byte, error) {
@@ -55,7 +58,7 @@ func GetUserData(state, code, tokenCode string) ([]byte, error) {
 		return nil, err
 	}
 
-	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
+	response, err := http.Get(internal.EnvConfig.Oauth2URL + token.AccessToken)
 	if err != nil {
 		return nil, err
 	}
