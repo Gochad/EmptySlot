@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 import {Form, modalStyles} from "./styles/FullCalendar.styled";
 
-export default function AddEventModal({modalIsOpen, handleCloseModal, handleSave, title, price, handleChangeTitle, handleChangePrice}) {
+export default function AddEventModal({modalIsOpen, handleCloseModal, handleSave, event, handleChange}) {
     return (
         <Modal
             isOpen={modalIsOpen}
@@ -17,18 +17,9 @@ export default function AddEventModal({modalIsOpen, handleCloseModal, handleSave
             }}>
                 <label>
                     Event Name:
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={handleChangeTitle}
-                        required
-                    />
-                    <input
-                        type="text"
-                        value={price}
-                        onChange={handleChangePrice}
-                        required
-                    />
+                    <input name="title" value={event?.title || ''} onChange={handleChange} />
+                    <input name="price" type="number" value={event?.price || ''} onChange={handleChange} />
+                    <input name="description" value={event?.description || ''} onChange={handleChange} />
                 </label>
                 <br />
                 <button type="submit">Save</button>

@@ -53,12 +53,13 @@ export default function FullCalendar() {
             closeModal('addEventModal');
         }
     };
-    const handleChangeTitle = (e) => {
-        setNewEvent({ ...newEvent, title: e.target.value });
-    };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
 
-    const handleChangePrice = (e) => {
-        setNewEvent({ ...newEvent, price: Number(e.target.value) });
+        setNewEvent(prevEvent => ({
+            ...prevEvent,
+            [name]: name === 'price' ? Number(value) : value
+        }));
     };
 
     const handleEventSelect = (event: BaseEvent) => {
@@ -107,10 +108,8 @@ export default function FullCalendar() {
                 modalIsOpen={modals.addEventModal}
                 handleCloseModal={() => closeModal("addEventModal")}
                 handleSave={handleSave}
-                title={newEvent.title}
-                price={newEvent.price}
-                handleChangeTitle={handleChangeTitle}
-                handleChangePrice={handleChangePrice}
+                event={newEvent}
+                handleChange={handleChange}
             />
             <ShowEventModal
                 modalIsOpen={modals.showEventModal}

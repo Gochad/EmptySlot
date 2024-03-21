@@ -14,6 +14,7 @@ axios.interceptors.request.use(config => {
 export interface BaseEvent {
     event_id: number,
     title: string,
+    description: string,
     price: number,
     start: Date
     end: Date,
@@ -21,6 +22,7 @@ export interface BaseEvent {
 export interface Reservation {
     id: number,
     name: string,
+    description: string,
     price: number,
     starttime: string,
     endtime: string,
@@ -36,6 +38,7 @@ export const mapEventToReservationRequests = (event: BaseEvent | ProcessedEvent)
     return {
         Confirmed: false,
         Name: event.title,
+        Description: event.description,
         Price: event.price,
         StartTime: event.start.toISOString(),
         EndTime: event.end.toISOString(),
@@ -54,6 +57,7 @@ export const mapReservationToEvent = (reservation: Reservation): BaseEvent => {
         start: convertStringToDate(reservation.starttime),
         end: convertStringToDate(reservation.endtime),
         title: reservation.name,
+        description: reservation.description,
         price: reservation.price,
     };
 };
