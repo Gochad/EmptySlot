@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import {Events} from "./events";
+import {Events, BaseEvent} from "./events";
 import {errorPopup, successPopup} from "./utils";
 import Modal from 'react-modal';
 import AddEventModal from "./AddEventModal";
@@ -13,16 +13,10 @@ Modal.setAppElement('#root');
 moment.locale("en-GB");
 const localizer = momentLocalizer(moment);
 
-export interface BaseEvent {
-    title: string,
-    start: Date,
-    end: Date,
-    price: number,
-}
-
 export default function FullCalendar() {
     const [events, setEvents] = useState<BaseEvent[]>([]);
     const [newEvent, setNewEvent] = useState({ start: null, end: null, title: '', price: 0 });
+    const [currentEventId, setCurrentEventId] = useState<string>();
 
     const [modals, setModals] = useState({
         addEventModal: false,
@@ -68,6 +62,8 @@ export default function FullCalendar() {
     };
 
     const handleEventSelect = (event: BaseEvent) => {
+        console.log(event)
+        setCurrentEventId(event.event_id);
         openModal('showEventModal');
     };
 
@@ -119,8 +115,7 @@ export default function FullCalendar() {
             <ShowEventModal
                 modalIsOpen={modals.showEventModal}
                 handleCloseModal={() => closeModal("showEventModal")}
-                title={newEvent.title}
-                price={newEvent.price}
+                eventId={currentEventId}
             />
         </div>
     );

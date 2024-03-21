@@ -1,9 +1,19 @@
 import Modal from "react-modal";
 import {modalStyles} from "./styles/FullCalendar.styled";
 import React from "react";
+import {errorPopup} from "./utils";
+import {Reservation} from "./reservation";
 
 
-export default function ShowEventModal({modalIsOpen, handleCloseModal, title, price}) {
+export default function ShowEventModal({modalIsOpen, handleCloseModal, eventId}) {
+    const createPaymentLink = async () => {
+        try {
+            const link = await Reservation.pay(eventId);
+        } catch (error) {
+            errorPopup(`problem with creating payment link: ${error}`);
+        }
+    };
+
     return (
         <Modal
             isOpen={modalIsOpen}
@@ -11,9 +21,7 @@ export default function ShowEventModal({modalIsOpen, handleCloseModal, title, pr
             contentLabel="Event info"
             styles={modalStyles}
         >
-            <p>Title</p>
-            <p>title</p>
-            <p>`Price ${price}`</p>
+            <button type="button" onClick={createPaymentLink}>Pay</button>
             <button type="button" onClick={handleCloseModal}>Close</button>
 
         </Modal>

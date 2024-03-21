@@ -42,7 +42,7 @@ func (r *ReservationRepository) UpdateReservation(m *Reservation) error {
 
 func (r *ReservationRepository) GetReservationByID(id string) (*Reservation, error) {
 	model := new(Reservation)
-	if err := r.Db.Preload("Merchandises").First(model, id).Error; err != nil {
+	if err := r.Db.First(model, id).Error; err != nil {
 		return nil, fmt.Errorf("error getting reservation: %v", err)
 	}
 
