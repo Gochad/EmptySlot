@@ -56,7 +56,7 @@ export default function FullCalendar() {
         } catch (error) {
             errorPopup(`error while saving new event: ${error}`);
         } finally {
-            closeModal();
+            closeModal('addEventModal');
         }
     };
     const handleChangeTitle = (e) => {
@@ -68,7 +68,7 @@ export default function FullCalendar() {
     };
 
     const handleEventSelect = (event: BaseEvent) => {
-
+        openModal('showEventModal');
     };
 
     const rerenderEvents = async () => {
@@ -109,7 +109,7 @@ export default function FullCalendar() {
             />
             <AddEventModal
                 modalIsOpen={modals.addEventModal}
-                handleCloseModal={closeModal}
+                handleCloseModal={() => closeModal("addEventModal")}
                 handleSave={handleSave}
                 title={newEvent.title}
                 price={newEvent.price}
@@ -118,7 +118,7 @@ export default function FullCalendar() {
             />
             <ShowEventModal
                 modalIsOpen={modals.showEventModal}
-                handleCloseModal={closeModal}
+                handleCloseModal={() => closeModal("showEventModal")}
                 title={newEvent.title}
                 price={newEvent.price}
             />

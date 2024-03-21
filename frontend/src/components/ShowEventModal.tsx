@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import {Form, modalStyles} from "./styles/FullCalendar.styled";
+import {modalStyles} from "./styles/FullCalendar.styled";
 import React from "react";
 
 

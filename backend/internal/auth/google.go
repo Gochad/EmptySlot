@@ -23,10 +23,7 @@ func init() {
 }
 
 func GoogleSignOn(res http.ResponseWriter, req *http.Request) {
-	tokenString, err := TokenString()
-	if err != nil {
-		fmt.Fprintf(res, "error: could not generate random token string: %v", err)
-	}
+	tokenString := TokenString()
 
 	session, err := Store.Get(req, "tokenSession")
 	if err != nil {

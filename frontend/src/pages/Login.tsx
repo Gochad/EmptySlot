@@ -6,7 +6,10 @@ import {errorPopup} from "../components/utils";
 import {API_URL, LOGIN_PREFIX} from "../config";
 
 const LoginScreen = () => {
-    const ssoUrl = `${API_URL}/google-sso`;
+    const sso = `${API_URL}/google-sso`;
+    const redirectURI = "http://localhost:3001/dashboard";
+
+    const ssoUrl = `${sso}?redirect_uri=${encodeURIComponent(redirectURI)}`;
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
