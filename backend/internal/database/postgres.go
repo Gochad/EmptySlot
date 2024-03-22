@@ -14,9 +14,9 @@ import (
 func ConnectDb() *gorm.DB {
 	dsn := fmt.Sprintf(
 		"host=db user=%s password=%s dbname=%s port=5432",
-		internal.EnvConfig.DbUser,
-		internal.EnvConfig.DbPwd,
-		internal.EnvConfig.DbName,
+		internal.EnvConfig.Session.DbUser,
+		internal.EnvConfig.Session.DbPwd,
+		internal.EnvConfig.Session.DbName,
 	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{

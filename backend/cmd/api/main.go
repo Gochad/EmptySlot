@@ -11,7 +11,6 @@ import (
 	"backend/internal/database"
 	"backend/internal/models"
 	"backend/internal/routes"
-	sg "backend/stripegateway"
 )
 
 func main() {
@@ -22,7 +21,6 @@ func main() {
 	ctx := context.WithValue(context.Background(), "DB", db)
 	routes.RegisterRoutes(ctx, r)
 	auth.RegisterAuth(ctx, r)
-	sg.Setup(ctx)
 
 	handler := auth.AddCors(r)
 	server.NewServer(handler)

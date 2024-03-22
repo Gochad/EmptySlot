@@ -14,9 +14,9 @@ import (
 
 func init() {
 	oauth = &oauth2.Config{
-		RedirectURL:  internal.EnvConfig.RedirectURL,
-		ClientID:     internal.EnvConfig.ClientID,
-		ClientSecret: internal.EnvConfig.AuthSecret,
+		RedirectURL:  internal.EnvConfig.Oauth.RedirectURL,
+		ClientID:     internal.EnvConfig.Oauth.ClientID,
+		ClientSecret: internal.EnvConfig.Oauth.AuthSecret,
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 		Endpoint:     google.Endpoint,
 	}

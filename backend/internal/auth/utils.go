@@ -17,7 +17,7 @@ import (
 
 var (
 	oauth *oauth2.Config
-	Store = sessions.NewCookieStore([]byte(internal.EnvConfig.TokenSecret))
+	Store = sessions.NewCookieStore([]byte(internal.EnvConfig.Oauth.TokenSecret))
 )
 
 type OAuthData struct {
@@ -58,7 +58,7 @@ func GetUserData(state, code, tokenCode string) ([]byte, error) {
 		return nil, err
 	}
 
-	response, err := http.Get(internal.EnvConfig.Oauth2URL + token.AccessToken)
+	response, err := http.Get(internal.EnvConfig.Oauth.URL + token.AccessToken)
 	if err != nil {
 		return nil, err
 	}
