@@ -27,17 +27,6 @@ jobs:
       - name: Install dependencies
         run: |
           cd backend && go mod init backend
-          go version
-          go get github.com/lib/pq
-          go get -u github.com/gorilla/mux
-          go get -u github.com/stripe/stripe-go/v76
-          go get gorm.io/gorm
-          go get gorm.io/gorm/logger
-          go get gorm.io/driver/postgres
-          go get github.com/google/uuid
-          go get github.com/joho/godotenv
-          go get -u golang.org/x/lint/golint
-          
 
       - name: Build
         run: |
