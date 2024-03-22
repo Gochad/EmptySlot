@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+
+	"backend/internal"
 )
 
 type UserCredentials struct {
@@ -11,7 +13,7 @@ type UserCredentials struct {
 	Password string `json:"password"`
 }
 
-var SecretKey = []byte("your_secret_key")
+var SecretKey = []byte(internal.EnvConfig.TokenSecretJWT)
 
 func generateJWT(user UserCredentials) (string, error) {
 	expirationTime := time.Now().Add(1 * time.Hour)
