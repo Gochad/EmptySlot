@@ -10,6 +10,9 @@ type config struct {
 	ClientID    string
 	AuthSecret  string
 	Oauth2URL   string
+	DbUser      string
+	DbPwd       string
+	DbName      string
 }
 
 var EnvConfig config
@@ -21,5 +24,8 @@ func init() {
 		ClientID:    os.Getenv("CLIENT_ID"),
 		AuthSecret:  os.Getenv("AUTH_SECRET"),
 		Oauth2URL:   os.Getenv("OAUTH2_URL"),
+		DbUser:      os.Getenv("DB_USER"),
+		DbPwd:       os.Getenv("DB_PASSWORD"),
+		DbName:      os.Getenv("DB_NAME"),
 	}
 }
