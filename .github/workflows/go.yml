@@ -27,6 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd backend && go mod init backend
+          go get backend/internal/auth
           go get github.com/lib/pq
           go get github.com/gorilla/mux
           go get github.com/gorilla/sessions
@@ -41,6 +42,7 @@ jobs:
           go get github.com/rs/cors
           go get golang.org/x/oauth2
           go get golang.org/x/oauth2/google
+          go get github.com/jackc/pgx/v5/pgconn@v5.4.3
 
       - name: Build
         run: |
