@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Modal from "react-modal";
 
 export const Form = styled.form`
   padding: 20px;
@@ -28,13 +29,18 @@ export const Form = styled.form`
   }
 `;
 
-export const modalStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
+
+export const ModalStyled = styled(Modal)<{}>`
+  min-height: 10vh;
+  min-width: 400px;
+  max-height: 90vh;
+  max-width: 1000px;
+  margin: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 5px;
+  border: 2px solid #000;
+`;
