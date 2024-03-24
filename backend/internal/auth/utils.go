@@ -6,18 +6,17 @@ import (
 	"io"
 	mr "math/rand"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/gorilla/sessions"
 	"golang.org/x/oauth2"
-
-	"backend/internal"
 )
 
 var (
 	oauth *oauth2.Config
-	Store = sessions.NewCookieStore([]byte(internal.EnvConfig.Oauth.TokenSecret))
+	Store = sessions.NewCookieStore([]byte(os.Getenv("TOKEN_SECRET")))
 )
 
 type OAuthData struct {
@@ -58,7 +57,7 @@ func GetUserData(state, code, tokenCode string) ([]byte, error) {
 		return nil, err
 	}
 
-	response, err := http.Get(internal.EnvConfig.Oauth.URL + token.AccessToken)
+	response, err := http.Get(os.Getenv("OAUTH2_URL") + token.AccessToken)
 	if err != nil {
 		return nil, err
 	}

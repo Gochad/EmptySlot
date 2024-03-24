@@ -5,18 +5,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
-
-	"backend/internal"
 )
 
 func init() {
 	oauth = &oauth2.Config{
-		RedirectURL:  internal.EnvConfig.Oauth.RedirectURL,
-		ClientID:     internal.EnvConfig.Oauth.ClientID,
-		ClientSecret: internal.EnvConfig.Oauth.AuthSecret,
+		RedirectURL:  os.Getenv("REDIRECT_URL"),
+		ClientID:     os.Getenv("CLIENT_ID"),
+		ClientSecret: os.Getenv("AUTH_SECRET"),
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 		Endpoint:     google.Endpoint,
 	}
