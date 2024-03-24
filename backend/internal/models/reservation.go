@@ -7,7 +7,7 @@ import (
 )
 
 type Reservation struct {
-	gorm        gorm.Model
+	gorm.Model
 	ID          string   `json:"id"`
 	Name        string   `json:"name"`
 	Description string   `json:"description"`

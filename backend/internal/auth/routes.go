@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -41,7 +42,9 @@ func (impl *authImpl) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(map[string]string{"token": token})
+	if err := json.NewEncoder(w).Encode(map[string]string{"token": token}); err != nil {
+		fmt.Println("error during encoding token: ", err)
+	}
 }
 
 func (impl *authImpl) register(w http.ResponseWriter, r *http.Request) {

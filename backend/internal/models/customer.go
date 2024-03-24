@@ -7,7 +7,7 @@ import (
 )
 
 type Customer struct {
-	gorm          gorm.Model
+	gorm.Model
 	ID            string  `json:"id"`
 	Name          string  `json:"name"`
 	User          User    `gorm:"constraint:OnDelete:CASCADE;" json:"user"`

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
@@ -15,13 +16,13 @@ func Config(port string, handler http.Handler) *http.Server {
 	}
 }
 
-func CloseServer(server *http.Server) {
+func CloseServer(ctx context.Context, server *http.Server) {
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
 	<-stop
 
-	err := server.Shutdown(nil)
+	err := server.Shutdown(ctx)
 	if err != nil {
 		log.Fatalf("Server closing error: %v", err)
 	}
@@ -36,9 +37,9 @@ func RunServer(server *http.Server) {
 	}()
 }
 
-func NewServer(r http.Handler) {
+func NewServer(ctx context.Context, r http.Handler) {
 	s := Config(":8080", r)
 
 	RunServer(s)
-	CloseServer(s)
+	CloseServer(ctx, s)
 }

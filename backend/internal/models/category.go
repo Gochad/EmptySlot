@@ -7,7 +7,7 @@ import (
 )
 
 type Category struct {
-	gorm         gorm.Model
+	gorm.Model
 	ID           string         `json:"id"`
 	Name         string         `json:"name"`
 	Merchandises []*Merchandise `gorm:"foreignKey:CategoryID" json:"merchandises"`

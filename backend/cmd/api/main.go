@@ -7,6 +7,7 @@ import (
 	_ "github.com/lib/pq"
 
 	"backend/cmd/server"
+	"backend/internal"
 	"backend/internal/auth"
 	"backend/internal/database"
 	"backend/internal/models"
@@ -19,11 +20,11 @@ func main() {
 	models.Migration(db)
 	r := mux.NewRouter()
 
-	ctx := context.WithValue(context.Background(), "DB", db)
+	ctx := context.WithValue(context.Background(), internal.DbKey, db)
 	routes.RegisterRoutes(ctx, r)
 	auth.RegisterAuth(ctx, r)
 	sg.Setup(ctx)
 
 	handler := auth.AddCors(r)
-	server.NewServer(handler)
+	server.NewServer(ctx, handler)
 }

@@ -30,7 +30,9 @@ func GoogleSignOn(res http.ResponseWriter, req *http.Request) {
 	}
 
 	session.Values["tokenStringKey"] = tokenString
-	session.Save(req, res)
+	if err := session.Save(req, res); err != nil {
+		log.Println("error while saving token session: ", err)
+	}
 
 	url := oauth.AuthCodeURL(tokenString)
 	http.Redirect(res, req, url, http.StatusTemporaryRedirect)
@@ -56,7 +58,9 @@ func Callback(res http.ResponseWriter, req *http.Request) {
 	}
 
 	session.Options.MaxAge = -1
-	session.Save(req, res)
+	if err := session.Save(req, res); err != nil {
+		fmt.Printf("error during saving session")
+	}
 
 	var authStruct OAuthData
 
