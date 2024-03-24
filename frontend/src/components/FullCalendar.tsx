@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import React, {ChangeEvent, useEffect, useState} from "react";
+import {Calendar, momentLocalizer, SlotInfo} from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import {Events, BaseEvent} from "./events";
@@ -15,8 +15,8 @@ const localizer = momentLocalizer(moment);
 
 export default function FullCalendar() {
     const [events, setEvents] = useState<BaseEvent[]>([]);
-    const [newEvent, setNewEvent] = useState({ start: null, end: null, title: '', price: 0 });
-    const [currentEventId, setCurrentEventId] = useState<string>();
+    const [newEvent, setNewEvent] = useState<BaseEvent>({ event_id: 0, title: '', description: '', price: 0, start: new Date(), end: new Date() });
+    const [currentEventId, setCurrentEventId] = useState<string>('');
 
     const [modals, setModals] = useState({
         addEventModal: false,
@@ -31,8 +31,8 @@ export default function FullCalendar() {
         setModals({ ...modals, [modalName]: false });
     };
 
-    const handleSelect = ({ start, end }) => {
-        setNewEvent({ start, end, title: '' });
+    const handleSelect = ({ start, end }: SlotInfo) => {
+        setNewEvent({ event_id: 0, title: '', description: '', price: 0, start: start, end: end });
         openModal('addEventModal');
 
     };
@@ -53,7 +53,7 @@ export default function FullCalendar() {
             closeModal('addEventModal');
         }
     };
-    const handleChange = (e) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
 
         setNewEvent(prevEvent => ({
@@ -64,7 +64,7 @@ export default function FullCalendar() {
 
     const handleEventSelect = (event: BaseEvent) => {
         console.log(event)
-        setCurrentEventId(event.event_id);
+        setCurrentEventId(String(event.event_id));
         openModal('showEventModal');
     };
 

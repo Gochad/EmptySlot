@@ -3,8 +3,13 @@ import React from "react";
 import {errorPopup} from "./utils";
 import {Reservation} from "./reservation";
 
+interface ModalProps {
+    modalIsOpen: boolean;
+    handleCloseModal: () => void;
+    eventId: string;
+}
 
-export default function ShowEventModal({modalIsOpen, handleCloseModal, eventId}) {
+export default function ShowEventModal({modalIsOpen, handleCloseModal, eventId}: ModalProps) {
     const createPaymentLink = async () => {
         try {
             const link = await Reservation.pay(eventId);

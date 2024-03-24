@@ -30,7 +30,7 @@ export const Form = styled.form`
 `;
 
 
-export const ModalStyled = styled(Modal)<{}>`
+export const ModalStyled = styled(Modal)<object>`
   min-height: 10vh;
   min-width: 400px;
   max-height: 90vh;

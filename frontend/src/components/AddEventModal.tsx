@@ -1,7 +1,15 @@
 import React from "react";
 import {Form, ModalStyled} from "./styles/FullCalendar.styled";
+import {BaseEvent} from "./events";
 
-export default function AddEventModal({modalIsOpen, handleCloseModal, handleSave, event, handleChange}) {
+interface ModalProps {
+    modalIsOpen: boolean;
+    handleCloseModal: () => void;
+    handleSave: () => void;
+    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    event: BaseEvent;
+}
+export default function AddEventModal({modalIsOpen, handleCloseModal, handleSave, event, handleChange}: ModalProps) {
     return (
         <ModalStyled
             isOpen={modalIsOpen}
