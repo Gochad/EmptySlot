@@ -10,20 +10,19 @@ permissions:
 
 jobs:
   golangci:
-    container:
-      image: golangci/golangci-lint:latest
     name: lint
-    runs-on: ubuntu-latest
+    runs-on: medium
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: '1.21'
-          cache: false
-      - name: Lint
-        run: |
-          cd backend 
-          go mod init backend
-          go mod tidy
-          golangci-lint run
-          go vet ./...
+          go-version: '1.22'
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.55
+          working-directory: ./backend
+          only-new-issues: true
+          install-mode: "binary"
+          args: ./...
+
