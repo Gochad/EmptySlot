@@ -27,5 +27,5 @@ jobs:
           version: latest
           working-directory: ./backend
           install-mode: "binary"
-          args: ./...
+          args: --out-format=github-actions --verbose ./...
 
