@@ -11,7 +11,7 @@ permissions:
 jobs:
   golangci:
     name: lint
-    runs-on: medium
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
@@ -22,7 +22,6 @@ jobs:
         with:
           version: v1.55
           working-directory: ./backend
-          only-new-issues: true
           install-mode: "binary"
           args: ./...
 
