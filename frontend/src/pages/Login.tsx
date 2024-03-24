@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import AuthService from './../services/Auth';
 import { useNavigate } from 'react-router-dom';
 import {Button, Container, Form, OAuth} from "./styles/Login.styled";
 import {errorPopup} from "../components/utils";
-import {API_URL, LOGIN_PREFIX} from "../config";
+import {API_URL} from "../config";
 
 const LoginScreen = () => {
     const sso = `${API_URL}/google-sso`;

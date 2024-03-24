@@ -1,4 +1,4 @@
-import {API_URL, LOGIN_PREFIX, REGISTER_PREFIX} from "../config";
+import {API_URL, LOGIN_PREFIX} from "../config";
 import axios from "axios";
 
 interface LoginResponse {

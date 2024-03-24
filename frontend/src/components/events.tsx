@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_URL, LOGIN_PREFIX} from "../config";
+import {API_URL} from "../config";
 import {errorPopup, removeInvalidDates} from "./utils";
 import {ProcessedEvent} from "@aldabil/react-scheduler/types";
 

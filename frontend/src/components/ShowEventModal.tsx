@@ -13,6 +13,7 @@ export default function ShowEventModal({modalIsOpen, handleCloseModal, eventId}:
     const createPaymentLink = async () => {
         try {
             const link = await Reservation.pay(eventId);
+            console.log(link);
         } catch (error) {
             errorPopup(`problem with creating payment link: ${error}`);
         }
