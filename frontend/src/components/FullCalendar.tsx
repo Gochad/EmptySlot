@@ -88,7 +88,7 @@ export default function FullCalendar() {
                 errorPopup(`error fetching events: ${error}`);
             }
         })();
-    }, []);
+    }, [events]);
 
     return (
         <div className="App">

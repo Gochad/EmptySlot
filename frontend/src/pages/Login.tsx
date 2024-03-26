@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import AuthService from './../services/Auth';
 import { useNavigate } from 'react-router-dom';
-import {Button, Container, Form, OAuth} from "./styles/Login.styled";
+import {OAuth, Logo} from "./styles/Login.styled";
 import {errorPopup} from "../components/utils";
 import {API_URL} from "../config";
+import { Container, TextField, Button, Typography } from '@mui/material';
 
 const LoginScreen = () => {
     const sso = `${API_URL}/google-sso`;
@@ -26,32 +27,56 @@ const LoginScreen = () => {
     };
 
     return (
-        <Container>
-            <h2>Login</h2>
-            <Form onSubmit={handleLogin}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
+        <Container component="main" maxWidth="xs">
+            <Logo src="logo.jpeg" alt="EmptySlot Logo"/>
+            <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
+                <Typography component="h1" variant="h5">
+                    Logowanie
+                </Typography>
+                <form style={{ width: '100%', marginTop: 3 }} onSubmit={handleLogin}>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
                         id="email"
+                        label="Adres Email"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Hasło"
                         type="password"
                         id="password"
+                        autoComplete="current-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                     />
-                </div>
-                <Button type="submit">Login</Button>
-            </Form>
-
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        style={{ margin: '24px 0px 16px' }}
+                    >
+                        Zaloguj się
+                    </Button>
+                </form>
+            </div>
             <OAuth>
                 <a href={ssoUrl}>
                     <img src="logo_google.png" alt="Google Logo"/>
