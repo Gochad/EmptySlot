@@ -62,7 +62,7 @@ export default function CategoriesScree() {
                 </Box>
                 <Grid container spacing={2}>
                     {categories.map((item) => (
-                        <Grid item xs={12} sm={6} md={4}>
+                        <Grid item xs={12} sm={6} md={4} key={item.name}>
                             <Paper elevation={3} sx={{ padding: 2 }}>
                                 <Typography variant="h6" component="h2">
                                     {item.name}
