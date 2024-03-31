@@ -8,9 +8,9 @@ import (
 
 type Category struct {
 	gorm.Model
-	ID           string         `json:"id"`
-	Name         string         `json:"name"`
-	Merchandises []*Merchandise `gorm:"foreignKey:CategoryID" json:"merchandises"`
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Color string `json:"color"`
 }
 
 type CategoryRepository struct {
@@ -35,7 +35,7 @@ func (r *CategoryRepository) UpdateCategory(c *Category) error {
 
 func (r *CategoryRepository) GetCategoryByID(id string) (*Category, error) {
 	model := new(Category)
-	if err := r.Db.Preload("Merchandises").First(model, id).Error; err != nil {
+	if err := r.Db.First(model, id).Error; err != nil {
 		return nil, fmt.Errorf("error updating category: %v", err)
 	}
 
@@ -44,13 +44,10 @@ func (r *CategoryRepository) GetCategoryByID(id string) (*Category, error) {
 
 func (r *CategoryRepository) GetAllCategories() ([]*Category, error) {
 	var list []*Category
-	if err := r.Db.Preload("Merchandises").Find(&list).Error; err != nil {
+	if err := r.Db.Find(&list).Error; err != nil {
 		return nil, fmt.Errorf("error updating category: %v", err)
 	}
 
-	for i, elem := range list {
-		fmt.Println(i, "-ty element: ", elem.Merchandises)
-	}
 	return list, nil
 }
 

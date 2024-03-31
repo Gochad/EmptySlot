@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -9,20 +9,48 @@ import Navbar from "../components/Navbar";
 import CategoriesService from "../services/Categories";
 import {Category} from "../services/Categories";
 import {errorPopup, successPopup} from "../services/utils";
+import AddCategoryModal from "../components/AddCategoryModal";
 
 export default function CategoriesScree() {
     const [categories, setCategories] = useState<Category[]>([]);
-    const add = async() => {
-        const newCategory: Category = {
-            name: `Item random`,
-        };
+    const [newCategory, setNewCategory] = useState<Category>({ name: "", color: "" });
+    const [modals, setModals] = useState({
+        addCategoryModal: false,
+    });
+
+    const openModal = (modalName: string) => {
+        setModals({ ...modals, [modalName]: true });
+    };
+
+    const closeModal = (modalName: string) => {
+        setModals({ ...modals, [modalName]: false });
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+
+        setNewCategory(prevItem => ({
+            ...prevItem,
+            [name]: value
+        }));
+    };
+
+    const handleSave = async () => {
         try {
+            if (newCategory.name) {
+                setCategories([
+                    ...categories,
+                    newCategory
+                ]);
+            }
+            console.log(newCategory)
             await CategoriesService.create(newCategory);
             successPopup(`category added`);
         } catch (error) {
             errorPopup(`error while saving new category: ${error}`);
+        } finally {
+            closeModal('addCategoryModal');
         }
-        setCategories([...categories, newCategory]);
     };
 
     const rerenderCategories = async () => {
@@ -53,11 +81,11 @@ export default function CategoriesScree() {
             <Navbar />
             <Container maxWidth="md">
                 <Typography variant="h4" component="h1" gutterBottom>
-                    Simple Tiles Page
+                    Service Categories
                 </Typography>
                 <Box mb={2}>
-                    <Button variant="contained" color="primary" onClick={add}>
-                        Dodaj nowy item
+                    <Button variant="contained" color="primary" onClick={() => openModal('addCategoryModal')}>
+                        Add category
                     </Button>
                 </Box>
                 <Grid container spacing={2}>
@@ -72,6 +100,14 @@ export default function CategoriesScree() {
                     ))}
                 </Grid>
             </Container>
+            <AddCategoryModal
+                modalIsOpen={modals.addCategoryModal}
+                handleCloseModal={() => closeModal("addCategoryModal")}
+                handleSave={handleSave}
+                item={newCategory}
+                handleChange={handleChange}
+                handleColorChange={setNewCategory}
+            />
         </>
     );
 }

@@ -1,6 +1,6 @@
 const config = {
     API: 'http://localhost:8080',
-    APP: 'http://localhost:3001',
+    APP: 'http://localhost:3000',
     MAIN: '/dashboard',
     LOGIN: '/login',
     REGISTER: '/register',

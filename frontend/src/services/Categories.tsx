@@ -3,6 +3,7 @@ import {config} from "../config";
 
 export interface Category {
     name: string,
+    color: string,
 }
 
 export default class CategoriesService {

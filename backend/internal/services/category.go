@@ -8,9 +8,9 @@ import (
 )
 
 type CategoryRequest struct {
-	ID           string                `json:"id"`
-	Name         string                `json:"name"`
-	Merchandises []*MerchandiseRequest `json:"merchandises"`
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Color string `json:"color"`
 }
 
 func (cr *CategoryRequest) ToModel(generateNewID bool) *models.Category {
@@ -18,15 +18,10 @@ func (cr *CategoryRequest) ToModel(generateNewID bool) *models.Category {
 		cr.ID = generateUUID()
 	}
 
-	ms := make([]*models.Merchandise, 0)
-	for _, m := range cr.Merchandises {
-		ms = append(ms, m.ToModel(generateNewID, cr.ID))
-	}
-
 	return &models.Category{
-		ID:           cr.ID,
-		Name:         cr.Name,
-		Merchandises: ms,
+		ID:    cr.ID,
+		Name:  cr.Name,
+		Color: cr.Color,
 	}
 }
 
