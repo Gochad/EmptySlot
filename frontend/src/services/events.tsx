@@ -1,7 +1,7 @@
 import axios from "axios";
 import {API_URL} from "../config";
-import {errorPopup, removeInvalidDates} from "./utils";
 import {ProcessedEvent} from "@aldabil/react-scheduler/types";
+import {errorPopup, removeInvalidDates} from "./utils";
 
 axios.interceptors.request.use(config => {
     const token = localStorage.getItem('token');

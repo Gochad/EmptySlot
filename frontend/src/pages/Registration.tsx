@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import React, {ChangeEvent, useState} from "react";
 import RegisterService from "../services/Register";
-import {errorPopup} from "../components/utils";
+import {errorPopup} from "../services/utils";
 import {Button, Container, Form} from "./styles/Registration.styled";
 
 

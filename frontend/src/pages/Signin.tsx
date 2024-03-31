@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {OAuth, Logo} from "./styles/Login.styled";
 import {API_URL} from "../config";
 import AuthService from "../services/Auth";
-import {errorPopup} from "../components/utils";
+import {errorPopup} from "../services/utils";
 import {useNavigate} from "react-router-dom";
 
 const defaultTheme = createTheme();

@@ -1,6 +1,6 @@
 import React from "react";
 import {Form, ModalStyled} from "./styles/FullCalendar.styled";
-import {BaseEvent} from "./events";
+import {BaseEvent} from "../services/events";
 
 interface ModalProps {
     modalIsOpen: boolean;
