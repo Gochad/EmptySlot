@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./../components/Navbar";
-
 import FullCalendar from '../components/FullCalendar';
+import {CalendarHeader} from "./styles/MainPage.styled";
 
 export default function MainPage() {
     const token = localStorage.getItem('token');
@@ -10,6 +10,9 @@ export default function MainPage() {
     return isTokenValid ? (
         <div>
             <Navbar />
+            <CalendarHeader>
+                Calendar
+            </CalendarHeader>
             <FullCalendar />
         </div>
     ): <div>{`You can't access`}</div>;

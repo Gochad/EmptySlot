@@ -7,6 +7,8 @@ import {errorPopup, successPopup} from "../services/utils";
 import Modal from 'react-modal';
 import AddEventModal from "./AddEventModal";
 import ShowEventModal from "./ShowEventModal";
+import "./styles/calendar.css";
+import {CalendarStyles} from "./styles/FullCalendar.styled";
 
 Modal.setAppElement('#root');
 
@@ -96,12 +98,14 @@ export default function FullCalendar() {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ height: 500 }}
+                style={CalendarStyles}
                 selectable
                 onSelectSlot={handleSelect}
                 defaultView="week"
                 views={["week","agenda"]}
                 onSelectEvent={handleEventSelect}
+                min={new Date(0, 0, 0, 6, 0, 0)}
+                max={new Date(0, 0, 0, 22, 0, 0)}
             />
             <AddEventModal
                 modalIsOpen={modals.addEventModal}

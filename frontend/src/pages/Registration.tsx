@@ -1,20 +1,23 @@
-import {useNavigate} from "react-router-dom";
-import React, {ChangeEvent, useState} from "react";
+import React, { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import RegisterService from "../services/Register";
 import {errorPopup} from "../services/utils";
-import {Button, Container, Form} from "./styles/Registration.styled";
 
-
-const RegistrationScreen = () => {
+export default function RegistrationScreen() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
         password: '',
-        email: ''
+        email: '',
     });
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleRegister = async (e: React.FormEvent) => {
@@ -28,49 +31,48 @@ const RegistrationScreen = () => {
         }
     };
 
-
     return (
-        <Container>
-            <h2>Register</h2>
-            <Form onSubmit={handleRegister}>
-                <div>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <Button type="submit">Register</Button>
-            </Form>
+        <Container maxWidth="sm">
+            <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
+                Register
+            </Typography>
+            <form onSubmit={handleRegister}>
+                <TextField
+                    label="Username"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    label="Password"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    label="Email"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                />
+                <Button type="submit" variant="contained" sx={{ mt: 3 }}>
+                    Register
+                </Button>
+            </form>
         </Container>
-
     );
-};
-
-export default RegistrationScreen;
+}

@@ -1,0 +1,88 @@
+.rbc-header {
+    background-color: #2196f3;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    align-self: baseline;
+    font-size: 20px;
+    font-weight: 500;
+    border-bottom: 2px solid #cfd8dc;
+}
+
+.rbc-day-bg.rbc-today {
+    background-color: #e0f7fa;
+    align-self: baseline;
+}
+
+.rbc-btn {
+    color: #2979ff;
+    background-color: transparent;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.rbc-btn:hover {
+    background-color: #e3f2fd;
+}
+
+.rbc-event {
+    background-color: #64b5f6;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.875rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.rbc-event:hover {
+    filter: brightness(85%);
+}
+
+
+.rbc-toolbar button.rbc-active {
+    background-color: #64b5f6;
+    color: white;
+    border-radius: 4px;
+}
+
+.rbc-toolbar .rbc-toolbar-label {
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+.rbc-toolbar button {
+    color: #2979ff;
+}
+
+.rbc-btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.rbc-btn-group button {
+    background-color: #64b5f6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.rbc-btn-group button:hover,
+.rbc-btn-group button:active,
+.rbc-btn-group button.rbc-active {
+    background-color: #1976d2;
+}
+
+.rbc-btn-group button:disabled {
+    background-color: #9e9e9e;
+    color: #bdbdbd;
+    cursor: not-allowed;
+}
+
+.rbc-allday-cell {
+    display: none !important;
+}
