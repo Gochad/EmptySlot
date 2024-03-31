@@ -1,4 +1,4 @@
-import {API_URL, LOGIN_PREFIX} from "../config";
+import {config} from "../config";
 import axios from "axios";
 
 interface LoginResponse {
@@ -10,13 +10,10 @@ interface LoginData {
     password: string;
 }
 
-
 class AuthService {
     static async login(userData: LoginData){
-        const response = await axios.post(`${API_URL}${LOGIN_PREFIX}`, userData);
-
+        const response = await axios.post(`${config.API}${config.LOGIN}`, userData);
         const data: LoginResponse = response.data;
-        console.log(data)
         localStorage.setItem('token', data.token);
     }
 

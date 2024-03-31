@@ -12,6 +12,11 @@ export default function Navbar() {
         navigate('/login');
     };
 
+    const categories = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        navigate('/categories');
+    };
+
     return (
         <AppBar position="static" color="primary" elevation={0}>
             <Toolbar>
@@ -22,6 +27,9 @@ export default function Navbar() {
                     </Typography>
                 </Box>
                 <Box sx={{ flexGrow: 1 }} />
+                <Button color="inherit" onClick={categories}>
+                    Service categories
+                </Button>
                 <Button color="inherit" onClick={() => console.log("user panel")}>
                     User
                 </Button>

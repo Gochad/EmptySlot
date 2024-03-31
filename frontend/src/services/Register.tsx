@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_URL, REGISTER_PREFIX} from "../config";
+import {config} from "../config";
 
 interface RegisterData {
     username: string;
@@ -9,7 +9,7 @@ interface RegisterData {
 
 class RegisterService {
     static async register(userData: RegisterData){
-        return await axios.post(`${API_URL}${REGISTER_PREFIX}`, userData);
+        return await axios.post(`${config.API}${config.REGISTER}`, userData);
     }
 }
 

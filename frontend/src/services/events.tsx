@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_URL} from "../config";
+import {config} from "../config";
 import {ProcessedEvent} from "@aldabil/react-scheduler/types";
 import {errorPopup, removeInvalidDates} from "./utils";
 
@@ -64,17 +64,17 @@ export const mapReservationToEvent = (reservation: Reservation): BaseEvent => {
 
 export class Events {
     static async get() {
-        const response = await axios.get(`${API_URL}/reservations/`);
+        const response = await axios.get(`${config.API}${config.RESERVATION}`);
         const events: Reservation[] = response.data;
         return removeInvalidDates(events.map(v => mapReservationToEvent(v)));
     }
 
     static async create(data: ProcessedEvent) {
         const mapped = mapEventToReservationRequests(data);
-        await axios.post(`${API_URL}/reservations/`, mapped);
+        await axios.post(`${config.API}${config.RESERVATION}`, mapped);
     }
 
     static async delete(id: string | number) {
-        await axios.delete(`${API_URL}/reservations/${id}`);
+        await axios.delete(`${config.API}${config.RESERVATION}/${id}`);
     }
 }

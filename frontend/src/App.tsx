@@ -4,7 +4,8 @@ import LandingPage from "./pages/LandingPage";
 import MainPage from "./pages/MainPage";
 import SignIn from "./pages/Signin";
 import RegistrationScreen from "./pages/Registration";
-import {MAIN_PREFIX, LOGIN_PREFIX, REGISTER_PREFIX} from "./config";
+import CategoriesScreen from "./pages/Categories";
+import {config} from "./config";
 
 function App() {
     return (
@@ -12,9 +13,10 @@ function App() {
             <div>
                 <Routes>
                     <Route path="" element={<LandingPage />} />
-                    <Route path={MAIN_PREFIX} element={<MainPage />} />
-                    <Route path={LOGIN_PREFIX} element={<SignIn />} />
-                    <Route path={REGISTER_PREFIX} element={<RegistrationScreen />} />
+                    <Route path={config.MAIN_PREFIX} element={<MainPage />} />
+                    <Route path={config.LOGIN_PREFIX} element={<SignIn />} />
+                    <Route path={config.REGISTER_PREFIX} element={<RegistrationScreen />} />
+                    <Route path={config.CATEGORIES_PREFIX} element={<CategoriesScreen />} />
                 </Routes>
             </div>
         </Router>
