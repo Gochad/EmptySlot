@@ -30,9 +30,13 @@ export default function SignIn() {
         try {
             e.preventDefault();
             const formData = new FormData(e.target as HTMLFormElement);
-            const formProps = Object.fromEntries(formData);
 
-            await AuthService.login({email: formProps.email as string, password: formProps.password as string});
+            const formProps = Object.fromEntries(formData) as { [key: string]: FormDataEntryValue };
+
+            await AuthService.login({
+                email: formProps.email.toString(),
+                password: formProps.password.toString()
+            });
             navigate('/dashboard');
         } catch (error) {
             errorPopup('Wrong password or email');
