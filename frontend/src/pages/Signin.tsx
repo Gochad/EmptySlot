@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {OAuth, Logo} from "./styles/Login.styled";
-import {API_URL} from "../config";
+import {APP_URL, API_URL, MAIN_PREFIX} from "../config";
 import AuthService from "../services/Auth";
 import {errorPopup} from "../services/utils";
 import {useNavigate} from "react-router-dom";
@@ -20,11 +20,8 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
     const sso = `${API_URL}/google-sso`;
-    const redirectURI = "http://localhost:3001/dashboard";
-
-    const ssoUrl = `${sso}?redirect_uri=${encodeURIComponent(redirectURI)}`;
+    const ssoUrl = `${sso}?redirect_uri=${encodeURIComponent(APP_URL + MAIN_PREFIX)}`;
     const navigate = useNavigate();
-
 
     const handleSubmit = async (e: React.FormEvent) => {
         try {
@@ -99,7 +96,7 @@ export default function SignIn() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/register" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
