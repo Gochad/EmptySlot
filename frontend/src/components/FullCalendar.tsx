@@ -63,7 +63,6 @@ export default function FullCalendar() {
     };
 
     const handleEventSelect = (event: BaseEvent) => {
-        console.log(event)
         setCurrentEventId(String(event.event_id));
         openModal('showEventModal');
     };
