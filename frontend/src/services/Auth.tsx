@@ -16,6 +16,7 @@ class AuthService {
         const response = await axios.post(`${API_URL}${LOGIN_PREFIX}`, userData);
 
         const data: LoginResponse = response.data;
+        console.log(data)
         localStorage.setItem('token', data.token);
     }
 
