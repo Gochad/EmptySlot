@@ -14,7 +14,6 @@ import {OAuth, Logo} from "./styles/Login.styled";
 import {API_URL} from "../config";
 import AuthService from "../services/Auth";
 import {errorPopup} from "../components/utils";
-import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 const defaultTheme = createTheme();
@@ -25,8 +24,7 @@ export default function SignIn() {
 
     const ssoUrl = `${sso}?redirect_uri=${encodeURIComponent(redirectURI)}`;
     const navigate = useNavigate();
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         try {
@@ -67,7 +65,6 @@ export default function SignIn() {
                             name="email"
                             autoComplete="email"
                             autoFocus
-                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField
                             margin="normal"
@@ -78,7 +75,6 @@ export default function SignIn() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}

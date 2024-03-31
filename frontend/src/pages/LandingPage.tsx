@@ -37,4 +37,4 @@ export default function LandingPage(){
             </Container>
         </>
     );
-};
+}
