@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Container, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import {Logo} from "./styles/LandingPage.styled";
+import {Logo} from "../components/styles/logo.styled";
 
 export default function LandingPage(){
     const navigate = useNavigate();
