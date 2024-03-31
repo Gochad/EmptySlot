@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {OAuth, Logo} from "./styles/Login.styled";
-import {APP_URL, API_URL, MAIN_PREFIX} from "../config";
+import {config} from "../config";
 import AuthService from "../services/Auth";
 import {errorPopup} from "../services/utils";
 import {useNavigate} from "react-router-dom";
@@ -19,8 +19,8 @@ import {useNavigate} from "react-router-dom";
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-    const sso = `${API_URL}/google-sso`;
-    const ssoUrl = `${sso}?redirect_uri=${encodeURIComponent(APP_URL + MAIN_PREFIX)}`;
+    const redirect = `${encodeURIComponent(config.APP + config.MAIN)}`;
+    const ssoUrl = `${config.API}/google-sso?redirect_uri=${redirect}`;
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {

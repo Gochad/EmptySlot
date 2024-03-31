@@ -92,7 +92,7 @@ export default function FullCalendar() {
     }, []);
 
     return (
-        <div className="App">
+        <div>
             <Calendar
                 localizer={localizer}
                 events={events}

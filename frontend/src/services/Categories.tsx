@@ -1,17 +1,18 @@
-import axios from "axios/index";
+import axios from "axios";
 import {config} from "../config";
 
-
-interface CategoryData {
-    username: string;
-    email: string;
-    password: string;
+export interface Category {
+    name: string,
 }
 
-class RegisterService {
-    static async categories(data: CategoryData){
-        return await axios.post(`${config.API}${config.REGISTER}`, data);
+export default class CategoriesService {
+    static async get() {
+        const response = await axios.get(`${config.API}${config.CATEGORIES}/`);
+        const categories: Category[] = response.data;
+        return categories;
+    }
+
+    static async create(data: Category) {
+        await axios.post(`${config.API}${config.CATEGORIES}/`, data);
     }
 }
-
-export default RegisterService;

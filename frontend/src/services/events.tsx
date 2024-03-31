@@ -64,14 +64,14 @@ export const mapReservationToEvent = (reservation: Reservation): BaseEvent => {
 
 export class Events {
     static async get() {
-        const response = await axios.get(`${config.API}${config.RESERVATION}`);
+        const response = await axios.get(`${config.API}${config.RESERVATION}/`);
         const events: Reservation[] = response.data;
         return removeInvalidDates(events.map(v => mapReservationToEvent(v)));
     }
 
     static async create(data: ProcessedEvent) {
         const mapped = mapEventToReservationRequests(data);
-        await axios.post(`${config.API}${config.RESERVATION}`, mapped);
+        await axios.post(`${config.API}${config.RESERVATION}/`, mapped);
     }
 
     static async delete(id: string | number) {

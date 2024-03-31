@@ -4,7 +4,7 @@ const config = {
     MAIN: '/dashboard',
     LOGIN: '/login',
     REGISTER: '/register',
-    RESERVATION: 'reservations',
+    RESERVATION: '/reservations',
     CATEGORIES: '/category',
 };
 

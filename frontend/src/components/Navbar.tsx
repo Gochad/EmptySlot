@@ -1,7 +1,8 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, ButtonBase, Toolbar, Typography} from "@mui/material";
 import {Logo} from "./styles/logo.styled";
+import { config } from "../config";
 
 export default function Navbar() {
     const navigate = useNavigate();
@@ -14,18 +15,24 @@ export default function Navbar() {
 
     const categories = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        navigate('/categories');
+        navigate(config.CATEGORIES);
+    };
+
+    const logo = () => {
+        navigate(config.MAIN);
     };
 
     return (
         <AppBar position="static" color="primary" elevation={0}>
             <Toolbar>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Logo src="logo.jpeg" alt="EmptySlot Logo" />
-                    <Typography variant="h6" color="inherit" noWrap>
-                        EmptySlot
-                    </Typography>
-                </Box>
+                <ButtonBase onClick={logo}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }} >
+                        <Logo src="logo.jpeg" alt="EmptySlot Logo"/>
+                        <Typography variant="h6" color="inherit" noWrap>
+                            EmptySlot
+                        </Typography>
+                    </Box>
+                </ButtonBase>
                 <Box sx={{ flexGrow: 1 }} />
                 <Button color="inherit" onClick={categories}>
                     Service categories

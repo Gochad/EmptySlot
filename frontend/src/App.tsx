@@ -13,10 +13,10 @@ function App() {
             <div>
                 <Routes>
                     <Route path="" element={<LandingPage />} />
-                    <Route path={config.MAIN_PREFIX} element={<MainPage />} />
-                    <Route path={config.LOGIN_PREFIX} element={<SignIn />} />
-                    <Route path={config.REGISTER_PREFIX} element={<RegistrationScreen />} />
-                    <Route path={config.CATEGORIES_PREFIX} element={<CategoriesScreen />} />
+                    <Route path={config.MAIN} element={<MainPage />} />
+                    <Route path={config.LOGIN} element={<SignIn />} />
+                    <Route path={config.REGISTER} element={<RegistrationScreen />} />
+                    <Route path={config.CATEGORIES} element={<CategoriesScreen />} />
                 </Routes>
             </div>
         </Router>
