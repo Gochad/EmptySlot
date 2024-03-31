@@ -10,12 +10,18 @@ type PaymentLink struct {
 	Active bool
 }
 
-func generatePaymentLink(price *stripe.Price) (*PaymentLink, error) {
+func generatePaymentLink(price *stripe.Price, redirectURL string) (*PaymentLink, error) {
 	params := &stripe.PaymentLinkParams{
 		LineItems: []*stripe.PaymentLinkLineItemParams{
 			{
 				Price:    stripe.String(price.ID),
 				Quantity: stripe.Int64(1),
+			},
+		},
+		AfterCompletion: &stripe.PaymentLinkAfterCompletionParams{
+			Type: stripe.String("redirect"),
+			Redirect: &stripe.PaymentLinkAfterCompletionRedirectParams{
+				URL: stripe.String(redirectURL),
 			},
 		},
 	}

@@ -1,7 +1,8 @@
 const API_URL = 'http://localhost:8080';
+const APP_URL = "http://localhost:3001";
 const MAIN_PREFIX = `/dashboard`;
 const LOGIN_PREFIX = `/login`;
 const REGISTER_PREFIX = `/register`;
 
 
-export { API_URL, MAIN_PREFIX, LOGIN_PREFIX, REGISTER_PREFIX };
+export { API_URL, APP_URL, MAIN_PREFIX, LOGIN_PREFIX, REGISTER_PREFIX };

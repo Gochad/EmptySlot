@@ -1,11 +1,11 @@
 import axios from "axios";
-import {API_URL} from "../config";
+import {API_URL, APP_URL, MAIN_PREFIX} from "../config";
 
 export class Reservation {
     static async pay(id: string) {
-        const response = await axios.post(`${API_URL}/reservations/${id}/pay`);
-        const link = response.data;
-        console.log("PAYMENT LINK", link);
-        return link;
+        const response = await axios.post(`${API_URL}/reservations/${id}/pay?redirect_url=${encodeURIComponent(APP_URL + MAIN_PREFIX)}`)
+
+        // return payment link
+        return response.data;
     }
 }

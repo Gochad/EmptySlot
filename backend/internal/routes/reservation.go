@@ -124,9 +124,16 @@ func (impl *reservationImpl) makePayment(w http.ResponseWriter, r *http.Request)
 	vars := mux.Vars(r)
 	reservationID := vars["id"]
 
-	var body services.ReservationRequest
-	paymentLink, err := body.Pay(impl.ctx, reservationID)
+	redirectURL := r.URL.Query().Get("redirect_url")
 
+	if redirectURL == "" {
+		http.Error(w, "Missing redirect_url parameter", http.StatusBadRequest)
+		return
+	}
+
+	var body services.ReservationRequest
+
+	paymentLink, err := body.Pay(impl.ctx, reservationID, redirectURL)
 	if err == nil {
 		views.SendResponse(w, paymentLink)
 	} else {

@@ -78,7 +78,7 @@ func (rr *ReservationRequest) DeleteMany(ctx context.Context) error {
 	return mr.DeleteReservations()
 }
 
-func (rr *ReservationRequest) Pay(ctx context.Context, id string) (string, error) {
+func (rr *ReservationRequest) Pay(ctx context.Context, id, redirectURL string) (string, error) {
 	mr := models.ReservationRepository{Db: internal.Database(ctx)}
 	reservation, err := mr.GetReservationByID(id)
 	if err != nil {
@@ -89,5 +89,5 @@ func (rr *ReservationRequest) Pay(ctx context.Context, id string) (string, error
 		return "", fmt.Errorf("reservation from db is nil")
 	}
 
-	return makePaymentLink(*reservation)
+	return makePaymentLink(*reservation, redirectURL)
 }
