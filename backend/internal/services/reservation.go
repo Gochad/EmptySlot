@@ -9,15 +9,12 @@ import (
 )
 
 type ReservationRequest struct {
-	ID          string          `json:"id"`
-	Name        string          `json:"name"`
-	Description string          `json:"description"`
-	Price       int64           `json:"price"`
-	Confirmed   bool            `json:"confirmed"`
-	StartTime   string          `json:"starttime"`
-	EndTime     string          `json:"endtime"`
-	IsReserved  bool            `json:"isreserved"`
-	CustomerReq CustomerRequest `json:"customer"`
+	ID             string          `json:"id"`
+	Name           string          `json:"name"`
+	Description    string          `json:"description"`
+	IsReserved     bool            `json:"isreserved"`
+	MerchandiseIDs []string        `json:"merchandises"`
+	CustomerReq    CustomerRequest `json:"customer"`
 }
 
 func (rr *ReservationRequest) ToModel(generateNewID bool) *models.Reservation {
@@ -29,10 +26,6 @@ func (rr *ReservationRequest) ToModel(generateNewID bool) *models.Reservation {
 		ID:          rr.ID,
 		Name:        rr.Name,
 		Description: rr.Description,
-		Price:       rr.Price,
-		Confirmed:   rr.Confirmed,
-		StartTime:   rr.StartTime,
-		EndTime:     rr.EndTime,
 		IsReserved:  rr.IsReserved,
 		Customer:    *rr.CustomerReq.ToModel(generateNewID),
 	}
@@ -79,14 +72,26 @@ func (rr *ReservationRequest) DeleteMany(ctx context.Context) error {
 }
 
 func (rr *ReservationRequest) Pay(ctx context.Context, id, redirectURL string) (string, error) {
-	mr := models.ReservationRepository{Db: internal.Database(ctx)}
-	reservation, err := mr.GetReservationByID(id)
+	repo := models.ReservationRepository{Db: internal.Database(ctx)}
+	reservation, err := repo.GetReservationByID(id)
 	if err != nil {
 		return "", fmt.Errorf("getting reservation from db error: %v", err)
 	}
 
 	if reservation == nil {
 		return "", fmt.Errorf("reservation from db is nil")
+	}
+
+	mrepo := models.MerchandiseRepository{Db: internal.Database(ctx)}
+
+	//merchandises := make([]*models.Merchandise, 0, len(reservation.MerchandiseIDs))
+	for _, merch := range reservation.MerchandiseIDs {
+		merchandise, err := mrepo.GetMerchandiseByID(merch)
+		if err != nil {
+			return "", fmt.Errorf("error getting merchandise: %v", err)
+		}
+		//merchandises[i] = merchandise
+		reservation.CalculatedPrice += merchandise.Price
 	}
 
 	return makePaymentLink(*reservation, redirectURL)

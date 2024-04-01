@@ -19,7 +19,7 @@ export interface BaseEvent {
     start: Date
     end: Date,
 }
-export interface Reservation {
+export interface Merchandise {
     id: number,
     name: string,
     description: string,
@@ -27,10 +27,9 @@ export interface Reservation {
     starttime: string,
     endtime: string,
     confirmed: boolean,
-    isreserved: boolean,
 }
 
-export const mapEventToReservationRequests = (event: BaseEvent | ProcessedEvent) => {
+export const mapEventToMerchandiseRequests = (event: BaseEvent | ProcessedEvent) => {
     if (event && !event.start && !event.end){
         errorPopup("Event obj doesn't have start or end prop")
         return
@@ -42,7 +41,6 @@ export const mapEventToReservationRequests = (event: BaseEvent | ProcessedEvent)
         Price: event.price,
         StartTime: event.start.toISOString(),
         EndTime: event.end.toISOString(),
-        IsReserved: false,
     };
 };
 
@@ -51,30 +49,30 @@ function convertStringToDate(dateString: string) {
     return date;
 }
 
-export const mapReservationToEvent = (reservation: Reservation): BaseEvent => {
+export const mapReservationToEvent = (merch: Merchandise): BaseEvent => {
     return {
-        event_id: Number(reservation.id),
-        start: convertStringToDate(reservation.starttime),
-        end: convertStringToDate(reservation.endtime),
-        title: reservation.name,
-        description: reservation.description,
-        price: reservation.price,
+        event_id: Number(merch.id),
+        start: convertStringToDate(merch.starttime),
+        end: convertStringToDate(merch.endtime),
+        title: merch.name,
+        description: merch.description,
+        price: merch.price,
     };
 };
 
 export class Events {
     static async get() {
-        const response = await axios.get(`${config.API}${config.RESERVATION}/`);
-        const events: Reservation[] = response.data;
+        const response = await axios.get(`${config.API}${config.MERCH}/`);
+        const events: Merchandise[] = response.data;
         return removeInvalidDates(events.map(v => mapReservationToEvent(v)));
     }
 
     static async create(data: ProcessedEvent) {
-        const mapped = mapEventToReservationRequests(data);
-        await axios.post(`${config.API}${config.RESERVATION}/`, mapped);
+        const mapped = mapEventToMerchandiseRequests(data);
+        await axios.post(`${config.API}${config.MERCH}/`, mapped);
     }
 
     static async delete(id: string | number) {
-        await axios.delete(`${config.API}${config.RESERVATION}/${id}`);
+        await axios.delete(`${config.API}${config.MERCH}/${id}`);
     }
 }

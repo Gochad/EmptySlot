@@ -8,12 +8,15 @@ import (
 
 type Merchandise struct {
 	gorm.Model
-	ID            string  `json:"id"`
-	Name          string  `json:"name"`
-	Description   string  `json:"description"`
-	Price         int64   `json:"price"`
-	CategoryID    *string `json:"category_id"`
-	ReservationID *string `json:"reservation_id"`
+	ID          string  `json:"id"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	CategoryID  *string `json:"category_id"`
+
+	Price     int64  `json:"price"`
+	Confirmed bool   `json:"confirmed"`
+	StartTime string `json:"starttime"`
+	EndTime   string `json:"endtime"`
 }
 
 type MerchandiseRepository struct {

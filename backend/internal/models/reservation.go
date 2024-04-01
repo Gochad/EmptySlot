@@ -8,15 +8,13 @@ import (
 
 type Reservation struct {
 	gorm.Model
-	ID          string   `json:"id"`
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	Price       int64    `json:"price"`
-	Confirmed   bool     `json:"confirmed"`
-	IsReserved  bool     `json:"isreserved"`
-	StartTime   string   `json:"starttime"`
-	EndTime     string   `json:"endtime"`
-	Customer    Customer `gorm:"foreignKey:ReservationID" json:"customer"`
+	ID              string   `json:"id"`
+	Name            string   `json:"name"`
+	Description     string   `json:"description"`
+	IsReserved      bool     `json:"isreserved"`
+	MerchandiseIDs  []string `json:"merchandises"`
+	CalculatedPrice int64    `json:"price"`
+	Customer        Customer `gorm:"foreignKey:ReservationID" json:"customer"`
 }
 
 type ReservationRepository struct {

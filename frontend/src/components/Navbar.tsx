@@ -3,8 +3,13 @@ import {useNavigate} from "react-router-dom";
 import {AppBar, Box, Button, ButtonBase, Toolbar, Typography} from "@mui/material";
 import {Logo} from "./styles/logo.styled";
 import { config } from "../config";
+import GoToCartButton from "./GoToCartButton";
 
-export default function Navbar() {
+interface NavbarProps {
+    cart?: boolean;
+}
+
+export default function Navbar({cart}: NavbarProps) {
     const navigate = useNavigate();
 
     const logout = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -34,6 +39,7 @@ export default function Navbar() {
                     </Box>
                 </ButtonBase>
                 <Box sx={{ flexGrow: 1 }} />
+                {cart ? <GoToCartButton /> : null}
                 <Button color="inherit" onClick={categories}>
                     Service categories
                 </Button>

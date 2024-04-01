@@ -11,8 +11,12 @@ type MerchandiseRequest struct {
 	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	Price       int64  `json:"price"`
 	CategoryID  uint   `json:"category_id"`
+
+	Price     int64  `json:"price"`
+	Confirmed bool   `json:"confirmed"`
+	StartTime string `json:"starttime"`
+	EndTime   string `json:"endtime"`
 }
 
 func (mreq *MerchandiseRequest) ToModel(generateNewID bool, categoryId string) *models.Merchandise {
@@ -23,8 +27,12 @@ func (mreq *MerchandiseRequest) ToModel(generateNewID bool, categoryId string) *
 		ID:          mreq.ID,
 		Name:        mreq.Name,
 		Description: mreq.Description,
-		Price:       mreq.Price,
 		CategoryID:  &categoryId,
+
+		Price:     mreq.Price,
+		Confirmed: mreq.Confirmed,
+		StartTime: mreq.StartTime,
+		EndTime:   mreq.EndTime,
 	}
 }
 

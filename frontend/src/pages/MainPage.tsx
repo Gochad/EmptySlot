@@ -9,10 +9,12 @@ export default function MainPage() {
 
     return isTokenValid ? (
         <div>
-            <Navbar />
+            <Navbar cart/>
+
             <CalendarHeader>
                 Calendar
             </CalendarHeader>
+
             <FullCalendar />
         </div>
     ): <div>{`You can't access`}</div>;
