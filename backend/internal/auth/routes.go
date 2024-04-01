@@ -35,6 +35,12 @@ func (impl *authImpl) login(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	var ureq services.UserRequest
+	user, err := ureq.Detail(impl.ctx, creds.Email)
+	if err != nil || !CheckPasswordHash(creds.Password, user.Password) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
 
 	token, err := generateJWT(creds)
 	if err != nil {
@@ -42,7 +48,7 @@ func (impl *authImpl) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := json.NewEncoder(w).Encode(map[string]string{"token": token}); err != nil {
+	if err = json.NewEncoder(w).Encode(map[string]string{"token": token, "reservation": user.ReservationID}); err != nil {
 		fmt.Println("error during encoding token: ", err)
 	}
 }
@@ -54,13 +60,18 @@ func (impl *authImpl) register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hashedPassword, _ := HashPassword(newUser.Password)
-	newUser.Password = hashedPassword
+	var rreq services.ReservationRequest
+	reservation, _ := rreq.Create(impl.ctx)
 
-	create, err := newUser.Create(impl.ctx)
+	hashedPassword, err := HashPassword(newUser.Password)
 	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	newUser.Password = hashedPassword
+
+	newUser.ReservationID = reservation.ID
+	create, err := newUser.Create(impl.ctx)
 
 	if err == nil {
 		views.SendResponse(w, create)

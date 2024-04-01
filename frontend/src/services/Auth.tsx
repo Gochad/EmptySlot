@@ -3,6 +3,7 @@ import axios from "axios";
 
 interface LoginResponse {
     token: string;
+    reservation: string;
 }
 
 interface LoginData {
@@ -15,6 +16,7 @@ class AuthService {
         const response = await axios.post(`${config.API}${config.LOGIN}`, userData);
         const data: LoginResponse = response.data;
         localStorage.setItem('token', data.token);
+        localStorage.setItem('reservation', data.token);
     }
 
     static logout() {

@@ -14,6 +14,8 @@ type UserRequest struct {
 	Email    string `json:"email"`
 	Address  string `json:"address"`
 	Phone    string `json:"phone"`
+
+	ReservationID string `json:"reservation"`
 }
 
 func (ur *UserRequest) ToModel(generateNewID bool) *models.User {
@@ -21,12 +23,13 @@ func (ur *UserRequest) ToModel(generateNewID bool) *models.User {
 		ur.ID = generateUUID()
 	}
 	return &models.User{
-		ID:       ur.ID,
-		Username: ur.Username,
-		Password: ur.Password,
-		Email:    ur.Email,
-		Address:  ur.Address,
-		Phone:    ur.Phone,
+		ID:            ur.ID,
+		Username:      ur.Username,
+		Password:      ur.Password,
+		Email:         ur.Email,
+		Address:       ur.Address,
+		Phone:         ur.Phone,
+		ReservationID: ur.ReservationID,
 	}
 }
 
@@ -57,7 +60,7 @@ func (ur *UserRequest) Get(ctx context.Context) ([]*models.User, error) {
 	return u.GetAllUsers()
 }
 
-func (ur *UserRequest) Detail(ctx context.Context, id string) (*models.User, error) {
+func (ur *UserRequest) Detail(ctx context.Context, email string) (*models.User, error) {
 	u := models.UserRepository{Db: internal.Database(ctx)}
-	return u.GetUserByID(id)
+	return u.GetUserByEmail(email)
 }

@@ -5,7 +5,8 @@ import Typography from '@mui/material/Typography';
 import Navbar from "../components/Navbar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-
+import {errorPopup, successPopup} from "../services/utils";
+import {ReservationService} from "../services/reservation";
 
 export default function Cart() {
     const items = [
@@ -24,6 +25,16 @@ export default function Cart() {
             confirmed: false,
         },
     ];
+
+    const loadReservation = async () => {
+        try {
+            const reservationID = localStorage.getItem('reservation') as string;
+            await ReservationService.get(reservationID);
+            successPopup(`event added`);
+        } catch (error) {
+            errorPopup(`error while getting all reservations: ${error}`);
+        }
+    };
 
     return (
         <>

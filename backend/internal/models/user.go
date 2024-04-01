@@ -38,9 +38,9 @@ func (r *UserRepository) UpdateUser(m *User) error {
 	return nil
 }
 
-func (r *UserRepository) GetUserByID(id string) (*User, error) {
+func (r *UserRepository) GetUserByEmail(email string) (*User, error) {
 	model := new(User)
-	if err := r.Db.First(model, id).Error; err != nil {
+	if err := r.Db.Where("email = ?", email).First(&model).Error; err != nil {
 		return nil, fmt.Errorf("error updating user: %v", err)
 	}
 
