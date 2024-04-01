@@ -9,12 +9,11 @@ import (
 )
 
 type ReservationRequest struct {
-	ID             string          `json:"id"`
-	Name           string          `json:"name"`
-	Description    string          `json:"description"`
-	IsReserved     bool            `json:"isreserved"`
-	MerchandiseIDs []string        `json:"merchandises"`
-	CustomerReq    CustomerRequest `json:"customer"`
+	ID             string   `json:"id"`
+	Name           string   `json:"name"`
+	Description    string   `json:"description"`
+	IsReserved     bool     `json:"isreserved"`
+	MerchandiseIDs []string `json:"merchandises"`
 }
 
 func (rr *ReservationRequest) ToModel(generateNewID bool) *models.Reservation {
@@ -27,7 +26,6 @@ func (rr *ReservationRequest) ToModel(generateNewID bool) *models.Reservation {
 		Name:        rr.Name,
 		Description: rr.Description,
 		IsReserved:  rr.IsReserved,
-		Customer:    *rr.CustomerReq.ToModel(generateNewID),
 	}
 }
 

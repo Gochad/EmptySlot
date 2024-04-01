@@ -3,7 +3,6 @@ package routes
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -13,7 +12,8 @@ import (
 )
 
 type merchandiseImpl struct {
-	ctx context.Context
+	ctx  context.Context
+	body services.MerchandiseRequest
 }
 
 func registerMerchandise(ctx context.Context, router *mux.Router) {
@@ -28,13 +28,11 @@ func registerMerchandise(ctx context.Context, router *mux.Router) {
 }
 
 func (impl *merchandiseImpl) create(w http.ResponseWriter, r *http.Request) {
-	var body services.MerchandiseRequest
-
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
-	model, err := body.Create(impl.ctx)
+	model, err := impl.body.Create(impl.ctx)
 	if err == nil {
 		views.SendResponse(w, model)
 	} else {
@@ -43,17 +41,11 @@ func (impl *merchandiseImpl) create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (impl *merchandiseImpl) update(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	merchandiseID := vars["id"]
-	fmt.Println(merchandiseID)
-
-	var body services.MerchandiseRequest
-
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
-	model, err := body.Update(impl.ctx)
+	model, err := impl.body.Update(impl.ctx)
 
 	if err == nil {
 		views.SendResponse(w, model)
@@ -63,9 +55,7 @@ func (impl *merchandiseImpl) update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (impl *merchandiseImpl) get(w http.ResponseWriter, r *http.Request) {
-	var body services.MerchandiseRequest
-
-	mods, err := body.Get(impl.ctx)
+	mods, err := impl.body.Get(impl.ctx)
 
 	if err == nil {
 		views.SendResponse(w, mods)
@@ -78,8 +68,7 @@ func (impl *merchandiseImpl) detail(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	merchandiseID := vars["id"]
 
-	var body services.MerchandiseRequest
-	model, err := body.Detail(impl.ctx, merchandiseID)
+	model, err := impl.body.Detail(impl.ctx, merchandiseID)
 
 	if err == nil {
 		views.SendResponse(w, model)

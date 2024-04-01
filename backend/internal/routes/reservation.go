@@ -3,7 +3,6 @@ package routes
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -13,7 +12,8 @@ import (
 )
 
 type reservationImpl struct {
-	ctx context.Context
+	ctx  context.Context
+	body services.ReservationRequest
 }
 
 func registerReservation(ctx context.Context, router *mux.Router) {
@@ -35,13 +35,11 @@ func registerReservation(ctx context.Context, router *mux.Router) {
 }
 
 func (impl *reservationImpl) create(w http.ResponseWriter, r *http.Request) {
-	var body services.ReservationRequest
-
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
-	model, err := body.Create(impl.ctx)
+	model, err := impl.body.Create(impl.ctx)
 	if err == nil {
 		views.SendResponse(w, model)
 	} else {
@@ -50,17 +48,11 @@ func (impl *reservationImpl) create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (impl *reservationImpl) update(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	reservationID := vars["id"]
-	fmt.Println(reservationID)
-
-	var body services.ReservationRequest
-
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
-	model, err := body.Update(impl.ctx)
+	model, err := impl.body.Update(impl.ctx)
 
 	if err == nil {
 		views.SendResponse(w, model)
@@ -70,9 +62,7 @@ func (impl *reservationImpl) update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (impl *reservationImpl) get(w http.ResponseWriter, r *http.Request) {
-	var body services.ReservationRequest
-
-	mods, err := body.Get(impl.ctx)
+	mods, err := impl.body.Get(impl.ctx)
 
 	if err == nil {
 		views.SendResponse(w, mods)
@@ -85,8 +75,7 @@ func (impl *reservationImpl) detail(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	reservationID := vars["id"]
 
-	var body services.ReservationRequest
-	model, err := body.Detail(impl.ctx, reservationID)
+	model, err := impl.body.Detail(impl.ctx, reservationID)
 
 	if err == nil {
 		views.SendResponse(w, model)
@@ -99,8 +88,7 @@ func (impl *reservationImpl) deleteOne(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	reservationID := vars["id"]
 
-	var body services.ReservationRequest
-	err := body.DeleteOne(impl.ctx, reservationID)
+	err := impl.body.DeleteOne(impl.ctx, reservationID)
 
 	if err == nil {
 		views.SendResponse(w, reservationID)
@@ -110,8 +98,7 @@ func (impl *reservationImpl) deleteOne(w http.ResponseWriter, r *http.Request) {
 }
 
 func (impl *reservationImpl) deleteMany(w http.ResponseWriter, r *http.Request) {
-	var body services.ReservationRequest
-	err := body.DeleteMany(impl.ctx)
+	err := impl.body.DeleteMany(impl.ctx)
 
 	if err == nil {
 		views.SendResponse(w, r)
@@ -125,15 +112,12 @@ func (impl *reservationImpl) makePayment(w http.ResponseWriter, r *http.Request)
 	reservationID := vars["id"]
 
 	redirectURL := r.URL.Query().Get("redirect_url")
-
 	if redirectURL == "" {
 		http.Error(w, "Missing redirect_url parameter", http.StatusBadRequest)
 		return
 	}
 
-	var body services.ReservationRequest
-
-	paymentLink, err := body.Pay(impl.ctx, reservationID, redirectURL)
+	paymentLink, err := impl.body.Pay(impl.ctx, reservationID, redirectURL)
 	if err == nil {
 		views.SendResponse(w, paymentLink)
 	} else {

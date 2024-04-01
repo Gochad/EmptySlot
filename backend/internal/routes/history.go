@@ -3,7 +3,6 @@ package routes
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -13,7 +12,8 @@ import (
 )
 
 type categoryImpl struct {
-	ctx context.Context
+	ctx  context.Context
+	body services.CategoryRequest
 }
 
 func registerCategory(ctx context.Context, router *mux.Router) {
@@ -28,13 +28,11 @@ func registerCategory(ctx context.Context, router *mux.Router) {
 }
 
 func (impl *categoryImpl) create(w http.ResponseWriter, r *http.Request) {
-	var body services.CategoryRequest
-
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
-	model, err := body.Create(impl.ctx)
+	model, err := impl.body.Create(impl.ctx)
 	if err == nil {
 		views.SendResponse(w, model)
 	} else {
@@ -43,18 +41,12 @@ func (impl *categoryImpl) create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (impl *categoryImpl) update(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	categoryID := vars["id"]
-	fmt.Println(categoryID)
-
-	var body services.CategoryRequest
-
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
 
-	model, err := body.Update(impl.ctx)
+	model, err := impl.body.Update(impl.ctx)
 
 	if err == nil {
 		views.SendResponse(w, model)
@@ -64,9 +56,7 @@ func (impl *categoryImpl) update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (impl *categoryImpl) get(w http.ResponseWriter, r *http.Request) {
-	var body services.CategoryRequest
-
-	mods, err := body.Get(impl.ctx)
+	mods, err := impl.body.Get(impl.ctx)
 
 	if err == nil {
 		views.SendResponse(w, mods)
@@ -79,8 +69,7 @@ func (impl *categoryImpl) detail(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	categoryID := vars["id"]
 
-	var body services.CategoryRequest
-	model, err := body.Detail(impl.ctx, categoryID)
+	model, err := impl.body.Detail(impl.ctx, categoryID)
 
 	if err == nil {
 		views.SendResponse(w, model)

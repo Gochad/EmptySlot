@@ -13,7 +13,8 @@ import (
 )
 
 type userImpl struct {
-	ctx context.Context
+	ctx  context.Context
+	body services.UserRequest
 }
 
 func registerUser(ctx context.Context, router *mux.Router) {
@@ -28,13 +29,11 @@ func registerUser(ctx context.Context, router *mux.Router) {
 }
 
 func (impl *userImpl) create(w http.ResponseWriter, r *http.Request) {
-	var body services.UserRequest
-
-	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
-	model, err := body.Create(impl.ctx)
+	model, err := impl.body.Create(impl.ctx)
 	if err == nil {
 		views.SendResponse(w, model)
 	} else {

@@ -7,48 +7,48 @@ import (
 	"backend/internal/models"
 )
 
-type CustomerRequest struct {
+type HistoryRequest struct {
 	ID   string      `json:"id"`
 	User UserRequest `json:"user"`
 }
 
-func (cr *CustomerRequest) ToModel(generateNewID bool) *models.Customer {
+func (cr *HistoryRequest) ToModel(generateNewID bool) *models.History {
 	if generateNewID {
 		cr.ID = generateUUID()
 	}
 
-	return &models.Customer{
+	return &models.History{
 		ID:   cr.ID,
 		User: *cr.User.ToModel(generateNewID),
 	}
 }
 
-func (cr *CustomerRequest) Create(ctx context.Context) (*models.Customer, error) {
-	mr := models.CustomerRepository{Db: internal.Database(ctx)}
+func (cr *HistoryRequest) Create(ctx context.Context) (*models.History, error) {
+	mr := models.HistoryRepository{Db: internal.Database(ctx)}
 	model := cr.ToModel(true)
-	err := mr.CreateCustomer(model)
+	err := mr.CreateHistory(model)
 	if err != nil {
 		return nil, err
 	}
 	return model, nil
 }
 
-func (cr *CustomerRequest) Update(ctx context.Context) (*models.Customer, error) {
-	mr := models.CustomerRepository{Db: internal.Database(ctx)}
+func (cr *HistoryRequest) Update(ctx context.Context) (*models.History, error) {
+	mr := models.HistoryRepository{Db: internal.Database(ctx)}
 	model := cr.ToModel(false)
-	err := mr.UpdateCustomer(model)
+	err := mr.UpdateHistory(model)
 	if err != nil {
 		return nil, err
 	}
 	return model, nil
 }
 
-func (cr *CustomerRequest) Get(ctx context.Context) ([]*models.Customer, error) {
-	mr := models.CustomerRepository{Db: internal.Database(ctx)}
-	return mr.GetAllCustomers()
+func (cr *HistoryRequest) Get(ctx context.Context) ([]*models.History, error) {
+	mr := models.HistoryRepository{Db: internal.Database(ctx)}
+	return mr.GetAllHistorys()
 }
 
-func (cr *CustomerRequest) Detail(ctx context.Context, id string) (*models.Customer, error) {
-	mr := models.CustomerRepository{Db: internal.Database(ctx)}
-	return mr.GetCustomerByID(id)
+func (cr *HistoryRequest) Detail(ctx context.Context, id string) (*models.History, error) {
+	mr := models.HistoryRepository{Db: internal.Database(ctx)}
+	return mr.GetHistoryByID(id)
 }

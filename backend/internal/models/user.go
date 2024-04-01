@@ -8,13 +8,14 @@ import (
 
 type User struct {
 	gorm.Model
-	ID         string  `json:"id" gorm:"unique_index"`
-	Username   string  `json:"username"`
-	Email      string  `json:"email"`
-	Password   string  `json:"password"`
-	Address    string  `json:"address"`
-	Phone      string  `json:"phone"`
-	CustomerID *string `json:"customer_id"`
+	ID       string `json:"id" gorm:"unique_index"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Address  string `json:"address"`
+	Phone    string `json:"phone"`
+
+	ReservationID string `json:"reservation"`
 }
 
 type UserRepository struct {

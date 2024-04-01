@@ -14,7 +14,6 @@ type Reservation struct {
 	IsReserved      bool     `json:"isreserved"`
 	MerchandiseIDs  []string `json:"merchandises"`
 	CalculatedPrice int64    `json:"price"`
-	Customer        Customer `gorm:"foreignKey:ReservationID" json:"customer"`
 }
 
 type ReservationRepository struct {

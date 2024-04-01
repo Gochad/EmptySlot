@@ -12,7 +12,7 @@ func Migration(db *gorm.DB) {
 		&Category{},
 		&Reservation{},
 		&User{},
-		&Customer{},
+		&History{},
 	}
 
 	if err := db.AutoMigrate(models...); err != nil {
