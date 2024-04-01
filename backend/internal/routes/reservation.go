@@ -18,7 +18,8 @@ type reservationImpl struct {
 
 func registerReservation(ctx context.Context, router *mux.Router) {
 	impl := &reservationImpl{
-		ctx: ctx,
+		ctx:  ctx,
+		body: services.ReservationRequest{},
 	}
 
 	s := router.PathPrefix("/reservations").Subrouter()

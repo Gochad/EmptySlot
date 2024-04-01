@@ -11,23 +11,24 @@ import (
 	"backend/internal/views"
 )
 
-type historyImpl struct {
+type categoryImpl struct {
 	ctx  context.Context
-	body services.HistoryRequest
+	body services.CategoryRequest
 }
 
-func registerHistory(ctx context.Context, router *mux.Router) {
-	impl := &historyImpl{
-		ctx: ctx,
+func registerCategory(ctx context.Context, router *mux.Router) {
+	impl := &categoryImpl{
+		ctx:  ctx,
+		body: services.CategoryRequest{},
 	}
-	s := router.PathPrefix("/history").Subrouter()
+	s := router.PathPrefix("/category").Subrouter()
 	s.HandleFunc("/", impl.create).Methods("POST")
 	s.HandleFunc("/", impl.get).Methods("GET")
 	s.HandleFunc("/{id}", impl.update).Methods("PUT")
 	s.HandleFunc("/{id}", impl.detail).Methods("GET")
 }
 
-func (impl *historyImpl) create(w http.ResponseWriter, r *http.Request) {
+func (impl *categoryImpl) create(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
@@ -40,11 +41,12 @@ func (impl *historyImpl) create(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (impl *historyImpl) update(w http.ResponseWriter, r *http.Request) {
+func (impl *categoryImpl) update(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
 	}
+
 	model, err := impl.body.Update(impl.ctx)
 
 	if err == nil {
@@ -54,7 +56,7 @@ func (impl *historyImpl) update(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (impl *historyImpl) get(w http.ResponseWriter, r *http.Request) {
+func (impl *categoryImpl) get(w http.ResponseWriter, r *http.Request) {
 	mods, err := impl.body.Get(impl.ctx)
 
 	if err == nil {
@@ -64,11 +66,11 @@ func (impl *historyImpl) get(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (impl *historyImpl) detail(w http.ResponseWriter, r *http.Request) {
+func (impl *categoryImpl) detail(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	historyID := vars["id"]
+	categoryID := vars["id"]
 
-	model, err := impl.body.Detail(impl.ctx, historyID)
+	model, err := impl.body.Detail(impl.ctx, categoryID)
 
 	if err == nil {
 		views.SendResponse(w, model)

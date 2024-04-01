@@ -19,7 +19,8 @@ type userImpl struct {
 
 func registerUser(ctx context.Context, router *mux.Router) {
 	impl := &userImpl{
-		ctx: ctx,
+		ctx:  ctx,
+		body: services.UserRequest{},
 	}
 	s := router.PathPrefix("/users").Subrouter()
 	s.HandleFunc("/", impl.create).Methods("POST")

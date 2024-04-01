@@ -18,7 +18,8 @@ type merchandiseImpl struct {
 
 func registerMerchandise(ctx context.Context, router *mux.Router) {
 	impl := &merchandiseImpl{
-		ctx: ctx,
+		ctx:  ctx,
+		body: services.MerchandiseRequest{},
 	}
 	s := router.PathPrefix("/merchandises").Subrouter()
 	s.HandleFunc("/", impl.create).Methods("POST")

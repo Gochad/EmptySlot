@@ -12,7 +12,7 @@ type Reservation struct {
 	Name            string   `json:"name"`
 	Description     string   `json:"description"`
 	IsReserved      bool     `json:"isreserved"`
-	MerchandiseIDs  []string `json:"merchandises"`
+	MerchandiseIDs  []string `json:"merchandises" gorm:"type:json"`
 	CalculatedPrice int64    `json:"price"`
 }
 

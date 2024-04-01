@@ -8,8 +8,8 @@ import (
 )
 
 type HistoryRequest struct {
-	ID   string      `json:"id"`
-	User UserRequest `json:"user"`
+	ID     string `json:"id"`
+	UserID string `json:"user"`
 }
 
 func (cr *HistoryRequest) ToModel(generateNewID bool) *models.History {
@@ -18,8 +18,8 @@ func (cr *HistoryRequest) ToModel(generateNewID bool) *models.History {
 	}
 
 	return &models.History{
-		ID:   cr.ID,
-		User: *cr.User.ToModel(generateNewID),
+		ID:     cr.ID,
+		UserID: cr.UserID,
 	}
 }
 

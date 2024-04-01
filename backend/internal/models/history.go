@@ -8,10 +8,10 @@ import (
 
 type History struct {
 	gorm.Model
-	ID            string  `json:"id"`
-	Name          string  `json:"name"`
-	User          User    `gorm:"constraint:OnDelete:CASCADE;" json:"user"`
-	ReservationID *string `json:"reservation_id"`
+	ID            string `json:"id"`
+	Name          string `json:"name"`
+	UserID        string `json:"user"`
+	ReservationID string `json:"reservation_id"`
 }
 
 type HistoryRepository struct {
