@@ -1,7 +1,5 @@
 import {ModalStyled} from "./styles/FullCalendar.styled";
 import React from "react";
-import {errorPopup} from "../services/utils";
-import {Reservation} from "../services/reservation";
 
 interface ModalProps {
     modalIsOpen: boolean;

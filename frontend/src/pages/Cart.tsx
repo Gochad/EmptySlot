@@ -15,8 +15,7 @@ export default function Cart() {
 
     const createPaymentLink = async () => {
         try {
-            const link = await ReservationService.pay(reservationID);
-            window.location.href = link;
+            window.location.href = await ReservationService.pay(reservationID);
         } catch (error) {
             errorPopup(`problem with creating payment link: ${error}`);
         }
@@ -24,8 +23,7 @@ export default function Cart() {
 
     const loadReservation = async () => {
         try {
-            const items: Merchandise[] = await EventsService.getByReservation(reservationID);
-            return items;
+            return await EventsService.getByReservation(reservationID);
         } catch (error) {
             errorPopup(`error while getting all reservations: ${error}`);
         }

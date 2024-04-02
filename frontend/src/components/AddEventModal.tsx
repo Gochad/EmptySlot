@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Form, ModalStyled} from "./styles/FullCalendar.styled";
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import {BaseEvent} from "../services/events";
 import CategoriesService, {Category} from "../services/Categories";
 import {errorPopup} from "../services/utils";
