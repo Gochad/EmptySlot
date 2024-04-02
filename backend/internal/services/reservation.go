@@ -3,6 +3,9 @@ package services
 import (
 	"context"
 	"fmt"
+	"log"
+	"strconv"
+	"time"
 
 	"backend/internal"
 	"backend/internal/models"
@@ -79,6 +82,9 @@ func (rr *ReservationRequest) Pay(ctx context.Context, id, redirectURL string) (
 		return "", fmt.Errorf("reservation from db is nil")
 	}
 
+	reservation.Name = "reservation from emptyslot"
+	reservation.Description = "Reservation: " + strconv.FormatInt(time.Now().Unix(), 10)
+
 	merchandises, err := GetMerchByReservationID(ctx, id)
 	if err != nil {
 		return "", fmt.Errorf("error getting related merchandises from db")
@@ -88,5 +94,6 @@ func (rr *ReservationRequest) Pay(ctx context.Context, id, redirectURL string) (
 		reservation.CalculatedPrice += merch.Price
 	}
 
+	log.Print(reservation.CalculatedPrice)
 	return makePaymentLink(*reservation, redirectURL)
 }

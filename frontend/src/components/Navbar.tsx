@@ -15,6 +15,7 @@ export default function Navbar({cart}: NavbarProps) {
     const logout = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         localStorage.removeItem('token');
+        localStorage.removeItem('reservation');
         navigate('/login');
     };
 

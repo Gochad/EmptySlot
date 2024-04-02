@@ -32,7 +32,7 @@ func registerReservation(ctx context.Context, router *mux.Router) {
 	s.HandleFunc("/{id}", impl.detail).Methods("GET")
 	s.HandleFunc("/{id}", impl.deleteOne).Methods("DELETE")
 
-	s.HandleFunc("/{id}/pay", impl.makePayment).Methods("POST")
+	s.HandleFunc("/{id}/pay", impl.makePayment).Methods("GET")
 }
 
 func (impl *reservationImpl) create(w http.ResponseWriter, r *http.Request) {

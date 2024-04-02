@@ -11,10 +11,11 @@ import {ReservationService} from "../services/reservation";
 
 export default function Cart() {
     const [merchandises, setMerchandises] = useState<Merchandise[]>([]);
+    const reservationID = localStorage.getItem('reservation') as string;
 
     const createPaymentLink = async () => {
         try {
-            const link = await ReservationService.pay(localStorage.getItem('reservation') as string);
+            const link = await ReservationService.pay(reservationID);
             window.location.href = link;
         } catch (error) {
             errorPopup(`problem with creating payment link: ${error}`);
@@ -23,7 +24,6 @@ export default function Cart() {
 
     const loadReservation = async () => {
         try {
-            const reservationID = localStorage.getItem('reservation') as string;
             const items: Merchandise[] = await EventsService.getByReservation(reservationID);
             return items;
         } catch (error) {
