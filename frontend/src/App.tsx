@@ -6,6 +6,7 @@ import SignIn from "./pages/Signin";
 import RegistrationScreen from "./pages/Registration";
 import CategoriesScreen from "./pages/Categories";
 import Cart from "./pages/Cart";
+import UserScreen from "./pages/User";
 import {config} from "./config";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                     <Route path={config.REGISTER} element={<RegistrationScreen />} />
                     <Route path={config.CATEGORIES} element={<CategoriesScreen />} />
                     <Route path={config.CART} element={<Cart />} />
+                    <Route path={config.USER} element={<UserScreen />} />
                 </Routes>
             </div>
         </Router>

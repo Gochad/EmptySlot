@@ -28,6 +28,10 @@ export default function Navbar({cart}: NavbarProps) {
         navigate(config.MAIN);
     };
 
+    const userpanel = (e: React.MouseEvent<HTMLButtonElement>) => {
+        navigate(config.USER);
+    };
+
     return (
         <AppBar position="static" color="primary" elevation={0}>
             <Toolbar>
@@ -44,7 +48,7 @@ export default function Navbar({cart}: NavbarProps) {
                 <Button color="inherit" onClick={categories}>
                     Service categories
                 </Button>
-                <Button color="inherit" onClick={() => console.log("user panel")}>
+                <Button color="inherit" onClick={userpanel}>
                     User
                 </Button>
                 <Button color="inherit" onClick={() => console.log("history payments")}>
