@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import {errorPopup} from "../services/utils";
 import {EventsService, Merchandise} from "../services/events";
-import {Reservation, ReservationService} from "../services/reservation";
+import {ReservationService} from "../services/reservation";
 
 export default function Cart() {
     const [merchandises, setMerchandises] = useState<Merchandise[]>([]);

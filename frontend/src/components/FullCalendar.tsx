@@ -2,7 +2,7 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import {Calendar, momentLocalizer, SlotInfo} from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import {Events, BaseEvent} from "../services/events";
+import {BaseEvent, EventsService} from "../services/events";
 import {errorPopup, successPopup} from "../services/utils";
 import Modal from 'react-modal';
 import AddEventModal from "./AddEventModal";
@@ -48,7 +48,7 @@ export default function FullCalendar() {
                     updatedEvent
                 ]);
             }
-            await Events.create(updatedEvent);
+            await EventsService.create(updatedEvent);
             successPopup(`event added`);
         } catch (error) {
             errorPopup(`error while saving new event: ${error}`);
@@ -72,7 +72,7 @@ export default function FullCalendar() {
 
     const rerenderEvents = async () => {
         try {
-            const events: BaseEvent[] = await Events.get();
+            const events: BaseEvent[] = await EventsService.get();
             return events;
         } catch (error) {
             errorPopup(`problem with loading data: ${error}`);
