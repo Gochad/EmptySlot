@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import {errorPopup} from "../services/utils";
 import {EventsService, Merchandise} from "../services/events";
 import {ReservationService} from "../services/reservation";
+import { Box } from '@mui/material';
 
 export default function Cart() {
     const [merchandises, setMerchandises] = useState<Merchandise[]>([]);
@@ -43,10 +44,13 @@ export default function Cart() {
         <>
             <Navbar />
             <Container maxWidth="md">
-                <Typography variant="h4" component="h1" gutterBottom>
-                    Merchandises to reserve
-                </Typography>
-                <button type="submit" className="btn btn-primary" onClick={createPaymentLink}>Pay</button>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: '30px', justifyContent: 'center'}} >
+                    <Typography variant="h4" component="h1">
+                        Merchandises to reserve
+                    </Typography>
+                    <button type="submit" className="btn btn-primary" onClick={createPaymentLink}>Pay</button>
+                </Box>
+
                 <Grid container spacing={2}>
                     {merchandises.map((item) => (
                         <Card key={item.id} sx={{ marginBottom: 2 }}>

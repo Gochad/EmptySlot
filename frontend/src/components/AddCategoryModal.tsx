@@ -25,7 +25,7 @@ export default function AddCategoryModal({modalIsOpen, item, handleCloseModal, h
             onRequestClose={handleCloseModal}
             contentLabel="New Category"
         >
-            <h2>New Event</h2>
+            <h2>New Category</h2>
             <Form onSubmit={(e) => {
                 e.preventDefault();
                 handleSave();
