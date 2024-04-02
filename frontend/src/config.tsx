@@ -8,6 +8,7 @@ const config = {
     API: 'http://localhost:8080',
     RESERVATION: '/reservations',
     MERCH: '/merchandises',
+    MCONCRETE: '/merchandisesfromreservation',
     CATEGORIES: '/category',
 };
 

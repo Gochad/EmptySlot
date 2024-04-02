@@ -2,6 +2,7 @@ import axios from "axios";
 import {config} from "../config";
 
 export interface Category {
+    id: string,
     name: string,
     color: string,
 }

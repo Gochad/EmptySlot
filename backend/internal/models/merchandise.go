@@ -8,10 +8,11 @@ import (
 
 type Merchandise struct {
 	gorm.Model
-	ID          string  `json:"id"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	CategoryID  *string `json:"category_id"`
+	ID            string `json:"id"`
+	Name          string `json:"name"`
+	Description   string `json:"description"`
+	CategoryID    string `json:"category_id"`
+	ReservationID string `json:"reservation_id"`
 
 	Price     int64  `json:"price"`
 	Confirmed bool   `json:"confirmed"`
@@ -47,6 +48,16 @@ func (r *MerchandiseRepository) GetMerchandiseByID(id string) (*Merchandise, err
 	}
 
 	return model, nil
+}
+
+func (r *MerchandiseRepository) GetMerchandiseByReservationID(reservationID string) ([]*Merchandise, error) {
+	var models []*Merchandise
+
+	if err := r.Db.Where("reservation_id = ?", reservationID).Find(&models).Error; err != nil {
+		return nil, fmt.Errorf("error retrieving merchandise by reservation ID: %v", err)
+	}
+
+	return models, nil
 }
 
 func (r *MerchandiseRepository) GetAllMerchandise() ([]*Merchandise, error) {

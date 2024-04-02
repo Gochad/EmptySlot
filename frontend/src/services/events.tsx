@@ -13,6 +13,7 @@ axios.interceptors.request.use(config => {
 
 export interface BaseEvent {
     event_id: number,
+    category_id: string,
     title: string,
     description: string,
     price: number,
@@ -23,6 +24,9 @@ export interface Merchandise {
     id: number,
     name: string,
     description: string,
+    category_id: string,
+    reservation_id: string,
+
     price: number,
     starttime: string,
     endtime: string,
@@ -35,12 +39,15 @@ export const mapEventToMerchandiseRequests = (event: BaseEvent | ProcessedEvent)
         return
     }
     return {
-        Confirmed: false,
-        Name: event.title,
-        Description: event.description,
-        Price: event.price,
-        StartTime: event.start.toISOString(),
-        EndTime: event.end.toISOString(),
+        confirmed: false,
+        name: event.title,
+        description: event.description,
+        price: event.price,
+        starttime: event.start.toISOString(),
+        endtime: event.end.toISOString(),
+
+        category_id: event.category_id,
+        reservation_id: localStorage.getItem('reservation'),
     };
 };
 
@@ -57,10 +64,11 @@ export const mapReservationToEvent = (merch: Merchandise): BaseEvent => {
         title: merch.name,
         description: merch.description,
         price: merch.price,
+        category_id: merch.category_id
     };
 };
 
-export class Events {
+export class EventsService {
     static async get() {
         const response = await axios.get(`${config.API}${config.MERCH}/`);
         const events: Merchandise[] = response.data;
@@ -72,7 +80,10 @@ export class Events {
         await axios.post(`${config.API}${config.MERCH}/`, mapped);
     }
 
-    static async delete(id: string | number) {
-        await axios.delete(`${config.API}${config.MERCH}/${id}`);
+    static async getByReservation(id: string) {
+        const response = await axios.get(`${config.API}${config.MCONCRETE}/${id}`);
+        const events: Merchandise[] = response.data;
+        return events;
     }
+
 }

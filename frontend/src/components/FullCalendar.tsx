@@ -17,7 +17,7 @@ const localizer = momentLocalizer(moment);
 
 export default function FullCalendar() {
     const [events, setEvents] = useState<BaseEvent[]>([]);
-    const [newEvent, setNewEvent] = useState<BaseEvent>({ event_id: 0, title: '', description: '', price: 0, start: new Date(), end: new Date() });
+    const [newEvent, setNewEvent] = useState<BaseEvent>({ event_id: 0, title: '', description: '', category_id: '', price: 0, start: new Date(), end: new Date() });
     const [currentEventId, setCurrentEventId] = useState<string>('');
 
     const [modals, setModals] = useState({
@@ -34,20 +34,21 @@ export default function FullCalendar() {
     };
 
     const handleSelect = ({ start, end }: SlotInfo) => {
-        setNewEvent({ event_id: 0, title: '', description: '', price: 0, start: start, end: end });
+        setNewEvent({ event_id: 0, title: '', description: '', category_id: '', price: 0, start: start, end: end });
         openModal('addEventModal');
 
     };
-    const handleSave = async () => {
-        if (newEvent.title) {
-            setEvents([
-                ...events,
-                newEvent
-            ]);
-        }
-
+    const handleSave = async (categoryId: string) => {
         try {
-            await Events.create(newEvent);
+            const updatedEvent = {...newEvent, category_id: categoryId};
+
+            if (newEvent.title) {
+                setEvents([
+                    ...events,
+                    updatedEvent
+                ]);
+            }
+            await Events.create(updatedEvent);
             successPopup(`event added`);
         } catch (error) {
             errorPopup(`error while saving new event: ${error}`);

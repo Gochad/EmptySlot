@@ -16,7 +16,7 @@ class AuthService {
         const response = await axios.post(`${config.API}${config.LOGIN}`, userData);
         const data: LoginResponse = response.data;
         localStorage.setItem('token', data.token);
-        localStorage.setItem('reservation', data.token);
+        localStorage.setItem('reservation', data.reservation);
     }
 
     static logout() {

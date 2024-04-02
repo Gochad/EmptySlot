@@ -9,11 +9,10 @@ import (
 )
 
 type ReservationRequest struct {
-	ID             string   `json:"id"`
-	Name           string   `json:"name"`
-	Description    string   `json:"description"`
-	IsReserved     bool     `json:"isreserved"`
-	MerchandiseIDs []string `json:"merchandises"`
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	IsReserved  bool   `json:"isreserved"`
 }
 
 func (rr *ReservationRequest) ToModel(generateNewID bool) *models.Reservation {
@@ -80,16 +79,13 @@ func (rr *ReservationRequest) Pay(ctx context.Context, id, redirectURL string) (
 		return "", fmt.Errorf("reservation from db is nil")
 	}
 
-	mrepo := models.MerchandiseRepository{Db: internal.Database(ctx)}
+	merchandises, err := GetMerchByReservationID(ctx, id)
+	if err != nil {
+		return "", fmt.Errorf("error getting related merchandises from db")
+	}
 
-	//merchandises := make([]*models.Merchandise, 0, len(reservation.MerchandiseIDs))
-	for _, merch := range reservation.MerchandiseIDs {
-		merchandise, err := mrepo.GetMerchandiseByID(merch)
-		if err != nil {
-			return "", fmt.Errorf("error getting merchandise: %v", err)
-		}
-		//merchandises[i] = merchandise
-		reservation.CalculatedPrice += merchandise.Price
+	for _, merch := range merchandises {
+		reservation.CalculatedPrice += merch.Price
 	}
 
 	return makePaymentLink(*reservation, redirectURL)

@@ -8,10 +8,11 @@ import (
 )
 
 type MerchandiseRequest struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	CategoryID  uint   `json:"category_id"`
+	ID            string `json:"id"`
+	Name          string `json:"name"`
+	Description   string `json:"description"`
+	CategoryID    string `json:"category_id"`
+	ReservationID string `json:"reservation_id"`
 
 	Price     int64  `json:"price"`
 	Confirmed bool   `json:"confirmed"`
@@ -19,15 +20,16 @@ type MerchandiseRequest struct {
 	EndTime   string `json:"endtime"`
 }
 
-func (mreq *MerchandiseRequest) ToModel(generateNewID bool, categoryId string) *models.Merchandise {
+func (mreq *MerchandiseRequest) ToModel(generateNewID bool) *models.Merchandise {
 	if generateNewID {
 		mreq.ID = generateUUID()
 	}
 	return &models.Merchandise{
-		ID:          mreq.ID,
-		Name:        mreq.Name,
-		Description: mreq.Description,
-		CategoryID:  &categoryId,
+		ID:            mreq.ID,
+		Name:          mreq.Name,
+		Description:   mreq.Description,
+		CategoryID:    mreq.CategoryID,
+		ReservationID: mreq.ReservationID,
 
 		Price:     mreq.Price,
 		Confirmed: mreq.Confirmed,
@@ -38,7 +40,7 @@ func (mreq *MerchandiseRequest) ToModel(generateNewID bool, categoryId string) *
 
 func (mreq *MerchandiseRequest) Create(ctx context.Context) (*models.Merchandise, error) {
 	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
-	model := mreq.ToModel(true, "")
+	model := mreq.ToModel(true)
 	err := mr.CreateMerchandise(model)
 
 	if err != nil {
@@ -50,7 +52,7 @@ func (mreq *MerchandiseRequest) Create(ctx context.Context) (*models.Merchandise
 
 func (mreq *MerchandiseRequest) Update(ctx context.Context) (*models.Merchandise, error) {
 	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
-	model := mreq.ToModel(false, "")
+	model := mreq.ToModel(false)
 	err := mr.UpdateMerchandise(model)
 
 	if err != nil {
@@ -68,4 +70,9 @@ func (mreq *MerchandiseRequest) Get(ctx context.Context) ([]*models.Merchandise,
 func (mreq *MerchandiseRequest) Detail(ctx context.Context, id string) (*models.Merchandise, error) {
 	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
 	return mr.GetMerchandiseByID(id)
+}
+
+func GetMerchByReservationID(ctx context.Context, id string) ([]*models.Merchandise, error) {
+	mr := models.MerchandiseRepository{Db: internal.Database(ctx)}
+	return mr.GetMerchandiseByReservationID(id)
 }

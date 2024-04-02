@@ -26,6 +26,9 @@ func registerMerchandise(ctx context.Context, router *mux.Router) {
 	s.HandleFunc("/", impl.get).Methods("GET")
 	s.HandleFunc("/{id}", impl.update).Methods("PUT")
 	s.HandleFunc("/{id}", impl.detail).Methods("GET")
+
+	s = router.PathPrefix("/merchandisesfromreservation").Subrouter()
+	s.HandleFunc("/{id}", impl.getByReservation).Methods("GET")
 }
 
 func (impl *merchandiseImpl) create(w http.ResponseWriter, r *http.Request) {
@@ -75,5 +78,18 @@ func (impl *merchandiseImpl) detail(w http.ResponseWriter, r *http.Request) {
 		views.SendResponse(w, model)
 	} else {
 		views.SendErrorMsg(w, model)
+	}
+}
+
+func (impl *merchandiseImpl) getByReservation(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	reservationID := vars["id"]
+
+	mods, err := services.GetMerchByReservationID(impl.ctx, reservationID)
+
+	if err == nil {
+		views.SendResponse(w, mods)
+	} else {
+		views.SendErrorMsg(w, mods)
 	}
 }

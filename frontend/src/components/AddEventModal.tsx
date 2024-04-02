@@ -1,15 +1,45 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Form, ModalStyled} from "./styles/FullCalendar.styled";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import {BaseEvent} from "../services/events";
+import CategoriesService, {Category} from "../services/Categories";
+import {errorPopup} from "../services/utils";
 
 interface ModalProps {
     modalIsOpen: boolean;
     handleCloseModal: () => void;
-    handleSave: () => void;
+    handleSave: (categoryId: string) => void;
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     event: BaseEvent;
 }
 export default function AddEventModal({modalIsOpen, handleCloseModal, handleSave, event, handleChange}: ModalProps) {
+    const [categories, setCategories] = useState<Category[]>([]);
+
+    const [selectedCategoryId, setselectedCategoryId] = React.useState('');
+
+    const rerenderCategories = async () => {
+        try {
+            const items: Category[] = await CategoriesService.get();
+            return items;
+        } catch (error) {
+            errorPopup(`problem with loading data: ${error}`);
+        }
+    };
+
+    useEffect(() => {
+        rerenderCategories().then(categories => {
+            if (categories) {
+                setCategories(categories);
+            }
+        }).catch(error => {
+            errorPopup(`error fetching categories: ${error}`);
+        });
+    }, []);
+
+    const handleChangeInFormControl = (event: SelectChangeEvent<string>) => {
+        setselectedCategoryId(event.target.value);
+    };
+
     return (
         <ModalStyled
             isOpen={modalIsOpen}
@@ -19,7 +49,7 @@ export default function AddEventModal({modalIsOpen, handleCloseModal, handleSave
             <h2>New Event</h2>
             <Form onSubmit={(e) => {
                 e.preventDefault();
-                handleSave();
+                handleSave(selectedCategoryId);
             }}>
 
                 <div className="mb-3">
@@ -36,6 +66,24 @@ export default function AddEventModal({modalIsOpen, handleCloseModal, handleSave
                     <label htmlFor="eventDescription" className="form-label">Description:</label>
                     <input type="text" className="form-control" id="eventDescription" name="description" value={event?.description || ''} onChange={handleChange} />
                 </div>
+
+                <FormControl fullWidth>
+                    <label htmlFor="eventColor" className="form-label">Category:</label>
+                    <Select
+                        labelId="category-select-label"
+                        id="category-select"
+                        value={selectedCategoryId}
+                        label="Category"
+                        onChange={handleChangeInFormControl}
+                    >
+                        {categories.map((item) => (
+                            <MenuItem key={item.id} value={item.id} sx={{ backgroundColor: item.color }}
+                            >
+                                {item.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
                 <button type="submit" className="btn btn-primary">Save</button>
                 <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Cancel</button>

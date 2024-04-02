@@ -1,40 +1,45 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Navbar from "../components/Navbar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import {errorPopup, successPopup} from "../services/utils";
-import {ReservationService} from "../services/reservation";
+import {errorPopup} from "../services/utils";
+import {EventsService, Merchandise} from "../services/events";
+import {Reservation, ReservationService} from "../services/reservation";
 
 export default function Cart() {
-    const items = [
-        {
-            id: 1,
-            name: 'item1',
-            description: 'desc1',
-            price: 1,
-            confirmed: false,
-        },
-        {
-            id: 2,
-            name: 'item2',
-            description: 'desc2',
-            price: 1,
-            confirmed: false,
-        },
-    ];
+    const [merchandises, setMerchandises] = useState<Merchandise[]>([]);
+
+    const createPaymentLink = async () => {
+        try {
+            const link = await ReservationService.pay(localStorage.getItem('reservation') as string);
+            window.location.href = link;
+        } catch (error) {
+            errorPopup(`problem with creating payment link: ${error}`);
+        }
+    };
 
     const loadReservation = async () => {
         try {
             const reservationID = localStorage.getItem('reservation') as string;
-            await ReservationService.get(reservationID);
-            successPopup(`event added`);
+            const items: Merchandise[] = await EventsService.getByReservation(reservationID);
+            return items;
         } catch (error) {
             errorPopup(`error while getting all reservations: ${error}`);
         }
     };
+
+    useEffect(() => {
+        loadReservation().then(items => {
+            if (items) {
+                setMerchandises(items);
+            }
+        }).catch(error => {
+            errorPopup(`error fetching categories: ${error}`);
+        });
+    }, []);
 
     return (
         <>
@@ -43,8 +48,9 @@ export default function Cart() {
                 <Typography variant="h4" component="h1" gutterBottom>
                     Merchandises to reserve
                 </Typography>
+                <button type="submit" className="btn btn-primary" onClick={createPaymentLink}>Pay</button>
                 <Grid container spacing={2}>
-                    {items.map((item) => (
+                    {merchandises.map((item) => (
                         <Card key={item.id} sx={{ marginBottom: 2 }}>
                             <CardContent>
                                 <Typography variant="h5" component="div">

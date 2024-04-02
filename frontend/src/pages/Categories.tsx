@@ -13,7 +13,7 @@ import AddCategoryModal from "../components/AddCategoryModal";
 
 export default function CategoriesScree() {
     const [categories, setCategories] = useState<Category[]>([]);
-    const [newCategory, setNewCategory] = useState<Category>({ name: "", color: "" });
+    const [newCategory, setNewCategory] = useState<Category>({ id: '', name: '', color: '' });
     const [modals, setModals] = useState({
         addCategoryModal: false,
     });
@@ -63,16 +63,13 @@ export default function CategoriesScree() {
     };
 
     useEffect(() => {
-        (async () => {
-            try {
-                const categories: Category[] | undefined = await rerenderCategories();
-                if (categories) {
-                    setCategories(categories);
-                }
-            } catch (error) {
-                errorPopup(`error fetching events: ${error}`);
+        rerenderCategories().then(categories => {
+            if (categories) {
+                setCategories(categories);
             }
-        })();
+        }).catch(error => {
+            errorPopup(`error fetching categories: ${error}`);
+        });
     }, []);
 
 

@@ -8,12 +8,11 @@ import (
 
 type Reservation struct {
 	gorm.Model
-	ID              string   `json:"id"`
-	Name            string   `json:"name"`
-	Description     string   `json:"description"`
-	IsReserved      bool     `json:"isreserved"`
-	MerchandiseIDs  []string `json:"merchandises" gorm:"type:json"`
-	CalculatedPrice int64    `json:"price"`
+	ID              string `json:"id"`
+	Name            string `json:"name"`
+	Description     string `json:"description"`
+	IsReserved      bool   `json:"isreserved"`
+	CalculatedPrice int64  `json:"price"`
 }
 
 type ReservationRepository struct {
