@@ -31,6 +31,11 @@ export interface Merchandise {
     starttime: string,
     endtime: string,
     confirmed: boolean,
+
+    ID: number,
+    CreatedAt: string,
+    UpdatedAt: string,
+    DeletedAt: string
 }
 
 export const mapEventToMerchandiseRequests = (event: BaseEvent | ProcessedEvent) => {
@@ -56,7 +61,7 @@ function convertStringToDate(dateString: string) {
     return date;
 }
 
-export const mapReservationToEvent = (merch: Merchandise): BaseEvent => {
+export const mapMerchandiseToEvent = (merch: Merchandise): BaseEvent => {
     return {
         event_id: Number(merch.id),
         start: convertStringToDate(merch.starttime),
@@ -72,12 +77,25 @@ export class EventsService {
     static async get() {
         const response = await axios.get(`${config.API}${config.MERCH}/`);
         const events: Merchandise[] = response.data;
-        return removeInvalidDates(events.map(v => mapReservationToEvent(v)));
+        return removeInvalidDates(events.map(v => mapMerchandiseToEvent(v)));
     }
 
     static async create(data: ProcessedEvent) {
         const mapped = mapEventToMerchandiseRequests(data);
         await axios.post(`${config.API}${config.MERCH}/`, mapped);
+    }
+
+    static async update(data: Merchandise) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { ID, CreatedAt, UpdatedAt, DeletedAt, ...newData } = data;
+        console.log(newData)
+        await axios.put(`${config.API}${config.MERCH}/`, newData);
+    }
+
+    static async getById(id: string) {
+        const response = await axios.get(`${config.API}${config.MERCH}/${id}`);
+        const event: Merchandise = response.data;
+        return event;
     }
 
     static async getByReservation(id: string) {

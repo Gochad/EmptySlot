@@ -65,6 +65,20 @@ export default function FullCalendar() {
         }));
     };
 
+    const handleAssignToReservation = async() => {
+        try {
+            const e = await EventsService.getById(currentEventId);
+            e.reservation_id = localStorage.getItem('reservation') as string
+            await EventsService.update(e)
+            successPopup(`event assign to current reservation`);
+        } catch (error) {
+            console.log(error)
+            errorPopup(`error while assign current reservation: ${error}`);
+        } finally {
+            closeModal('showEventModal');
+        }
+    };
+
     const handleEventSelect = (event: BaseEvent) => {
         setCurrentEventId(String(event.event_id));
         openModal('showEventModal');
@@ -118,7 +132,7 @@ export default function FullCalendar() {
             <ShowEventModal
                 modalIsOpen={modals.showEventModal}
                 handleCloseModal={() => closeModal("showEventModal")}
-                eventId={currentEventId}
+                handleAssign={handleAssignToReservation}
             />
         </div>
     );

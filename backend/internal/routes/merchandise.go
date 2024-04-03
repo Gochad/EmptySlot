@@ -3,6 +3,7 @@ package routes
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -24,7 +25,7 @@ func registerMerchandise(ctx context.Context, router *mux.Router) {
 	s := router.PathPrefix("/merchandises").Subrouter()
 	s.HandleFunc("/", impl.create).Methods("POST")
 	s.HandleFunc("/", impl.get).Methods("GET")
-	s.HandleFunc("/{id}", impl.update).Methods("PUT")
+	s.HandleFunc("/", impl.update).Methods("PUT")
 	s.HandleFunc("/{id}", impl.detail).Methods("GET")
 
 	s = router.PathPrefix("/merchandisesfromreservation").Subrouter()
@@ -45,6 +46,7 @@ func (impl *merchandiseImpl) create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (impl *merchandiseImpl) update(w http.ResponseWriter, r *http.Request) {
+	log.Print("robie create")
 	if err := json.NewDecoder(r.Body).Decode(&impl.body); err != nil {
 		views.SendErrorMsg(w, "Error decoding JSON")
 		return
