@@ -44,9 +44,3 @@ export const ModalStyled = styled(Modal)<object>`
   border-radius: 5px;
   border: 2px solid #000;
 `;
-
-
-export const CalendarStyles = {
-    height: '80vh',
-    width: `90vw`,
-}

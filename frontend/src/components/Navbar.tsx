@@ -28,7 +28,7 @@ export default function Navbar({cart}: NavbarProps) {
         navigate(config.MAIN);
     };
 
-    const userpanel = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const userpanel = () => {
         navigate(config.USER);
     };
 
