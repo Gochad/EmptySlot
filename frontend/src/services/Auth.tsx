@@ -4,6 +4,7 @@ import axios from "axios";
 interface LoginResponse {
     token: string;
     reservation: string;
+    email: string;
 }
 
 interface LoginData {
@@ -17,10 +18,12 @@ class AuthService {
         const data: LoginResponse = response.data;
         localStorage.setItem('token', data.token);
         localStorage.setItem('reservation', data.reservation);
+        localStorage.setItem('email', data.email);
     }
 
     static logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('userid');
     }
 }
 

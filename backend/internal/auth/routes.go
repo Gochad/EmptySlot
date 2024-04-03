@@ -48,7 +48,7 @@ func (impl *authImpl) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = json.NewEncoder(w).Encode(map[string]string{"token": token, "reservation": user.ReservationID}); err != nil {
+	if err = json.NewEncoder(w).Encode(map[string]string{"token": token, "reservation": user.ReservationID, "email": user.Email}); err != nil {
 		fmt.Println("error during encoding token: ", err)
 	}
 }
