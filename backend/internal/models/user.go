@@ -6,6 +6,13 @@ import (
 	"gorm.io/gorm"
 )
 
+type Role int
+
+const (
+	Admin Role = iota
+	Normal
+)
+
 type User struct {
 	gorm.Model
 	ID       string `json:"id" gorm:"unique_index"`
@@ -14,6 +21,7 @@ type User struct {
 	Password string `json:"password"`
 	Address  string `json:"address"`
 	Phone    string `json:"phone"`
+	Role     int    `json:"role"`
 
 	ReservationID string `json:"reservation"`
 }

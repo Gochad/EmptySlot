@@ -14,6 +14,7 @@ type UserRequest struct {
 	Email    string `json:"email"`
 	Address  string `json:"address"`
 	Phone    string `json:"phone"`
+	Role     int    `json:"role"`
 
 	ReservationID string `json:"reservation"`
 }
@@ -29,6 +30,7 @@ func (ur *UserRequest) ToModel(generateNewID bool) *models.User {
 		Email:         ur.Email,
 		Address:       ur.Address,
 		Phone:         ur.Phone,
+		Role:          ur.Role,
 		ReservationID: ur.ReservationID,
 	}
 }
