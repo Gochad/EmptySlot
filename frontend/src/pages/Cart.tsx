@@ -22,6 +22,7 @@ export default function Cart() {
         }
     };
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const loadReservation = async () => {
         try {
             return await EventsService.getByReservation(reservationID);
@@ -38,7 +39,7 @@ export default function Cart() {
         }).catch(error => {
             errorPopup(`error fetching categories: ${error}`);
         });
-    }, []);
+    }, [loadReservation]);
 
     return (
         <>
