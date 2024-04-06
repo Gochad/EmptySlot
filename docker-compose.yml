@@ -14,13 +14,13 @@ services:
       - postgres-db:/var/lib/postgresql/data
 
   be:
-    build: ./backend
+    build: ./server
     env_file:
       - .env
     ports:
       - "8080:8080"
     volumes:
-      - ./backend:/usr/src/app
+      - ./server:/usr/src/app
     command: go run ./cmd/api/main.go
     depends_on:
       - db

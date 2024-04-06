@@ -15,11 +15,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./frontend
+        working-directory: ./client
 
       - name: Build the project
         run: npm run build
-        working-directory: ./frontend
+        working-directory: ./client
 
       - uses: actions/upload-artifact@v3
         with:
