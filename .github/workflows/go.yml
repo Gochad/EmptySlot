@@ -29,11 +29,11 @@ jobs:
 
       - name: Build
         run: |
-          cd backend
+          cd server
           go build -v ./...
 
       - name: Test
         run: |
-          cd backend
+          cd server
           go test -v ./...
 
