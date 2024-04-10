@@ -18,7 +18,7 @@ jobs:
           username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
-      - name: Build and push Docker image
+      - name: compose
         run: |
-          docker build . -t ${{ secrets.AZURE_REGISTRY }}/emptyslot:${{ github.sha }}
-          docker push ${{ secrets.AZURE_REGISTRY }}/emptyslot:${{ github.sha }}
+            docker compose -f docker-compose.yml build
+            docker compose -f docker-compose.yml push
