@@ -14,6 +14,7 @@ services:
       - postgres-db:/var/lib/postgresql/data
 
   be:
+    image: goochadregistry.azurecr.io/be:latest
     build: ./server
     env_file:
       - .env
@@ -26,6 +27,7 @@ services:
       - db
 
   fe:
+    image: goochadregistry.azurecr.io/fe:latest
     build: ./client
     ports:
       - "3000:80"
