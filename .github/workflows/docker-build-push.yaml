@@ -18,6 +18,12 @@ jobs:
           username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
+      - name: Create .env file
+        run: |
+          echo DB_USER=${{ secrets.DB_USER }} >> .env
+          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> .env
+          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+
       - name: compose
         run: |
             docker compose -f docker-compose.yml build
