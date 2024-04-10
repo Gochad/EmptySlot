@@ -25,5 +25,13 @@ services:
     depends_on:
       - db
 
+  fe:
+    build: ./client
+    ports:
+      - "3000:80"
+    depends_on:
+      - be
+
+
 volumes:
   postgres-db:
