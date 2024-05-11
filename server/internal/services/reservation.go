@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-	"log"
 	"strconv"
 	"time"
 
@@ -94,6 +93,5 @@ func (rr *ReservationRequest) Pay(ctx context.Context, id, redirectURL string) (
 		reservation.CalculatedPrice += merch.Price
 	}
 
-	log.Print(reservation.CalculatedPrice)
 	return makePaymentLink(*reservation, redirectURL)
 }
