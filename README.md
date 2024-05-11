@@ -15,26 +15,33 @@ A web application for booking any service and making payments for it through the
 1. `cd backend`
 1. with `docker compose up`
 
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant A as Admin
+    participant Auth as Authentication Service
+    participant SS as Slot Service
+    participant DB as Database
 
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#FFCC00', 'primaryBorderColor': '#333', 'lineColor': '#333', 'textColor': '#333' }}}%%
-usecaseDiagram
-actor User
-actor Admin
+    U->>+Auth: Provide credentials
+    Auth-->>-U: Authentication Response (Success/Fail)
 
-%% User Use Cases
-User --> (Login/Logout)
-User --> (Register)
-User --> (View Slots)
-User --> (Book Slot)
-User --> (Cancel Booking)
+    alt Authentication Success
+        U->>+SS: Request to view slots
+        SS->>+DB: Fetch available slots
+        DB-->>-SS: Return slots data
+        SS-->>-U: Display slots
 
-%% Admin Use Cases
-Admin --> (Add Slot)
-Admin --> (Remove Slot)
-Admin --> (Modify Slot)
-Admin --> (View Slots)
+        U->>+SS: Select and book slot
+        SS->>+DB: Update slot status
+        DB-->>-SS: Confirm update
+        SS-->>-U: Booking confirmation
 
-%% Overlapping Use Cases
-(View Slots) <.. (Modify Slot) : "<<extends>>"
-(View Slots) <.. (Add Slot) : "<<extends>>"
-(View Slots) <.. (Remove Slot) : "<<extends>>"
+        A->>+SS: Add new slot
+        SS->>+DB: Insert new slot
+        DB-->>-SS: Confirm insertion
+        SS-->>-A: Slot added confirmation
+    else Authentication Failed
+        Auth-->>U: Show error
+    end
+```
