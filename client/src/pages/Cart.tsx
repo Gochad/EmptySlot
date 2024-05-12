@@ -38,7 +38,7 @@ export default function Cart() {
         }).catch(error => {
             errorPopup(`error fetching categories: ${error}`);
         });
-    }, []);
+    }, [loadReservation]);
 
     return (
         <>
