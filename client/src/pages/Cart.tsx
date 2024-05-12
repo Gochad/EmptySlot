@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -22,13 +22,13 @@ export default function Cart() {
         }
     };
 
-    const loadReservation = async () => {
+    const loadReservation = useCallback(async () => {
         try {
             return await EventsService.getByReservation(reservationID);
         } catch (error) {
             errorPopup(`error while getting all reservations: ${error}`);
         }
-    };
+    }, [reservationID]);
 
     useEffect(() => {
         loadReservation().then(items => {
@@ -39,6 +39,7 @@ export default function Cart() {
             errorPopup(`error fetching categories: ${error}`);
         });
     }, [loadReservation]);
+
 
     return (
         <>
