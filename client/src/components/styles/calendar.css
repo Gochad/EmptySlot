@@ -9,6 +9,10 @@
     border-bottom: 2px solid #cfd8dc;
 }
 
+.rbc-current-time-indicator {
+    display: none;
+}
+
 .rbc-day-bg.rbc-today {
     background-color: #e0f7fa;
     align-self: baseline;

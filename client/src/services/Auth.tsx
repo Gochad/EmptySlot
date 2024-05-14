@@ -5,6 +5,7 @@ interface LoginResponse {
     token: string;
     reservation: string;
     email: string;
+    role: number;
 }
 
 interface LoginData {
@@ -19,6 +20,7 @@ class AuthService {
         localStorage.setItem('token', data.token);
         localStorage.setItem('reservation', data.reservation);
         localStorage.setItem('email', data.email);
+        localStorage.setItem('role', data.role === 0 ? "admin" : "user");
     }
 
     static logout() {

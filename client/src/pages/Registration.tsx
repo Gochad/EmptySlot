@@ -10,6 +10,9 @@ import { Box } from '@mui/material';
 
 export default function RegistrationScreen() {
     const navigate = useNavigate();
+
+    const queryParams = new URLSearchParams(location.search);
+    const usertype = queryParams.get('usertype') || "user";
     const handleRegister = async (e: React.FormEvent) => {
         try {
             e.preventDefault();
@@ -20,7 +23,7 @@ export default function RegistrationScreen() {
                 username: formProps.username.toString(),
                 password: formProps.password.toString(),
                 email: formProps.email.toString()
-            });
+            }, usertype);
             navigate('/login');
         } catch (error) {
             errorPopup('Wrong password or email');

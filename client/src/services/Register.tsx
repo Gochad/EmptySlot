@@ -8,8 +8,11 @@ interface RegisterData {
 }
 
 class RegisterService {
-    static async register(userData: RegisterData){
-        return await axios.post(`${config.API}${config.REGISTER}`, userData);
+    static async register(userData: RegisterData, userType: string){
+        if (userType === "admin") {
+            return await axios.post(`${config.API}${config.REGISTER}?usertype=admin`, userData);
+        }
+        return await axios.post(`${config.API}${config.REGISTER}?usertype=user`, userData);
     }
 }
 

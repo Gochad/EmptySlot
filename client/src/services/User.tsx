@@ -16,7 +16,6 @@ export interface User {
 export default class UserService {
     static async get(email: string) {
         const response = await axios.get(`${config.API}${config.USERS}/${email}`);
-        console.log(response.data)
         const user: User = response.data;
         return user;
     }

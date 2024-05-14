@@ -24,6 +24,10 @@ export default function FullCalendar() {
         showEventModal: false,
     });
 
+    const isUserRole = () => {
+        return localStorage.getItem('role') === 'user';
+    };
+
     const openModal = (modalName: string) => {
         setModals({ ...modals, [modalName]: true });
     };
@@ -112,7 +116,7 @@ export default function FullCalendar() {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
-                selectable
+                selectable={!isUserRole()}
                 onSelectSlot={handleSelect}
                 defaultView="week"
                 views={["week","agenda"]}

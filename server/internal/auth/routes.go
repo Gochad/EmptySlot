@@ -22,7 +22,7 @@ func RegisterAuth(ctx context.Context, r *mux.Router) {
 	}
 
 	r.HandleFunc("/login", impl.login)
-	r.HandleFunc("/register", impl.register)
+	r.HandleFunc("/register", impl.register).Methods("POST")
 
 	r.HandleFunc("/google-sso", GoogleSignOn)
 	r.HandleFunc("/callback", Callback)
@@ -48,7 +48,7 @@ func (impl *authImpl) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = json.NewEncoder(w).Encode(map[string]string{"token": token, "reservation": user.ReservationID, "email": user.Email}); err != nil {
+	if err = json.NewEncoder(w).Encode(map[string]any{"token": token, "reservation": user.ReservationID, "email": user.Email, "role": user.Role}); err != nil {
 		fmt.Println("error during encoding token: ", err)
 	}
 }
@@ -60,6 +60,8 @@ func (impl *authImpl) register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	usertype := r.URL.Query().Get("usertype")
+
 	var rreq services.ReservationRequest
 	reservation, _ := rreq.Create(impl.ctx)
 
@@ -69,10 +71,15 @@ func (impl *authImpl) register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	newUser.Password = hashedPassword
-
 	newUser.ReservationID = reservation.ID
-	create, err := newUser.Create(impl.ctx)
 
+	if usertype == "admin" {
+		newUser.Role = 0 // admin
+	} else {
+		newUser.Role = 1 // standard
+	}
+
+	create, err := newUser.Create(impl.ctx)
 	if err == nil {
 		views.SendResponse(w, create)
 	} else {

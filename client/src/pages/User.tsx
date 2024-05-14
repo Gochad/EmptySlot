@@ -5,11 +5,8 @@ import {User} from "../services/User";
 import UserService from "../services/User";
 import Navbar from "../components/Navbar";
 
-
-//TODO: fixme
 export default function UserScreen() {
     const [userData, setUserData] = useState<User>();
-
     const loadUser = async () => {
         try {
             return await UserService.get(localStorage.getItem('email') as string);

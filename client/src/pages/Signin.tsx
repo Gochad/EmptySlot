@@ -40,6 +40,11 @@ export default function SignIn() {
         }
     };
 
+    const handleRegisterAdmin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        navigate('/register?usertype=admin');
+    };
+
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
@@ -52,7 +57,7 @@ export default function SignIn() {
                         alignItems: 'center',
                     }}
                 >
-                    <Logo src="logo.jpeg" alt="EmptySlot Logo"/>
+                    <Logo src="logo.jpeg" alt="EmptySlot Logo" />
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
@@ -96,16 +101,24 @@ export default function SignIn() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="/register" variant="body2">
+                                <Link href="/register?usertype=user" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
                         </Grid>
                     </Box>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        onClick={handleRegisterAdmin}
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Register your service
+                    </Button>
                 </Box>
                 <OAuth>
                     <a href={ssoUrl}>
-                        <img src="logo_google.png" alt="Google Logo"/>
+                        <img src="logo_google.png" alt="Google Logo" />
                     </a>
                 </OAuth>
             </Container>
